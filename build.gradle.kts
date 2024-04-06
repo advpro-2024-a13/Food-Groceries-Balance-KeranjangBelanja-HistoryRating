@@ -23,6 +23,7 @@ repositories {
 }
 
 dependencies {
+    implementation("postgresql:postgresql:9.1-901.jdbc4")
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
     implementation("org.springframework.boot:spring-boot-starter-web")
     compileOnly("org.projectlombok:lombok")
@@ -34,17 +35,13 @@ dependencies {
 tasks.register<Test>("unitTest") {
     description = "Runs unit tests."
     group = "verification"
+}
 
-    filter {
-        excludeTestsMatching("*FunctionalTest")
-    }
+tasks.withType<Test>().configureEach {
+    useJUnitPlatform()
 }
 
 tasks.test {
-    filter {
-        excludeTestsMatching("*FunctionalTest")
-    }
-
     finalizedBy(tasks.jacocoTestReport)
 }
 
