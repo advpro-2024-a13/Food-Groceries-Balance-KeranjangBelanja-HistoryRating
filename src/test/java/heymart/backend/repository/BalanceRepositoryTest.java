@@ -1,15 +1,16 @@
+package heymart.backend.repository;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
 
 import heymart.backend.models.Balance;
+import heymart.backend.service.BalanceServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-
-import java.util.Optional;
 
 @ExtendWith(MockitoExtension.class)
 public class BalanceRepositoryTest {
@@ -18,7 +19,7 @@ public class BalanceRepositoryTest {
     private BalanceRepository balanceRepository;
 
     @InjectMocks
-    private BalanceService balanceService;
+    private BalanceServiceImpl balanceService;
 
     @BeforeEach
     public void setUp() {
@@ -28,7 +29,7 @@ public class BalanceRepositoryTest {
 
     @Test
     public void testFindByOwnerId() {
-        Balance foundBalance = balanceService.findByOwnerId(123L);
+        Balance foundBalance = balanceService.getBalanceById(123L);
         
         verify(balanceRepository).findByOwnerId(123L);
         

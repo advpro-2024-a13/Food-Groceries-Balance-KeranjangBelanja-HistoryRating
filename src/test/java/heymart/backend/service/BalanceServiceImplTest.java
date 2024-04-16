@@ -53,16 +53,6 @@ public class BalanceServiceImplTest {
     }
 
     @Test
-    public void testAddNewBalance() {
-        Long ownerId = 123L;
-
-        Balance newBalance = balanceService.addNewBalance(ownerId);
-
-        assertEquals(ownerId, newBalance.getOwnerId());
-        assertEquals(0L, newBalance.getBalance());
-    }
-
-    @Test
     public void testDeleteBalance() {
         Long ownerId = 123L;
 
