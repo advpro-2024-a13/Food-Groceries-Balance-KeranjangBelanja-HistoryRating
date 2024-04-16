@@ -1,9 +1,8 @@
+package heymart.backend.models;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.Mockito.mock;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
-import heymart.backend.models.Balance;
 
 public class BalanceTest {
 
