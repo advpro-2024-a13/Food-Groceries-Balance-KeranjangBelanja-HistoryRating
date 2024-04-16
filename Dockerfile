@@ -18,7 +18,5 @@ USER ${USER_NAME}
 WORKDIR /opt/balancekeranjangbelanjahistoryrating
 COPY --from=builder --chown=${USER_UID}:${USER_GID} /src/balancekeranjangbelanjahistoryrating/build/libs/*.jar app.jar
 
-EXPOSE 8080
-
 ENTRYPOINT ["java"]
 CMD ["-jar", "app.jar"]
