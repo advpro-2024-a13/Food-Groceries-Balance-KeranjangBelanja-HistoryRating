@@ -35,7 +35,7 @@ jobs:
 
       - name: Deploy
         run: |
-          gcloud run deploy booku-be-booklist \
+          gcloud run deploy a13heymartbalancekeranjangbelanjahistoryrating \
           --region europe-west1 \
           --image gcr.io/${{ secrets.GCP_PROJECT_ID }}/a13heymartbalancekeranjangbelanjahistoryrating \
           --platform managed \
