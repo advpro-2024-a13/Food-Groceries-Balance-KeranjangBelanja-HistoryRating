@@ -16,48 +16,41 @@ import org.springframework.http.ResponseEntity;
 import java.util.HashMap;
 
 @ExtendWith(MockitoExtension.class)
-public class BalanceControllerTest {
+public class BalanceAPIControllerTest {
 
     @Mock
     private BalanceServiceImpl balanceService;
 
     @InjectMocks
-    private BalanceController balanceController;
+    private BalanceAPIController balanceAPIController;
 
     @Test
-    public void testModifyBalance() {
-        when(balanceService.existsById(any(Long.class))).thenReturn(true);
-        HashMap<String, String> JSON = new HashMap<>();
-        JSON.put("ownerId", "1");
-        JSON.put("amount", "100");
-        ResponseEntity<?> response = balanceController.modifyBalance(JSON);
-        assertEquals(HttpStatus.OK, response.getStatusCode());
-        assertEquals("Balance with ownerId 1 modified.", response.getBody());
-    }
-
-    @Test
-    public void testTopUp() {
+    public void testGetBalanceById() {
         when(balanceService.existsById(any(Long.class))).thenReturn(true);
         when(balanceService.getBalanceById(any(Long.class))).thenReturn(new Balance());
         HashMap<String, String> JSON = new HashMap<>();
         JSON.put("ownerId", "1");
-        JSON.put("amount", "50");
-        JSON.put("role", "ROLE_PEMBELI");
-        ResponseEntity<?> response = balanceController.topUp(JSON);
+        ResponseEntity<?> response = balanceAPIController.getBalanceById(JSON);
         assertEquals(HttpStatus.OK, response.getStatusCode());
-        assertEquals("Balance with ownerId 1 topped up.", response.getBody());
     }
 
     @Test
-    public void testWithdraw() {
-        when(balanceService.existsById(any(Long.class))).thenReturn(true);
-        when(balanceService.getBalanceById(any(Long.class))).thenReturn(new Balance());
+    public void testAddNewBalance() {
+        when(balanceService.existsById(any(Long.class))).thenReturn(false);
         HashMap<String, String> JSON = new HashMap<>();
         JSON.put("ownerId", "1");
-        JSON.put("amount", "50");
-        JSON.put("role", "ROLE_PENGELOLA");
-        ResponseEntity<?> response = balanceController.withdraw(JSON);
+        ResponseEntity<?> response = balanceAPIController.addNewBalance(JSON);
         assertEquals(HttpStatus.OK, response.getStatusCode());
-        assertEquals("Balance with ownerId 1 withdrawn.", response.getBody());
+        assertEquals("Balance with ownerId 1 added.", response.getBody());
+    }
+
+    @Test
+    public void testDeleteBalance() {
+        when(balanceService.existsById(any(Long.class))).thenReturn(true);
+        HashMap<String, String> JSON = new HashMap<>();
+        JSON.put("ownerId", "1");
+        ResponseEntity<?> response = balanceAPIController.deleteBalance(JSON);
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals("Balance with ownerId 1 deleted.", response.getBody());
     }
 }
