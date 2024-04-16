@@ -10,6 +10,9 @@ jobs:
     name: Cloud Run Deployment
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout code
+        uses: actions/checkout@master
+    
       - id: 'auth'
         uses: 'google-github-actions/auth@v2'
         with:
