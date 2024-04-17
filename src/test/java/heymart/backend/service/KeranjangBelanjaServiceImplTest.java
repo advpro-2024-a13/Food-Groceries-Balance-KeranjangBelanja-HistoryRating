@@ -5,6 +5,10 @@ import heymart.backend.model.Product;
 import heymart.backend.repository.KeranjangBelanjaRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,16 +16,19 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
 
+@ExtendWith(MockitoExtension.class)
 public class KeranjangBelanjaServiceImplTest {
-
+    @InjectMocks
+    KeranjangBelanjaServiceImpl keranjangBelanjaService;
+    @Mock
     KeranjangBelanjaRepository keranjangBelanjaRepository;
-    List<KeranjangBelanja> keranjangBelanjaList;
+    private List<KeranjangBelanja> keranjangBelanjaList;
     private List<Product> products;
 
     @BeforeEach
     void setKeranjangBelanja() {
         keranjangBelanjaList = new ArrayList<>();
-        keranjangBelanjaRepository = new KeranjangBelanjaRepository();
+
         this.products = new ArrayList<>();
 
         Product product1 = new Product();
@@ -42,6 +49,15 @@ public class KeranjangBelanjaServiceImplTest {
 
         this.products.add(product1);
         this.products.add(product2);
+
+        KeranjangBelanja keranjangBelanja1 = new KeranjangBelanja("Divie_123", products);
+        keranjangBelanjaList.add(keranjangBelanja1);
+
+        KeranjangBelanja keranjangBelanja2 = new KeranjangBelanja("Laras_123", products);
+        keranjangBelanjaList.add(keranjangBelanja2);
+
+        KeranjangBelanja keranjangBelanja3 = new KeranjangBelanja("Vinka_123", products);
+        keranjangBelanjaList.add(keranjangBelanja3);
     }
 
     @Test
