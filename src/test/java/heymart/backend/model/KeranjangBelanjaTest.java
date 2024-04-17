@@ -1,12 +1,13 @@
-package heymart.backend;
-
+package heymart.backend.model;
+import heymart.backend.KeranjangBelanja;
+import heymart.backend.Product;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
+import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertSame;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class KeranjangBelanjaTest {
     private List<Product> products;
@@ -16,7 +17,7 @@ public class KeranjangBelanjaTest {
         this.products = new ArrayList<>();
 
         Product product1 = new Product();
-        product1.setProductSupermarket("Indomales");
+        product1.setProductSupermarket("1648");
         product1.setProductId("123");
         product1.setProductName("Vanilla Bourbon");
         product1.setProductPrice(150);
@@ -24,7 +25,7 @@ public class KeranjangBelanjaTest {
         product1.setProductAmount(2);
 
         Product product2 = new Product();
-        product2.setProductSupermarket("Indorajin");
+        product2.setProductSupermarket("1748");
         product2.setProductId("234");
         product2.setProductName("Rum Raisin");
         product2.setProductPrice(200);
@@ -51,14 +52,14 @@ public class KeranjangBelanjaTest {
         assertSame(this.products, keranjangBelanja.getProducts());
         assertEquals(2, keranjangBelanja.getProducts().size());
 
-        assertEquals("Indomales", keranjangBelanja.getProducts().get(0).getProductSupermarket());
+        assertEquals("1648", keranjangBelanja.getProducts().get(0).getProductSupermarket());
         assertEquals("123", keranjangBelanja.getProducts().get(0).getProductId());
         assertEquals("Vanilla Bourbon", keranjangBelanja.getProducts().get(0).getProductName());
         assertEquals(150, keranjangBelanja.getProducts().get(0).getProductPrice());
         assertEquals("Gelato", keranjangBelanja.getProducts().get(0).getProductCategory());
         assertEquals(2, keranjangBelanja.getProducts().get(0).getProductAmount());
 
-        assertEquals("Indorajin", keranjangBelanja.getProducts().get(1).getProductSupermarket());
+        assertEquals("1748", keranjangBelanja.getProducts().get(1).getProductSupermarket());
         assertEquals("234", keranjangBelanja.getProducts().get(1).getProductId());
         assertEquals("Rum Raisin", keranjangBelanja.getProducts().get(1).getProductName());
         assertEquals(200, keranjangBelanja.getProducts().get(1).getProductPrice());
