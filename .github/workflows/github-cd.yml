@@ -5,6 +5,9 @@ name: Build Deploy
 on:
   push:
 
+    # Add this line at the beginning of your workflow file
+env:
+  ACTIONS_RUNNER_DEBUG: true
 
 # We defined our jobs. 
 # For simplicity we will use a single job called build
