@@ -1,4 +1,4 @@
-package heymart.backend;
+package heymart.backend.model;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -11,4 +11,6 @@ public class Product {
     private long productPrice;
     private String productCategory;
     private int productAmount;
+
+
 }
