@@ -33,7 +33,7 @@ jobs:
       - name: Test with Gradle
         run: | 
           ./gradlew wrapper --gradle-version=8.5
-          ./gradlew test --gradle-version=8.5
+          ./gradlew test
 
       - name: Store reports
         if: failure()
