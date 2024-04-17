@@ -3,6 +3,7 @@ plugins {
     jacoco
     id("org.springframework.boot") version "3.2.4"
     id("io.spring.dependency-management") version "1.1.4"
+    id("com.google.cloud.tools.jib") version "3.2.0"
 }
 
 group = "heymart.backend"
@@ -35,6 +36,8 @@ dependencies {
     testImplementation ("org.junit.jupiter:junit-jupiter-api:5.9.1")
     testRuntimeOnly ("org.junit.jupiter:junit-jupiter-engine:5.9.1")
     testImplementation("org.junit.platform:junit-platform-runner:1.10.2")
+    implementation("org.springframework.cloud:spring-cloud-gcp-starter-sql-postgresql:1.2.8.RELEASE")
+    implementation("org.springframework.cloud:spring-cloud-gcp-starter:1.1.1.RELEASE")
 }
 
 tasks.register<Test>("unitTest") {
