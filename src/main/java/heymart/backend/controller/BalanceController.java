@@ -3,12 +3,14 @@ package heymart.backend.controller;
 import heymart.backend.models.Balance;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import heymart.backend.service.BalanceServiceImpl;
 
 import java.util.HashMap;
 
+@Controller
 @RequestMapping("/balance")
 public class BalanceController {
     
@@ -49,7 +51,6 @@ public class BalanceController {
                     .body("Param Invalid");
         }
     }
-
 
     @PostMapping("/withdraw")
     public ResponseEntity<?> withdraw(@RequestBody HashMap<String, String> JSON) {
