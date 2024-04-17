@@ -21,6 +21,10 @@ public class HistoryTest {
         supermarket = mock(Supermarket.class);
     }
     @Test
+    public Long getId() {
+        return history.getId();
+    }
+    @Test
     public void testGetSetOwnerId() {
         Long ownerId = 123L;
         history.setOwnerId(ownerId);

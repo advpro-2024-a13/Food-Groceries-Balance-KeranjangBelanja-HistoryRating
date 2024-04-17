@@ -28,10 +28,14 @@ public class History{
     }
 
     public History(Long ownerId, Long marketId, List<Product> purchases, double totalSpent) {
+        this.id = id;
         this.ownerId = ownerId;
         this.marketId = marketId;
         this.purchases = purchases;
         this.totalSpent = totalSpent;
+    }
+    public Long getId() {
+        return id;
     }
     public void setOwnerId(Long ownerId) {
         this.ownerId = ownerId;
