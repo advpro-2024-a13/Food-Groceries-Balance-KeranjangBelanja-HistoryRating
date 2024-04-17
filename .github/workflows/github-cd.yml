@@ -31,7 +31,8 @@ jobs:
         settings-path: ${{ github.workspace }}
     # Step 3: run gradle build
     - name: Build with Gradle
-      run: ./gradlew assemble
+      run: chmod +x gradlew
+          ./gradlew assemble
 
     # Step 4: login to docker hub using credentials set in github 
     # secrets described in previous section
