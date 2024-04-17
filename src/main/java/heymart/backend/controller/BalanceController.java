@@ -1,5 +1,6 @@
 package heymart.backend.controller;
 
+import heymart.backend.enums.EnumRoleSingleton;
 import heymart.backend.models.Balance;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -36,7 +37,8 @@ public class BalanceController {
         long ownerId = Long.parseLong(JSON.get("ownerId"));
         long amount = Long.parseLong(JSON.get("amount"));
         String role = JSON.get("role");
-        if (balanceService.existsById(ownerId) && role.equals("ROLE_PEMBELI")) {
+        String roleEnum = EnumRoleSingleton.INSTANCE.getStringValue("Pembeli");
+        if (balanceService.existsById(ownerId) && role.equals(roleEnum)) {
             Balance balance = balanceService.getBalanceById(ownerId);
             if (balance == null) {
                 balanceService.addNewBalance(ownerId);
@@ -57,7 +59,8 @@ public class BalanceController {
         long ownerId = Long.parseLong(JSON.get("ownerId"));
         long amount = Long.parseLong(JSON.get("amount"));
         String role = JSON.get("role");
-        if (balanceService.existsById(ownerId) && role.equals("ROLE_PENGELOLA")) {
+        String roleEnum = EnumRoleSingleton.INSTANCE.getStringValue("Pengelola");
+        if (balanceService.existsById(ownerId) && role.equals(roleEnum)) {
             Balance balance = balanceService.getBalanceById(ownerId);
             if (balance == null) {
                 balanceService.addNewBalance(ownerId);

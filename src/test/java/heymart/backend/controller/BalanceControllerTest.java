@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
+import heymart.backend.enums.EnumRoleSingleton;
 import heymart.backend.models.Balance;
 import heymart.backend.service.BalanceServiceImpl;
 import org.junit.jupiter.api.Test;
@@ -42,7 +43,8 @@ public class BalanceControllerTest {
         HashMap<String, String> JSON = new HashMap<>();
         JSON.put("ownerId", "1");
         JSON.put("amount", "50");
-        JSON.put("role", "ROLE_PEMBELI");
+        String roleEnum = EnumRoleSingleton.INSTANCE.getStringValue("Pembeli");
+        JSON.put("role", roleEnum);
         ResponseEntity<?> response = balanceController.topUp(JSON);
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals("Balance with ownerId 1 topped up.", response.getBody());
@@ -55,7 +57,8 @@ public class BalanceControllerTest {
         HashMap<String, String> JSON = new HashMap<>();
         JSON.put("ownerId", "1");
         JSON.put("amount", "50");
-        JSON.put("role", "ROLE_PENGELOLA");
+        String roleEnum = EnumRoleSingleton.INSTANCE.getStringValue("Pengelola");
+        JSON.put("role", roleEnum);
         ResponseEntity<?> response = balanceController.withdraw(JSON);
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals("Balance with ownerId 1 withdrawn.", response.getBody());
