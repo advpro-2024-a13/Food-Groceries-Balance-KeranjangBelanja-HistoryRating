@@ -18,6 +18,8 @@ public class KeranjangBelanjaRepositoryTest {
 
     @BeforeEach
     void setKeranjangBelanja() {
+        keranjangBelanjaList = new ArrayList<>();
+        keranjangBelanjaRepository = new KeranjangBelanjaRepository();
         this.products = new ArrayList<>();
 
         Product product1 = new Product();
@@ -39,16 +41,14 @@ public class KeranjangBelanjaRepositoryTest {
         this.products.add(product1);
         this.products.add(product2);
 
-        List<KeranjangBelanja> listKeranjangBelanja = new ArrayList<>();
-
         KeranjangBelanja keranjangBelanja1 = new KeranjangBelanja("Divie_123", products);
-        listKeranjangBelanja.add(keranjangBelanja1);
+        keranjangBelanjaList.add(keranjangBelanja1);
 
         KeranjangBelanja keranjangBelanja2 = new KeranjangBelanja("Laras_123", products);
-        listKeranjangBelanja.add(keranjangBelanja2);
+        keranjangBelanjaList.add(keranjangBelanja2);
 
         KeranjangBelanja keranjangBelanja3 = new KeranjangBelanja("Vinka_123", products);
-        listKeranjangBelanja.add(keranjangBelanja3);
+        keranjangBelanjaList.add(keranjangBelanja3);
     }
 
     @Test
