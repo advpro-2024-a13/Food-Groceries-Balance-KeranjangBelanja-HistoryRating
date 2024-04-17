@@ -3,7 +3,9 @@ name: Build Deploy
 
 # We are triggering the action on any push to git 
 on:
-  push:
+  pull_request:
+    branches:
+      - master
 
 env:
   ACTIONS_RUNNER_DEBUG: true
