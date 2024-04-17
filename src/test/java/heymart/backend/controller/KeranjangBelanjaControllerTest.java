@@ -42,6 +42,6 @@ public class KeranjangBelanjaControllerTest {
         KeranjangBelanja keranjangBelanja = new KeranjangBelanja();
         Mockito.when(keranjangBelanjaService.createKeranjangBelanja(keranjangBelanja)).thenReturn(keranjangBelanja);
         String result = keranjangBelanjaController.createKeranjangBelanjaPost(keranjangBelanja, model);
-        assertEquals("redirect:list", result);
+        assertEquals("redirect::list", result);
     }
 }

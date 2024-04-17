@@ -20,4 +20,8 @@ public class KeranjangBelanja {
             this.products = products;
         }
     }
+
+    public KeranjangBelanja(){
+
+    }
 }
