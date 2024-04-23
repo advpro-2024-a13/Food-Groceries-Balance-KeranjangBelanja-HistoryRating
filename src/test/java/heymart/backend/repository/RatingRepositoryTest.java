@@ -1,6 +1,6 @@
-package repository;
+package heymart.backend.repository;
 
-import models.Rating;
+import heymart.backend.models.Rating;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -10,7 +10,7 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class RatingRepositoryTest {
-    RatingRepository ratingRepository;
+    private RatingRepository ratingRepository;
 
     List<Rating> ratings;
 

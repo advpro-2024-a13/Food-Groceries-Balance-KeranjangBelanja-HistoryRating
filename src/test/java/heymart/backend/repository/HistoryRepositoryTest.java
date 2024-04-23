@@ -1,7 +1,7 @@
-package repository;
+package heymart.backend.repository;
 
-import models.History;
-import models.Product;
+import heymart.backend.models.History;
+import heymart.backend.models.Product;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -11,9 +11,13 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class HistoryRepositoryTest {
-    HistoryRepository historyRepository;
+    private HistoryRepository historyRepository;
 
     List<History> histories;
+
+    Product product1;
+    Product product2;
+
 
     @BeforeEach
     void setUp() {
@@ -21,15 +25,9 @@ public class HistoryRepositoryTest {
 
         histories = new ArrayList<>();
 
-        Product product1 = new Product();
-        product1.setId(1L);
-        product1.setName("Product 1");
-        product1.setPrice(1000);
+        product1 = new Product(1L, "Product 1", 1000);
 
-        Product product2 = new Product();
-        product2.setId(2L);
-        product2.setName("Product 2");
-        product2.setPrice(2000);
+        product2 = new Product(2L, "Product 2", 2000);
 
         History history1 = new History(1L, 1L, List.of(product1, product2), 3000);
         histories.add(history1);
@@ -43,7 +41,7 @@ public class HistoryRepositoryTest {
 
     @Test
     void testSaveCreate() {
-        History newHistory = new History(5L, 5L, List.of(new Product(), new Product()), 6000);
+        History newHistory = new History(5L, 5L, List.of(product1, product2), 6000);
         historyRepository.save(newHistory);
         List<History> allHistories = historyRepository.findAll();
         assertTrue(allHistories.contains(newHistory));

@@ -1,6 +1,9 @@
-package models;
+package heymart.backend.models;
 
-import models.*;
+import heymart.backend.models.History;
+import heymart.backend.models.Product;
+import heymart.backend.models.Supermarket;
+import heymart.backend.models.User;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.mock;
@@ -38,8 +41,8 @@ public class HistoryTest {
     }
     @Test
     public void testAddPurchase() {
-        Product product1 = new Product("Product1", 10.0);
-        Product product2 = new Product("Product2", 20.0);
+        Product product1 = new Product(1L,"Product1", 10.0);
+        Product product2 = new Product(1L, "Product2", 20.0);
 
         double total = product1.getPrice() + product2.getPrice();
 

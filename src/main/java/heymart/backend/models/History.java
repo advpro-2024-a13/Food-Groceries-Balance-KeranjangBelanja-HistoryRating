@@ -1,4 +1,4 @@
-package models;
+package heymart.backend.models;
 
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -57,6 +57,12 @@ public class History{
         return purchases;
     }
     public double getTotalSpent() {
+        return totalSpent;
+    }
+    public void setTotal(double totalSpent) {
+        this.totalSpent = totalSpent;
+    }
+    public double getTotal() {
         return totalSpent;
     }
 }
