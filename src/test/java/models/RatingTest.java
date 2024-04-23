@@ -1,4 +1,4 @@
-package heymart.backend.models;
+package models;
 
 import models.Rating;
 import org.junit.jupiter.api.Test;

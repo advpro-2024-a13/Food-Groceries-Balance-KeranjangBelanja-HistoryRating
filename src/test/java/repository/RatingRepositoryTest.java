@@ -1,4 +1,4 @@
-package heymart.backend.repository;
+package repository;
 
 import models.Rating;
 import org.junit.jupiter.api.BeforeEach;

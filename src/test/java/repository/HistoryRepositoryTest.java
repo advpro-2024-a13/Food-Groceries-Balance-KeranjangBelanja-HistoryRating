@@ -1,4 +1,4 @@
-package heymart.backend.repository;
+package repository;
 
 import models.History;
 import models.Product;
