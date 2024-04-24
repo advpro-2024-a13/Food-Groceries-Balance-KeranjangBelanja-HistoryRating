@@ -1,6 +1,6 @@
 package heymart.backend.service;
 
-import heymart.backend.model.KeranjangBelanja;
+import heymart.backend.models.KeranjangBelanja;
 import heymart.backend.repository.KeranjangBelanjaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

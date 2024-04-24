@@ -1,6 +1,6 @@
 package heymart.backend.repository;
 
-import heymart.backend.model.KeranjangBelanja;
+import heymart.backend.models.KeranjangBelanja;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;

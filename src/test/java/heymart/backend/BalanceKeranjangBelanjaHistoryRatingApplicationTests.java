@@ -14,5 +14,4 @@ class BalanceKeranjangBelanjaHistoryRatingApplicationTests {
     @PostConstruct
     void contextLoads() {
     }
-
 }

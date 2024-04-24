@@ -1,7 +1,7 @@
 package heymart.backend.repository;
 
-import heymart.backend.model.KeranjangBelanja;
-import heymart.backend.model.Product;
+import heymart.backend.models.KeranjangBelanja;
+import heymart.backend.models.Product;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

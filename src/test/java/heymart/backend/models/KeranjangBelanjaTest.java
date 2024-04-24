@@ -1,4 +1,6 @@
-package heymart.backend.model;
+package heymart.backend.models;
+import heymart.backend.models.KeranjangBelanja;
+import heymart.backend.models.Product;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

@@ -1,5 +1,6 @@
-package heymart.backend.model;
+package heymart.backend.models;
 
+import heymart.backend.models.Product;
 import lombok.Builder;
 import lombok.Getter;
 
