@@ -43,7 +43,6 @@ jobs:
           path: |
             **/build/reports/
             **/build/test-results/
-=======
 name: CI
 
 on:
