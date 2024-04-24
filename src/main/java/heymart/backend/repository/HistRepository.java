@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class HistoryRepository {
+public class HistRepository {
     private List<History> histories = new ArrayList<>();
 
     public void save(History history) {
@@ -14,6 +14,7 @@ public class HistoryRepository {
             history.setId((long) (histories.size() + 1));
             histories.add(history);
         } else {
+            // Update an existing history
             int index = histories.indexOf(history);
             if (index != -1) {
                 histories.set(index, history);

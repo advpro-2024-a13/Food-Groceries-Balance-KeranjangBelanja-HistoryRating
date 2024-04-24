@@ -11,11 +11,9 @@ public class RatingRepository {
 
     public void save(Rating rating) {
         if (rating.getId() == null) {
-            // Generate a new ID for a new rating
             rating.setId((long) (ratings.size() + 1));
             ratings.add(rating);
         } else {
-            // Update an existing rating
             int index = ratings.indexOf(rating);
             if (index != -1) {
                 ratings.set(index, rating);

@@ -10,8 +10,7 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class RatingRepositoryTest {
-    private RatingRepository ratingRepository;
-
+    RatingRepository ratingRepository;
     List<Rating> ratings;
 
     @BeforeEach
@@ -22,12 +21,16 @@ public class RatingRepositoryTest {
 
         Rating rating1 = new Rating(1L, 1L, 4, "Great service!");
         ratings.add(rating1);
+        ratingRepository.save(rating1);
         Rating rating2 = new Rating(2L, 1L, 3, "Average experience.");
         ratings.add(rating2);
+        ratingRepository.save(rating2);
         Rating rating3 = new Rating(3L, 2L, 5, "Excellent products!");
         ratings.add(rating3);
+        ratingRepository.save(rating3);
         Rating rating4 = new Rating(4L, 2L, 2, "Poor customer support.");
         ratings.add(rating4);
+        ratingRepository.save(rating4);
     }
 
     @Test
