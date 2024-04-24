@@ -19,7 +19,7 @@ public class RatingRepositoryTest {
 
         ratings = new ArrayList<>();
 
-        Rating rating1 = new Rating(1L, 1L, 4, "Great service!");
+        Rating rating1 = new Rating(1L, 1L, 5, "Great service!");
         ratings.add(rating1);
         ratingRepository.save(rating1);
         Rating rating2 = new Rating(2L, 1L, 3, "Average experience.");

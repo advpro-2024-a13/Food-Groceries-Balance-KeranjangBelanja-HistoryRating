@@ -22,25 +22,24 @@ public class HistoryRepositoryTest {
 
         List<Product> purchases1 = new ArrayList<>();
         purchases1.add(new Product(1L, "Product 1", 10.0));
-        purchases1.add(new Product(2L, "Product 2", 15.0));
         History history1 = new History(1L, 1L, purchases1, 25.0);
         histories.add(history1);
         historyRepository.save(history1);
 
         List<Product> purchases2 = new ArrayList<>();
-        purchases2.add(new Product(3L, "Product 3", 20.0));
+        purchases2.add(new Product(2L, "Product 3", 20.0));
         History history2 = new History(1L, 2L, purchases2, 20.0);
         histories.add(history2);
         historyRepository.save(history2);
 
         List<Product> purchases3 = new ArrayList<>();
-        purchases3.add(new Product(4L, "Product 4", 30.0));
+        purchases3.add(new Product(3L, "Product 4", 30.0));
         History history3 = new History(2L, 1L, purchases3, 30.0);
         histories.add(history3);
         historyRepository.save(history3);
 
         List<Product> purchases4 = new ArrayList<>();
-        purchases4.add(new Product(5L, "Product 5", 25.0));
+        purchases4.add(new Product(4L, "Product 5", 25.0));
         History history4 = new History(2L, 2L, purchases4, 25.0);
         histories.add(history4);
         historyRepository.save(history4);
