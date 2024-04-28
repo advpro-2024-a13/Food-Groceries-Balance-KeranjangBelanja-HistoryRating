@@ -71,4 +71,16 @@ public class BalanceServiceImplTest {
 
         assertTrue(exists);
     }
+
+    @Test
+    public void testCreateBalance() {
+        Long ownerId = 123L;
+        Balance balance = new Balance(ownerId, 0L);
+
+        when(balanceRepository.save(any(Balance.class))).thenReturn(balance);
+
+        Balance createdBalance = balanceService.addNewBalance(ownerId);
+
+        assertEquals(balance, createdBalance);
+    }
 }

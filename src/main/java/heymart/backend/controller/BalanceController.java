@@ -38,12 +38,8 @@ public class BalanceController {
         long amount = Long.parseLong(JSON.get("amount"));
         String role = JSON.get("role");
         String roleEnum = EnumRoleSingleton.INSTANCE.getStringValue("Pembeli");
-        if (balanceService.existsById(ownerId) && role.equals(roleEnum)) {
+        if (balanceService.existsById(ownerId) && role.equals(roleEnum) && amount > 0) {
             Balance balance = balanceService.getBalanceById(ownerId);
-            if (balance == null) {
-                balanceService.addNewBalance(ownerId);
-                balance = balanceService.getBalanceById(ownerId);
-            }
             long newBalance = balance.getBalance() == null ? 0L : balance.getBalance();
             balanceService.modifyBalance(ownerId, newBalance + amount);
             return ResponseEntity.ok("Balance with ownerId " + ownerId + " topped up.");
@@ -60,12 +56,8 @@ public class BalanceController {
         long amount = Long.parseLong(JSON.get("amount"));
         String role = JSON.get("role");
         String roleEnum = EnumRoleSingleton.INSTANCE.getStringValue("Pengelola");
-        if (balanceService.existsById(ownerId) && role.equals(roleEnum)) {
+        if (balanceService.existsById(ownerId) && role.equals(roleEnum) && amount > 0 && amount <= balanceService.getBalanceById(ownerId).getBalance()) {
             Balance balance = balanceService.getBalanceById(ownerId);
-            if (balance == null) {
-                balanceService.addNewBalance(ownerId);
-                balance = balanceService.getBalanceById(ownerId);
-            }
             long newBalance = balance.getBalance() == null ? 0L : balance.getBalance();
             balanceService.modifyBalance(ownerId, newBalance - amount);
             return ResponseEntity.ok("Balance with ownerId " + ownerId + " withdrawn.");
