@@ -96,6 +96,10 @@ public class BalanceControllerTest {
         JSON.put("amount", "50");
         String roleEnum = EnumRoleSingleton.INSTANCE.getStringValue("Pengelola");
         JSON.put("role", roleEnum);
+
+        balanceService.addNewBalance(1L);
+        balanceService.modifyBalance(1L, 100L);
+
         ResponseEntity<?> response = balanceController.withdraw(JSON);
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals("Balance with ownerId 1 withdrawn.", response.getBody());

@@ -38,7 +38,7 @@ public class BalanceController {
         long amount = Long.parseLong(JSON.get("amount"));
         String role = JSON.get("role");
         String roleEnum = EnumRoleSingleton.INSTANCE.getStringValue("Pembeli");
-        if (balanceService.existsById(ownerId) && role.equals(roleEnum) && amount > 0) {
+        if (balanceService.existsById(ownerId) && role.equals(roleEnum) && amount > 0 && balanceService.getBalanceById(ownerId).getBalance() == null) {
             Balance balance = balanceService.getBalanceById(ownerId);
             long newBalance = balance.getBalance() == null ? 0L : balance.getBalance();
             balanceService.modifyBalance(ownerId, newBalance + amount);
@@ -56,7 +56,7 @@ public class BalanceController {
         long amount = Long.parseLong(JSON.get("amount"));
         String role = JSON.get("role");
         String roleEnum = EnumRoleSingleton.INSTANCE.getStringValue("Pengelola");
-        if (balanceService.existsById(ownerId) && role.equals(roleEnum) && amount > 0 && amount <= balanceService.getBalanceById(ownerId).getBalance()) {
+        if (balanceService.existsById(ownerId) && role.equals(roleEnum) && amount > 0 && balanceService.getBalanceById(ownerId).getBalance() == null) {
             Balance balance = balanceService.getBalanceById(ownerId);
             long newBalance = balance.getBalance() == null ? 0L : balance.getBalance();
             balanceService.modifyBalance(ownerId, newBalance - amount);

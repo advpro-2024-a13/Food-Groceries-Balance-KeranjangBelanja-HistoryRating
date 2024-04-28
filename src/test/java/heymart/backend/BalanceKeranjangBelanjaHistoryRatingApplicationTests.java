@@ -10,4 +10,9 @@ class BalanceKeranjangBelanjaHistoryRatingApplicationTests {
     void contextLoads() {
     }
 
+    @Test
+    public void testMain() {
+        BalanceKeranjangBelanjaHistoryRatingApplication.main(new String[] {});
+    }
+
 }
