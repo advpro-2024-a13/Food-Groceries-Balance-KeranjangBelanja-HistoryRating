@@ -40,6 +40,7 @@ dependencies {
     implementation("org.springframework.cloud:spring-cloud-gcp-starter-sql-postgresql:1.2.8.RELEASE")
     implementation("org.springframework.cloud:spring-cloud-gcp-starter:1.1.1.RELEASE")
     implementation("javax.annotation:javax.annotation-api:1.3.2")
+    implementation("org.springframework.boot:spring-boot-starter-thymeleaf")
 }
 
 tasks.register<Test>("unitTest") {
