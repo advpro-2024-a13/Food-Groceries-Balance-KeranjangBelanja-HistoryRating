@@ -22,4 +22,7 @@ jobs:
                 args: >
                     -Dsonar.organization=advpro-2024-a13
                     -Dsonar.projectKey=advpro-2024-a13_Food-Groceries-Balance-KeranjangBelanja-HistoryRating
-                    -Dsonar.java.binaries=build/classes/kotlin/main
+                    -Dsonar.java.binaries=.
+        -   name: Search for .class file
+            run: |
+                find . -type f -name "*.class"
