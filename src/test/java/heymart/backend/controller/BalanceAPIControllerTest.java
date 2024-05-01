@@ -35,6 +35,16 @@ public class BalanceAPIControllerTest {
     }
 
     @Test
+    public void testFailedGetBalanceById() {
+        when(balanceService.existsById(any(Long.class))).thenReturn(false);
+        HashMap<String, String> JSON = new HashMap<>();
+        JSON.put("ownerId", "1");
+        ResponseEntity<?> response = balanceAPIController.getBalanceById(JSON);
+        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
+        assertEquals("Balance with ownerId 1 not found.", response.getBody());
+    }
+
+    @Test
     public void testAddNewBalance() {
         when(balanceService.existsById(any(Long.class))).thenReturn(false);
         HashMap<String, String> JSON = new HashMap<>();
@@ -45,6 +55,16 @@ public class BalanceAPIControllerTest {
     }
 
     @Test
+    public void testFailedAddNewBalance() {
+        when(balanceService.existsById(any(Long.class))).thenReturn(true);
+        HashMap<String, String> JSON = new HashMap<>();
+        JSON.put("ownerId", "1");
+        ResponseEntity<?> response = balanceAPIController.addNewBalance(JSON);
+        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
+        assertEquals("Balance with ownerId 1 already exists.", response.getBody());
+    }
+
+    @Test
     public void testDeleteBalance() {
         when(balanceService.existsById(any(Long.class))).thenReturn(true);
         HashMap<String, String> JSON = new HashMap<>();
@@ -52,5 +72,15 @@ public class BalanceAPIControllerTest {
         ResponseEntity<?> response = balanceAPIController.deleteBalance(JSON);
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals("Balance with ownerId 1 deleted.", response.getBody());
+    }
+
+    @Test
+    public void testFailedDeleteBalance() {
+        when(balanceService.existsById(any(Long.class))).thenReturn(false);
+        HashMap<String, String> JSON = new HashMap<>();
+        JSON.put("ownerId", "1");
+        ResponseEntity<?> response = balanceAPIController.deleteBalance(JSON);
+        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
+        assertEquals("Balance with ownerId 1 not found.", response.getBody());
     }
 }
