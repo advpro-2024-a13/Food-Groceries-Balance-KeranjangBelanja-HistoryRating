@@ -23,6 +23,7 @@ jobs:
                     -Dsonar.organization=advpro-2024-a13
                     -Dsonar.projectKey=advpro-2024-a13_Food-Groceries-Balance-KeranjangBelanja-HistoryRating
                     -Dsonar.java.binaries=.
-        -   name: Search for .class file
+        -   name: Go to $HOME and search for .class file
             run: |
-                find . -type f -name "*.class" -exec echo {} \;
+                cd $HOME
+                find . -name "*.class" -print
