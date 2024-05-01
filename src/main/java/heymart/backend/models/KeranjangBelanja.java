@@ -1,6 +1,6 @@
 package heymart.backend.models;
 
-import heymart.backend.models.Product;
+import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -8,8 +8,13 @@ import java.util.List;
 
 @Builder
 @Getter
+@Entity
 public class KeranjangBelanja {
+
+    @Id
     String ownerId;
+
+    @OneToMany(mappedBy = "keranjangBelanja")
     List<Product> products;
 
     public KeranjangBelanja(String ownerId, List<Product> products){

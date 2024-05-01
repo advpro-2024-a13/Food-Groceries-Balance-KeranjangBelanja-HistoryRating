@@ -32,16 +32,16 @@ public class KeranjangBelanjaServiceImplTest {
         this.products = new ArrayList<>();
 
         Product product1 = new Product();
-        product1.setSupermarketId(1648);
-        product1.setProductId(123);
+        product1.setSupermarketId(1648L);
+        product1.setProductId(123L);
         product1.setProductName("Vanilla Bourbon");
         product1.setProductPrice(150);
         product1.setProductCategory("Gelato");
         product1.setProductAmount(2);
 
         Product product2 = new Product();
-        product2.setSupermarketId(1748);
-        product2.setProductId(234);
+        product2.setSupermarketId(1748l);
+        product2.setProductId(234l);
         product2.setProductName("Rum Raisin");
         product2.setProductPrice(200);
         product2.setProductCategory("Gelato");
