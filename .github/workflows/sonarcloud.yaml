@@ -22,4 +22,4 @@ jobs:
                 args: >
                     -Dsonar.organization=advpro-2024-a13
                     -Dsonar.projectKey=Food-Groceries-Balance-KeranjangBelanja-HistoryRating
-                    -Dsonar.java.binaries=build/classes
+                    -Dsonar.java.binaries=.
