@@ -21,9 +21,9 @@ public class BalanceController {
     @PostMapping("/modifyBalance")
     public ResponseEntity<?> modifyBalance(@RequestBody HashMap<String, String> JSON) {
         long ownerId = Long.parseLong(JSON.get("ownerId"));
-        long balance = Long.parseLong(JSON.get("amount"));
+        long amount = Long.parseLong(JSON.get("amount"));
         if (balanceService.existsById(ownerId)) {
-            balanceService.modifyBalance(ownerId, balance);
+            balanceService.modifyBalance(ownerId, amount);
             return ResponseEntity.ok("Balance with ownerId " + ownerId + " modified.");
         } else {
             return ResponseEntity

@@ -1,7 +1,6 @@
 package heymart.backend.controller;
 
 import heymart.backend.models.KeranjangBelanja;
-import heymart.backend.models.Product;
 import heymart.backend.service.KeranjangBelanjaService;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 @Controller
 @RequestMapping("/keranjangbelanja")
-public class KeranjangBelanjaController {
+public class KeranjangBelanjaAPIController {
 
     @Autowired
     private KeranjangBelanjaService keranjangBelanjaService;
@@ -29,11 +28,11 @@ public class KeranjangBelanjaController {
         return "redirect:/keranjangbelanja/list";
     }
 
-    @GetMapping("/list")
-    public String listKeranjangBelanja(Model model) {
-        model.addAttribute("keranjangBelanjaList", keranjangBelanjaService.getAllKeranjangBelanja());
-        return "ListKeranjangBelanja";
-    }
+    // @GetMapping("/list")
+    // public String listKeranjangBelanja(Model model) {
+    //     model.addAttribute("keranjangBelanjaList", keranjangBelanjaService.getAllKeranjangBelanja());
+    //     return "ListKeranjangBelanja";
+    // }
 
     // @PostMapping("/addProduct")
     // public String addProductToKeranjang(@RequestParam Long cartId, @RequestParam Long productId, @RequestParam int quantity) {
