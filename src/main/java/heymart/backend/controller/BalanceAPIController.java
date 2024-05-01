@@ -17,8 +17,7 @@ public class BalanceAPIController {
     private BalanceServiceImpl balanceService;
 
     @GetMapping("/getBalance")
-    public ResponseEntity<?> getBalanceById(@RequestBody HashMap<String, String> JSON) {
-        long ownerId = Long.parseLong(JSON.get("ownerId"));
+    public ResponseEntity<?> getBalanceById(@RequestParam Long ownerId) {
         if (balanceService.existsById(ownerId)) {
             return ResponseEntity.ok(balanceService.getBalanceById(ownerId).getBalance());
         } else {

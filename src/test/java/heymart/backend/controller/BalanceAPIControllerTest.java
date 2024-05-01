@@ -28,18 +28,14 @@ public class BalanceAPIControllerTest {
     public void testGetBalanceById() {
         when(balanceService.existsById(any(Long.class))).thenReturn(true);
         when(balanceService.getBalanceById(any(Long.class))).thenReturn(new Balance());
-        HashMap<String, String> JSON = new HashMap<>();
-        JSON.put("ownerId", "1");
-        ResponseEntity<?> response = balanceAPIController.getBalanceById(JSON);
+        ResponseEntity<?> response = balanceAPIController.getBalanceById(1L);
         assertEquals(HttpStatus.OK, response.getStatusCode());
     }
 
     @Test
     public void testFailedGetBalanceById() {
         when(balanceService.existsById(any(Long.class))).thenReturn(false);
-        HashMap<String, String> JSON = new HashMap<>();
-        JSON.put("ownerId", "1");
-        ResponseEntity<?> response = balanceAPIController.getBalanceById(JSON);
+        ResponseEntity<?> response = balanceAPIController.getBalanceById(1L);
         assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
         assertEquals("Balance with ownerId 1 not found.", response.getBody());
     }
