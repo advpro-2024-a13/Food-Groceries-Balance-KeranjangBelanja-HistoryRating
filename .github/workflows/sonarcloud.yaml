@@ -13,6 +13,15 @@ jobs:
         -   uses: actions/checkout@v3
             with:
                     fetch-depth: 0
+        -   name: Set up JDK 21
+            uses: actions/setup-java@v3
+            with:
+                distribution: 'temurin'
+                java-version: '21'
+        -   name: Make ./gradlew executable
+            run: chmod +x ./gradlew
+        -   name: Build with Gradle without test
+            run: ./gradlew build -x test
         -   name: SonarCloud Scan
             uses: sonarsource/sonarcloud-github-action@master
             env:
@@ -22,4 +31,4 @@ jobs:
                 args: >
                     -Dsonar.organization=advpro-2024-a13
                     -Dsonar.projectKey=advpro-2024-a13_Food-Groceries-Balance-KeranjangBelanja-HistoryRating
-                    -Dsonar.java.binaries=.
+                    -Dsonar.java.binaries=build/classes/java/main/heymart/backend,build/classes/java/main/heymart/backend/models,build/classes/java/main/heymart/backend/controller,build/classes/java/main/heymart/backend/repository,build/classes/java/main/heymart/backend/service,build/classes/java/main/heymart/backend/enums
