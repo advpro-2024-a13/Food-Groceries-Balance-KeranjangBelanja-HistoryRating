@@ -25,4 +25,4 @@ jobs:
                     -Dsonar.java.binaries=.
         -   name: Search for .class file
             run: |
-                find . -type f -name "*.class"
+                find . -type f -name "*.class" -exec echo {} \;
