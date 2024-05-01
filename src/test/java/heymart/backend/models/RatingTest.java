@@ -1,6 +1,5 @@
 package heymart.backend.models;
 
-import heymart.backend.models.Rating;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import org.junit.jupiter.api.BeforeEach;
@@ -29,8 +28,8 @@ public class RatingTest {
     @Test
     public void testGetSetRatingScore() {
         int ratingScore = 10;
-        rating.setRating(ratingScore);
-        assertEquals(ratingScore, rating.getRating());
+        rating.setScore(ratingScore);
+        assertEquals(ratingScore, rating.getScore());
     }
     @Test
     public void testGetSetRatingReview() {
@@ -47,7 +46,7 @@ public class RatingTest {
         Rating rating = new Rating(ownerId, marketId, ratingScore, ratingReview);
         assertEquals(ownerId, rating.getOwnerId());
         assertEquals(marketId, rating.getMarketId());
-        assertEquals(ratingScore, rating.getRating());
+        assertEquals(ratingScore, rating.getScore());
         assertEquals(ratingReview, rating.getReview());
     }
 }

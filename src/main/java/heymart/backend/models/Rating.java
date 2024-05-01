@@ -17,6 +17,7 @@ public class Rating {
     private Long marketId;
     private int score;
     private String review;
+
     @Id
     private Long id;
 
@@ -29,37 +30,4 @@ public class Rating {
         this.score = score;
         this.review = review;
     }
-
-    public void setOwnerId(Long ownerId) {
-        this.ownerId = ownerId;
-    }
-
-    public Long getOwnerId() {
-        return ownerId;
-    }
-
-    public void setMarketId(Long marketId) {
-        this.marketId = marketId;
-    }
-
-    public Long getMarketId() {
-        return marketId;
-    }
-
-    public void setRating(int score) {
-        this.score = score;
-    }
-
-    public int getRating() {
-        return score;
-    }
-
-    public void setReview(String review) {
-        this.review = review;
-    }
-
-    public String getReview() {
-        return review;
-    }
-
 }

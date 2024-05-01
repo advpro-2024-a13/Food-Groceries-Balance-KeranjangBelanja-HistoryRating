@@ -3,20 +3,23 @@ package heymart.backend.repository;
 import heymart.backend.models.Rating;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 public class RatingRepositoryTest {
+
+    @Mock
     RatingRepository ratingRepository;
+
     List<Rating> ratings;
 
     @BeforeEach
     void setUp() {
-        ratingRepository = new RatingRepository();
-
         ratings = new ArrayList<>();
 
         Rating rating1 = new Rating(1L, 1L, 5, "Great service!");
@@ -46,23 +49,26 @@ public class RatingRepositoryTest {
         Rating existingRating = ratings.get(0);
         existingRating.setReview("Updated review.");
         ratingRepository.save(existingRating);
-        Rating updatedRating = ratingRepository.findById(existingRating.getId());
-        assertEquals("Updated review.", updatedRating.getReview());
+        Optional<Rating> updatedRating = ratingRepository.findById(existingRating.getId());
+        assertTrue(updatedRating.isPresent());
+        assertEquals("Updated review.", updatedRating.get().getReview());
     }
 
     @Test
     void findByOwnerId() {
-        List<Rating> ratingsForOwner1 = ratingRepository.findByOwnerId(1L);
-        assertEquals(1, ratingsForOwner1.size());
-        assertTrue(ratingsForOwner1.contains(ratings.get(0)));
+        Optional<List<Rating>> ratingsForOwner1 = ratingRepository.findByOwnerId(1L);
+        assertTrue(ratingsForOwner1.isPresent());
+        assertEquals(1, ratingsForOwner1.get().size());
+        assertTrue(ratingsForOwner1.get().contains(ratings.getFirst()));
     }
 
     @Test
     void findByMarketId() {
-        List<Rating> ratingsForMarket1 = ratingRepository.findByMarketId(1L);
-        assertEquals(2, ratingsForMarket1.size());
-        assertTrue(ratingsForMarket1.contains(ratings.get(0)));
-        assertTrue(ratingsForMarket1.contains(ratings.get(1)));
+        Optional<List<Rating>> ratingsForMarket1 = ratingRepository.findByMarketId(1L);
+        assertTrue(ratingsForMarket1.isPresent());
+        assertEquals(2, ratingsForMarket1.get().size());
+        assertTrue(ratingsForMarket1.get().contains(ratings.get(0)));
+        assertTrue(ratingsForMarket1.get().contains(ratings.get(1)));
     }
 
     @Test
