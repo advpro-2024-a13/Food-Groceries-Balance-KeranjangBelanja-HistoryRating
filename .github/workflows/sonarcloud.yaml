@@ -32,12 +32,15 @@ jobs:
           key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
           restore-keys: |
             ${{ runner.os }}-gradle-
+                
+      - name: Make ./gradlew executable
+        run: chmod +x ./gradlew
 
       - name: Build and run tests
         run: ./gradlew build
 
       - name: SonarCloud Scan
-        uses: sonarsource/sonarcloud-github-action@v1
+        uses: sonarsource/sonarcloud-github-action@v2
         with:
           organization: "advpro-2024-a13"
           projectKey: "advpro-2024-a13_Food-Groceries-Balance-KeranjangBelanja-HistoryRating"
