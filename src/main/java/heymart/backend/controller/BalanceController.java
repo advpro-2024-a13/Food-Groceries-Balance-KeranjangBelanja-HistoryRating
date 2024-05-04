@@ -1,7 +1,6 @@
 package heymart.backend.controller;
 
 import heymart.backend.enums.EnumRoleSingleton;
-import heymart.backend.models.Balance;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -21,14 +20,24 @@ public class BalanceController {
     @PostMapping("/modifyBalance")
     public ResponseEntity<?> modifyBalance(@RequestBody HashMap<String, String> JSON) {
         long ownerId = Long.parseLong(JSON.get("ownerId"));
-        long balance = Long.parseLong(JSON.get("amount"));
-        if (balanceService.existsById(ownerId)) {
-            balanceService.modifyBalance(ownerId, balance);
-            return ResponseEntity.ok("Balance with ownerId " + ownerId + " modified.");
+        long amount = Long.parseLong(JSON.get("amount"));
+        if (amount > 0 && balanceService.existsById(ownerId)) {
+            balanceService.modifyBalance(ownerId, amount);
+            return ResponseEntity
+                    .ok()
+                    .body("Balance with ownerId " + ownerId + " modified.");
+        } else if (amount <= 0) {
+            return ResponseEntity
+                    .badRequest()
+                    .body("Amount harus lebih dari 0");
+        } else if (!balanceService.existsById(ownerId)) {
+            return ResponseEntity
+                    .badRequest()
+                    .body("Balance not found");
         } else {
             return ResponseEntity
-                .badRequest()
-                .body("Balance with ownerId " + ownerId + " not found.");
+                    .badRequest()
+                    .body("Param Invalid");
         }
     }
 
@@ -38,15 +47,25 @@ public class BalanceController {
         long amount = Long.parseLong(JSON.get("amount"));
         String role = JSON.get("role");
         String roleEnum = EnumRoleSingleton.INSTANCE.getStringValue("Pembeli");
-        if (balanceService.existsById(ownerId) && role.equals(roleEnum) && amount > 0 && balanceService.getBalanceById(ownerId).getBalance() == null) {
-            Balance balance = balanceService.getBalanceById(ownerId);
-            long newBalance = balance.getBalance() == null ? 0L : balance.getBalance();
-            balanceService.modifyBalance(ownerId, newBalance + amount);
-            return ResponseEntity.ok("Balance with ownerId " + ownerId + " topped up.");
-        } else {
+
+        if (!balanceService.existsById(ownerId)) {
             return ResponseEntity
                     .badRequest()
-                    .body("Param Invalid");
+                    .body("Balance not found");
+        } else if (amount <= 0) {
+            return ResponseEntity
+                    .badRequest()
+                    .body("Amount harus lebih dari 0");
+        } else if (!role.equals(roleEnum)) {
+            return ResponseEntity
+                    .badRequest()
+                    .body("Role not valid");
+        } else {
+            Long balance = balanceService.getBalanceById(ownerId);
+            balanceService.modifyBalance(ownerId, balance + amount);
+            return ResponseEntity
+                    .ok()
+                    .body("Balance with ownerId " + ownerId + " topped up.");
         }
     }
 
@@ -56,15 +75,29 @@ public class BalanceController {
         long amount = Long.parseLong(JSON.get("amount"));
         String role = JSON.get("role");
         String roleEnum = EnumRoleSingleton.INSTANCE.getStringValue("Pengelola");
-        if (balanceService.existsById(ownerId) && role.equals(roleEnum) && amount > 0 && balanceService.getBalanceById(ownerId).getBalance() == null) {
-            Balance balance = balanceService.getBalanceById(ownerId);
-            long newBalance = balance.getBalance() == null ? 0L : balance.getBalance();
-            balanceService.modifyBalance(ownerId, newBalance - amount);
-            return ResponseEntity.ok("Balance with ownerId " + ownerId + " withdrawn.");
-        } else {
+
+        if (!balanceService.existsById(ownerId)) {
             return ResponseEntity
                     .badRequest()
-                    .body("Param Invalid");
+                    .body("Balance not found");
+        } else if (amount <= 0) {
+            return ResponseEntity
+                    .badRequest()
+                    .body("Amount harus lebih dari 0");
+        } else if (amount > balanceService.getBalanceById(ownerId)) {
+            return ResponseEntity
+                    .badRequest()
+                    .body("Balance not enough");
+        } else if (!role.equals(roleEnum)) {
+            return ResponseEntity
+                    .badRequest()
+                    .body("Role not valid");
+        } else {
+            Long balance = balanceService.getBalanceById(ownerId);
+            balanceService.modifyBalance(ownerId, balance - amount);
+            return ResponseEntity
+                    .ok()
+                    .body("Balance with ownerId " + ownerId + " withdrawn.");
         }
     }
 }

@@ -19,7 +19,7 @@ public class BalanceAPIController {
     @GetMapping("/getBalance")
     public ResponseEntity<?> getBalanceById(@RequestParam Long ownerId) {
         if (balanceService.existsById(ownerId)) {
-            return ResponseEntity.ok(balanceService.getBalanceById(ownerId).getBalance());
+            return ResponseEntity.ok(balanceService.getBalanceById(ownerId));
         } else {
             return ResponseEntity
                 .badRequest()

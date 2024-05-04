@@ -6,6 +6,8 @@ import org.springframework.stereotype.Service;
 import heymart.backend.models.Balance;
 import heymart.backend.repository.BalanceRepository;
 
+import java.util.Optional;
+
 @Service
 public class BalanceServiceImpl implements BalanceService {
 
@@ -14,19 +16,25 @@ public class BalanceServiceImpl implements BalanceService {
 
     @Override
     public Balance modifyBalance(Long ownerId, Long amount) {
-        Balance balance = balanceRepository.findByOwnerId(ownerId);
-        balance.setBalance(balance.getBalance() + amount);
-        return balanceRepository.save(balance);
+        Optional<Balance> balance = balanceRepository.findById(ownerId);
+        if (!balance.isEmpty()) {
+            balance.get().setBalance(amount);
+            return balanceRepository.save(balance.get());
+        }
+        return null;
     }
 
     @Override
-    public Balance getBalanceById(Long ownerId) {
-        return balanceRepository.findByOwnerId(ownerId);
+    public Long getBalanceById(Long ownerId) {
+        return balanceRepository.getReferenceById(ownerId).getBalance();
     }
 
     @Override
     public Balance addNewBalance(Long ownerId) {
-        Balance balance = new Balance(ownerId, 0L);
+        Balance balance = Balance.builder()
+                .ownerId(ownerId)
+                .balance(0L)
+                .build();
         return balanceRepository.save(balance);
     }
 

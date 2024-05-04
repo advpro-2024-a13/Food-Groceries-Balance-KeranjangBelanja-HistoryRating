@@ -11,6 +11,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
+import java.util.Optional;
+
 public class BalanceServiceImplTest {
 
     @Mock
@@ -19,7 +21,6 @@ public class BalanceServiceImplTest {
     @InjectMocks
     private BalanceServiceImpl balanceService;
 
-    @SuppressWarnings("deprecation")
     @BeforeEach
     public void setUp() {
         MockitoAnnotations.initMocks(this);
@@ -30,9 +31,12 @@ public class BalanceServiceImplTest {
         Long ownerId = 123L;
         Long initialBalance = 1000L;
         Long amountToAdd = 500L;
-        Balance balance = new Balance(ownerId, initialBalance);
+        Balance balance = Balance.builder()
+                .ownerId(ownerId)
+                .balance(initialBalance)
+                .build();
 
-        when(balanceRepository.findByOwnerId(ownerId)).thenReturn(balance);
+        when(balanceRepository.findById(ownerId)).thenReturn(Optional.of(balance));
         when(balanceRepository.save(any(Balance.class))).thenReturn(balance);
 
         Balance modifiedBalance = balanceService.modifyBalance(ownerId, amountToAdd);
@@ -43,13 +47,28 @@ public class BalanceServiceImplTest {
     @Test
     public void testGetBalanceById() {
         Long ownerId = 123L;
-        Balance balance = new Balance(ownerId, 1000L);
+        Long expectedBalance = 1000L;
 
-        when(balanceRepository.findByOwnerId(ownerId)).thenReturn(balance);
+        when(balanceRepository.getReferenceById(ownerId).getBalance()).thenReturn(expectedBalance);
 
-        Balance retrievedBalance = balanceService.getBalanceById(ownerId);
+        Long actualBalance = balanceService.getBalanceById(ownerId);
 
-        assertEquals(balance, retrievedBalance);
+        assertEquals(expectedBalance, actualBalance);
+    }
+
+    @Test
+    public void testAddNewBalance() {
+        Long ownerId = 123L;
+        Balance balance = Balance.builder()
+                .ownerId(ownerId)
+                .balance(0L)
+                .build();
+
+        when(balanceRepository.save(any(Balance.class))).thenReturn(balance);
+
+        Balance createdBalance = balanceService.addNewBalance(ownerId);
+
+        assertEquals(balance, createdBalance);
     }
 
     @Test
@@ -70,17 +89,5 @@ public class BalanceServiceImplTest {
         boolean exists = balanceService.existsById(ownerId);
 
         assertTrue(exists);
-    }
-
-    @Test
-    public void testCreateBalance() {
-        Long ownerId = 123L;
-        Balance balance = new Balance(ownerId, 0L);
-
-        when(balanceRepository.save(any(Balance.class))).thenReturn(balance);
-
-        Balance createdBalance = balanceService.addNewBalance(ownerId);
-
-        assertEquals(balance, createdBalance);
     }
 }
