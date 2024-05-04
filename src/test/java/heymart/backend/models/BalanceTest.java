@@ -10,7 +10,8 @@ public class BalanceTest {
 
     @BeforeEach
     public void setUp() {
-        balance = new Balance();
+        balance = Balance.builder()
+                .build();
     }
 
     @Test
@@ -31,7 +32,10 @@ public class BalanceTest {
     public void testConstructor() {
         Long ownerId = 456L;
         Long balanceAmount = 2000L;
-        Balance balance = new Balance(ownerId, balanceAmount);
+        Balance balance = Balance.builder()
+                .ownerId(ownerId)
+                .balance(balanceAmount)
+                .build();
         assertEquals(ownerId, balance.getOwnerId());
         assertEquals(balanceAmount, balance.getBalance());
     }

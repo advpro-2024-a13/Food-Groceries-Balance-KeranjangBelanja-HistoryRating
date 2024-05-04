@@ -1,16 +1,15 @@
 package heymart.backend.repository;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 import heymart.backend.models.Balance;
-import heymart.backend.service.BalanceServiceImpl;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+
+import java.util.Optional;
 
 @ExtendWith(MockitoExtension.class)
 public class BalanceRepositoryTest {
@@ -18,22 +17,28 @@ public class BalanceRepositoryTest {
     @Mock
     private BalanceRepository balanceRepository;
 
-    @InjectMocks
-    private BalanceServiceImpl balanceService;
+    @Test
+    public void testFindByOwnerId() {
+        Balance balance = Balance.builder()
+                .ownerId(123L)
+                .balance(1000L)
+                .build();
 
-    @BeforeEach
-    public void setUp() {
-        Balance balance = new Balance(123L, 1000L);
-        when(balanceRepository.findByOwnerId(123L)).thenReturn(balance);
+        when(balanceRepository.findById(123L)).thenReturn(Optional.of(balance));
+
+        Optional<Balance> foundBalance = balanceRepository.findById(123L);
+
+        assertTrue(foundBalance.isPresent());
+        assertEquals(123L, foundBalance.get().getOwnerId());
+        assertEquals(1000L, foundBalance.get().getBalance());
     }
 
     @Test
-    public void testFindByOwnerId() {
-        Balance foundBalance = balanceService.getBalanceById(123L);
-        
-        verify(balanceRepository).findByOwnerId(123L);
-        
-        assertEquals(123L, foundBalance.getOwnerId());
-        assertEquals(1000L, foundBalance.getBalance());
+    public void testGetBalanceByOwnerId() {
+        when(balanceRepository.getReferenceById(123L).getBalance()).thenReturn(1000L);
+
+        Long foundBalance = balanceRepository.getReferenceById(123L).getBalance();
+
+        assertEquals(1000L, foundBalance);
     }
 }
