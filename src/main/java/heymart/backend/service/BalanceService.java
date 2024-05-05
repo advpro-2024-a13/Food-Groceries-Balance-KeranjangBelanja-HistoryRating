@@ -3,9 +3,10 @@ package heymart.backend.service;
 import heymart.backend.models.Balance;
 
 public interface BalanceService {
-    public Balance modifyBalance(Long ownerId, Long amount);
-    public Long getBalanceById(Long ownerId);
-    public Balance addNewBalance(Long ownerId);
-    public void deleteBalance(Long ownerId);
-    public boolean existsById(Long ownerId);
+    Balance modifyBalance(Long ownerId, Long amount);
+    Long getBalanceById(Long ownerId);
+    Balance addNewBalance(Long ownerId);
+    void deleteBalance(Long ownerId);
+    boolean existsById(Long ownerId);
+    Iterable<Balance> getAllBalance();
 }

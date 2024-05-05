@@ -17,7 +17,7 @@ public class BalanceServiceImpl implements BalanceService {
     @Override
     public Balance modifyBalance(Long ownerId, Long amount) {
         Optional<Balance> balance = balanceRepository.findById(ownerId);
-        if (!balance.isEmpty()) {
+        if (balance.isPresent()) {
             balance.get().setBalance(amount);
             return balanceRepository.save(balance.get());
         }
@@ -46,5 +46,10 @@ public class BalanceServiceImpl implements BalanceService {
     @Override
     public boolean existsById(Long ownerId) {
         return balanceRepository.existsById(ownerId);
+    }
+
+    @Override
+    public Iterable<Balance> getAllBalance() {
+        return balanceRepository.findAll();
     }
 }
