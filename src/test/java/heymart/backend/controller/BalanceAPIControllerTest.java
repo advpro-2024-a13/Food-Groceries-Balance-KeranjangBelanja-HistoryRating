@@ -81,4 +81,12 @@ public class BalanceAPIControllerTest {
         assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
         assertEquals("Balance with ownerId 1 not found.", response.getBody());
     }
+
+    @Test
+    public void testGetAllBalance() {
+        when(balanceService.getAllBalance()).thenReturn(null);
+        ResponseEntity<?> response = balanceAPIController.getAllBalance();
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertNull(response.getBody());
+    }
 }

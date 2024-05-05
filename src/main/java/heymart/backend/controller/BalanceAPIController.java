@@ -52,4 +52,9 @@ public class BalanceAPIController {
                 .body("Balance with ownerId " + ownerId + " not found.");
         }
     }
+
+    @GetMapping("/getAllBalance")
+    public ResponseEntity<?> getAllBalance() {
+        return ResponseEntity.ok(balanceService.getAllBalance());
+    }
 }
