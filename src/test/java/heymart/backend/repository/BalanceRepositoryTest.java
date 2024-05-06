@@ -35,10 +35,14 @@ public class BalanceRepositoryTest {
 
     @Test
     public void testGetBalanceByOwnerId() {
-        when(balanceRepository.getReferenceById(123L).getBalance()).thenReturn(1000L);
+        when(balanceRepository.findById(123L)).thenReturn(Optional.of(Balance.builder()
+                .ownerId(123L)
+                .balance(1000L)
+                .build()));
 
-        Long foundBalance = balanceRepository.getReferenceById(123L).getBalance();
+        Optional<Balance> foundBalance = balanceRepository.findById(123L);
 
-        assertEquals(1000L, foundBalance);
+        assertTrue(foundBalance.isPresent());
+        assertEquals(1000L, foundBalance.get().getBalance());
     }
 }

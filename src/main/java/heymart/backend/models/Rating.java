@@ -6,7 +6,6 @@ import lombok.Setter;
 
 @Getter
 @Setter
-
 @Table(name = "rating",
         uniqueConstraints = {
                 @UniqueConstraint(columnNames = {"owner_id", "market_id"})
