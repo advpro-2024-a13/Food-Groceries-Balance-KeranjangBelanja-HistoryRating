@@ -7,6 +7,7 @@ import heymart.backend.models.Balance;
 import heymart.backend.repository.BalanceRepository;
 
 import java.util.Optional;
+import java.util.concurrent.CompletableFuture;
 
 @Service
 public class BalanceServiceImpl implements BalanceService {
@@ -26,7 +27,11 @@ public class BalanceServiceImpl implements BalanceService {
 
     @Override
     public Long getBalanceById(Long ownerId) {
-        return balanceRepository.getReferenceById(ownerId).getBalance();
+        if (balanceRepository.findById(ownerId).isPresent()) {
+            return balanceRepository.findById(ownerId).get().getBalance();
+        } else {
+            return null;
+        }
     }
 
     @Override
@@ -49,7 +54,7 @@ public class BalanceServiceImpl implements BalanceService {
     }
 
     @Override
-    public Iterable<Balance> getAllBalance() {
-        return balanceRepository.findAll();
+    public CompletableFuture<Iterable<Balance>> getAllBalance() {
+        return CompletableFuture.supplyAsync(() -> balanceRepository.findAll());
     }
 }

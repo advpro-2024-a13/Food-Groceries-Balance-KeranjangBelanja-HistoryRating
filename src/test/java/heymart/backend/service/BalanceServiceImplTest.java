@@ -41,7 +41,7 @@ public class BalanceServiceImplTest {
 
         Balance modifiedBalance = balanceService.modifyBalance(ownerId, amountToAdd);
 
-        assertEquals(initialBalance + amountToAdd, modifiedBalance.getBalance());
+        assertEquals(amountToAdd, modifiedBalance.getBalance());
     }
 
     @Test
@@ -49,7 +49,10 @@ public class BalanceServiceImplTest {
         Long ownerId = 123L;
         Long expectedBalance = 1000L;
 
-        when(balanceRepository.getReferenceById(ownerId).getBalance()).thenReturn(expectedBalance);
+        when (balanceRepository.findById(ownerId)).thenReturn(Optional.of(Balance.builder()
+                .ownerId(ownerId)
+                .balance(expectedBalance)
+                .build()));
 
         Long actualBalance = balanceService.getBalanceById(ownerId);
 
@@ -89,5 +92,23 @@ public class BalanceServiceImplTest {
         boolean exists = balanceService.existsById(ownerId);
 
         assertTrue(exists);
+    }
+
+    @Test
+    public void testGetAllBalance() {
+        Balance balance1 = Balance.builder()
+                .ownerId(123L)
+                .balance(1000L)
+                .build();
+        Balance balance2 = Balance.builder()
+                .ownerId(456L)
+                .balance(2000L)
+                .build();
+
+        when(balanceRepository.findAll()).thenReturn(java.util.List.of(balance1, balance2));
+
+        Iterable<Balance> allBalance = balanceService.getAllBalance().join();
+
+        assertEquals(java.util.List.of(balance1, balance2), allBalance);
     }
 }

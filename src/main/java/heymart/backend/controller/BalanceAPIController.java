@@ -1,6 +1,8 @@
 package heymart.backend.controller;
 
+import heymart.backend.models.Balance;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.*;
@@ -8,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import heymart.backend.service.BalanceServiceImpl;
 
 import java.util.HashMap;
+import java.util.concurrent.CompletableFuture;
 
 @RestController
 @RequestMapping("/balance/api")
@@ -54,7 +57,9 @@ public class BalanceAPIController {
     }
 
     @GetMapping("/getAllBalance")
-    public ResponseEntity<?> getAllBalance() {
-        return ResponseEntity.ok(balanceService.getAllBalance());
+    public CompletableFuture<ResponseEntity<Iterable<Balance>>> getAllBalance() {
+        return balanceService.getAllBalance()
+                .thenApply(ResponseEntity::ok)
+                .exceptionally(e -> ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build());
     }
 }

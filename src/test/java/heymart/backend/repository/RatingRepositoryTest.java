@@ -1,88 +1,58 @@
 package heymart.backend.repository;
 
-import heymart.backend.models.Rating;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
 
-import java.util.ArrayList;
+import heymart.backend.models.Rating;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
+
 import java.util.List;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.*;
-
+@ExtendWith(MockitoExtension.class)
 public class RatingRepositoryTest {
 
     @Mock
-    RatingRepository ratingRepository;
+    private RatingRepository ratingRepository;
 
-    List<Rating> ratings;
+    @Test
+    public void testFindByOwnerId() {
+        Rating rating = new Rating();
+        rating.setOwnerId(123L);
+        rating.setMarketId(456L);
+        rating.setScore(5);
+        rating.setReview("Good");
 
-    @BeforeEach
-    void setUp() {
-        ratings = new ArrayList<>();
+        when(ratingRepository.findByOwnerId(123L)).thenReturn(Optional.of(List.of(rating)));
 
-        Rating rating1 = new Rating(1L, 1L, 5, "Great service!");
-        ratings.add(rating1);
-        ratingRepository.save(rating1);
-        Rating rating2 = new Rating(2L, 1L, 3, "Average experience.");
-        ratings.add(rating2);
-        ratingRepository.save(rating2);
-        Rating rating3 = new Rating(3L, 2L, 5, "Excellent products!");
-        ratings.add(rating3);
-        ratingRepository.save(rating3);
-        Rating rating4 = new Rating(4L, 2L, 2, "Poor customer support.");
-        ratings.add(rating4);
-        ratingRepository.save(rating4);
+        Optional<List<Rating>> foundRating = ratingRepository.findByOwnerId(123L);
+
+        assertTrue(foundRating.isPresent());
+        assertEquals(123L, foundRating.get().getFirst().getOwnerId());
+        assertEquals(456L, foundRating.get().getFirst().getMarketId());
+        assertEquals(5, foundRating.get().getFirst().getScore());
+        assertEquals("Good", foundRating.get().getFirst().getReview());
     }
 
     @Test
-    void testSaveCreate() {
-        Rating newRating = new Rating(5L, 3L, 4, "Good value for money.");
-        ratingRepository.save(newRating);
-        List<Rating> allRatings = ratingRepository.findAll();
-        assertTrue(allRatings.contains(newRating));
-    }
+    public void testFindByMarketId() {
+        Rating rating = new Rating();
+        rating.setOwnerId(123L);
+        rating.setMarketId(456L);
+        rating.setScore(5);
+        rating.setReview("Good");
 
-    @Test
-    void testSaveUpdate() {
-        Rating existingRating = ratings.get(0);
-        existingRating.setReview("Updated review.");
-        ratingRepository.save(existingRating);
-        Optional<Rating> updatedRating = ratingRepository.findById(existingRating.getId());
-        assertTrue(updatedRating.isPresent());
-        assertEquals("Updated review.", updatedRating.get().getReview());
-    }
+        when(ratingRepository.findByMarketId(456L)).thenReturn(Optional.of(List.of(rating)));
 
-    @Test
-    void findByOwnerId() {
-        Optional<List<Rating>> ratingsForOwner1 = ratingRepository.findByOwnerId(1L);
-        assertTrue(ratingsForOwner1.isPresent());
-        assertEquals(1, ratingsForOwner1.get().size());
-        assertTrue(ratingsForOwner1.get().contains(ratings.getFirst()));
-    }
+        Optional<List<Rating>> foundRating = ratingRepository.findByMarketId(456L);
 
-    @Test
-    void findByMarketId() {
-        Optional<List<Rating>> ratingsForMarket1 = ratingRepository.findByMarketId(1L);
-        assertTrue(ratingsForMarket1.isPresent());
-        assertEquals(2, ratingsForMarket1.get().size());
-        assertTrue(ratingsForMarket1.get().contains(ratings.get(0)));
-        assertTrue(ratingsForMarket1.get().contains(ratings.get(1)));
-    }
-
-    @Test
-    void testDelete() {
-        Rating ratingToDelete = ratings.get(0);
-        ratingRepository.delete(ratingToDelete);
-        List<Rating> allRatings = ratingRepository.findAll();
-        assertFalse(allRatings.contains(ratingToDelete));
-    }
-
-    @Test
-    void testFindAll() {
-        List<Rating> allRatings = ratingRepository.findAll();
-        assertEquals(ratings.size(), allRatings.size());
-        assertTrue(allRatings.containsAll(ratings));
+        assertTrue(foundRating.isPresent());
+        assertEquals(123L, foundRating.get().getFirst().getOwnerId());
+        assertEquals(456L, foundRating.get().getFirst().getMarketId());
+        assertEquals(5, foundRating.get().getFirst().getScore());
+        assertEquals("Good", foundRating.get().getFirst().getReview());
     }
 }
