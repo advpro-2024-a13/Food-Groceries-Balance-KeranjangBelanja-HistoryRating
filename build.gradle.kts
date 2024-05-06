@@ -4,7 +4,7 @@ plugins {
     id("org.springframework.boot") version "3.2.4"
     id("io.spring.dependency-management") version "1.1.4"
     id("com.google.cloud.tools.jib") version "3.2.0"
-    id("org.sonarqube") version "3.4.0.2513"
+    id("org.sonarqube") version "4.4.1.3373"
 }
 
 group = "heymart.backend"
@@ -42,6 +42,7 @@ dependencies {
     implementation("org.springframework.cloud:spring-cloud-gcp-starter:1.1.1.RELEASE")
     implementation("javax.annotation:javax.annotation-api:1.3.2")
     implementation("org.springframework.boot:spring-boot-starter-thymeleaf")
+    implementation(kotlin("script-runtime"))
 }
 
 tasks.register<Test>("unitTest") {
@@ -59,4 +60,9 @@ tasks.test {
 
 tasks.jacocoTestReport {
     dependsOn(tasks.test)
+
+    reports {
+        html.required = true
+        xml.required = true
+    }
 }
