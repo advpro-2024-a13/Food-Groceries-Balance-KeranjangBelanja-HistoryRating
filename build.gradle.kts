@@ -7,6 +7,14 @@ plugins {
     id("org.sonarqube") version "4.4.1.3373"
 }
 
+sonar {
+    properties {
+        property("sonar.projectKey", "advpro-2024-a13_Food-Groceries-Balance-KeranjangBelanja-HistoryRating")
+        property("sonar.organization", "advpro-2024-a13")
+        property("sonar.host.url", "https://sonarcloud.io")
+    }
+}
+
 group = "heymart.backend"
 version = "0.0.1-SNAPSHOT"
 
