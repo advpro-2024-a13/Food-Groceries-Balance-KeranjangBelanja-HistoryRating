@@ -1,6 +1,6 @@
 package heymart.backend.service;
 
-import heymart.backend.models.KeranjangBelanja;
+import heymart.backend.models.Cart;
 import heymart.backend.repository.KeranjangBelanjaRepository;
 import org.springframework.stereotype.Service;
 
@@ -14,7 +14,7 @@ public class KeranjangBelanjaServiceImpl implements KeranjangBelanjaService {
     }
 
     @Override
-    public KeranjangBelanja createKeranjangBelanja(KeranjangBelanja keranjangBelanja) {
-        return keranjangBelanjaRepository.save(keranjangBelanja);
+    public Cart createKeranjangBelanja(Cart cart) {
+        return keranjangBelanjaRepository.save(cart);
     }
 }

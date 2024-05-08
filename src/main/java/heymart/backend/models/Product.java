@@ -14,7 +14,7 @@ public class Product {
 
     @ManyToOne
     @JoinColumn(name = "keranjangBelanja_ownerId")
-    private KeranjangBelanja keranjangBelanja;
+    private Cart cart;
 
     @ManyToOne
     @JoinColumn(name = "history_id")

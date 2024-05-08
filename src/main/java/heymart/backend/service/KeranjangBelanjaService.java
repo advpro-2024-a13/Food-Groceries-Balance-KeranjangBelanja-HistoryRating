@@ -1,7 +1,7 @@
 package heymart.backend.service;
 
-import heymart.backend.models.KeranjangBelanja;
+import heymart.backend.models.Cart;
 
 public interface KeranjangBelanjaService {
-    KeranjangBelanja createKeranjangBelanja(KeranjangBelanja keranjangBelanja);
+    Cart createKeranjangBelanja(Cart cart);
 }

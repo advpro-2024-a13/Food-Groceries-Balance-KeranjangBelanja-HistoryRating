@@ -1,6 +1,6 @@
 package heymart.backend.repository;
 
-import heymart.backend.models.KeranjangBelanja;
+import heymart.backend.models.Cart;
 import heymart.backend.models.Product;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -10,15 +10,15 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class KeranjangBelanjaRepositoryTest {
+public class CartRepositoryTest {
 
     KeranjangBelanjaRepository keranjangBelanjaRepository;
-    List<KeranjangBelanja> keranjangBelanjaList;
+    List<Cart> cartList;
     private List<Product> products;
 
     @BeforeEach
     void setKeranjangBelanja() {
-        keranjangBelanjaList = new ArrayList<>();
+        cartList = new ArrayList<>();
         keranjangBelanjaRepository = new KeranjangBelanjaRepository();
         this.products = new ArrayList<>();
 
@@ -41,25 +41,25 @@ public class KeranjangBelanjaRepositoryTest {
         this.products.add(product1);
         this.products.add(product2);
 
-        KeranjangBelanja keranjangBelanja1 = new KeranjangBelanja("Divie_123", products);
-        keranjangBelanjaList.add(keranjangBelanja1);
+        Cart cart1 = new Cart("Divie_123", products);
+        cartList.add(cart1);
 
-        KeranjangBelanja keranjangBelanja2 = new KeranjangBelanja("Laras_123", products);
-        keranjangBelanjaList.add(keranjangBelanja2);
+        Cart cart2 = new Cart("Laras_123", products);
+        cartList.add(cart2);
 
-        KeranjangBelanja keranjangBelanja3 = new KeranjangBelanja("Vinka_123", products);
-        keranjangBelanjaList.add(keranjangBelanja3);
+        Cart cart3 = new Cart("Vinka_123", products);
+        cartList.add(cart3);
     }
 
     @Test
     void testSaveCreateKeranjangBelanja(){
-        KeranjangBelanja keranjangBelanja = keranjangBelanjaList.get(1);
-        KeranjangBelanja result = keranjangBelanjaRepository.save(keranjangBelanja);
+        Cart cart = cartList.get(1);
+        Cart result = keranjangBelanjaRepository.save(cart);
 
-        KeranjangBelanja findResult = keranjangBelanjaRepository.findByOwnerId(keranjangBelanjaList.get(1).getOwnerId());
-        assertEquals(keranjangBelanja.getOwnerId(), result.getOwnerId());
-        assertEquals(keranjangBelanja.getOwnerId(), findResult.getOwnerId());
-        assertEquals(keranjangBelanja.getProducts(), result.getProducts());
-        assertEquals(keranjangBelanja.getProducts(), findResult.getProducts());
+        Cart findResult = keranjangBelanjaRepository.findByOwnerId(cartList.get(1).getOwnerId());
+        assertEquals(cart.getOwnerId(), result.getOwnerId());
+        assertEquals(cart.getOwnerId(), findResult.getOwnerId());
+        assertEquals(cart.getProducts(), result.getProducts());
+        assertEquals(cart.getProducts(), findResult.getProducts());
     }
 }

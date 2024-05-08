@@ -1,7 +1,6 @@
 package heymart.backend.controller;
 
-import heymart.backend.models.KeranjangBelanja;
-import heymart.backend.models.Product;
+import heymart.backend.models.Cart;
 import heymart.backend.service.KeranjangBelanjaService;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,14 +17,14 @@ public class KeranjangBelanjaController {
 
     @GetMapping("/create")
     public String createKeranjangBelanjaPage(Model model) {
-        KeranjangBelanja keranjangBelanja = new KeranjangBelanja();
-        model.addAttribute("keranjangBelanja", keranjangBelanja);
+        Cart cart = new Cart();
+        model.addAttribute("keranjangBelanja", cart);
         return "CreateKeranjangBelanja";
     }
 
     @PostMapping("/create")
-    public String createKeranjangBelanja(@ModelAttribute KeranjangBelanja keranjangBelanja) {
-        keranjangBelanjaService.createKeranjangBelanja(keranjangBelanja);
+    public String createKeranjangBelanja(@ModelAttribute Cart cart) {
+        keranjangBelanjaService.createKeranjangBelanja(cart);
         return "redirect:/keranjangbelanja/list";
     }
 
