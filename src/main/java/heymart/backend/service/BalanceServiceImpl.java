@@ -29,11 +29,8 @@ public class BalanceServiceImpl implements BalanceService {
 
     @Override
     public Long getBalanceById(Long ownerId) {
-        if (balanceRepository.findById(ownerId).isPresent()) {
-            return balanceRepository.findById(ownerId).get().getBalance();
-        } else {
-            return null;
-        }
+        Optional<Balance> balance = balanceRepository.findById(ownerId);
+        return balance.map(Balance::getBalance).orElse(null);
     }
 
     @Override
