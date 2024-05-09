@@ -1,7 +1,6 @@
 package heymart.backend.controller;
 
 import heymart.backend.enums.EnumRoleSingleton;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -14,8 +13,11 @@ import java.util.HashMap;
 @RequestMapping("/balance")
 public class BalanceController {
     
-    @Autowired
-    private BalanceServiceImpl balanceService;
+    private final BalanceServiceImpl balanceService;
+
+    public BalanceController(BalanceServiceImpl balanceService) {
+        this.balanceService = balanceService;
+    }
 
     @PostMapping("/modifyBalance")
     public ResponseEntity<?> modifyBalance(@RequestBody HashMap<String, String> JSON) {

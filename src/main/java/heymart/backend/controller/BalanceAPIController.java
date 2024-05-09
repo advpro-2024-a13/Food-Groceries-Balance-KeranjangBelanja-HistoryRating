@@ -1,7 +1,6 @@
 package heymart.backend.controller;
 
 import heymart.backend.models.Balance;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
@@ -16,8 +15,11 @@ import java.util.concurrent.CompletableFuture;
 @RequestMapping("/balance/api")
 public class BalanceAPIController {
     
-    @Autowired
-    private BalanceServiceImpl balanceService;
+    private final BalanceServiceImpl balanceService;
+
+    public BalanceAPIController(BalanceServiceImpl balanceService) {
+        this.balanceService = balanceService;
+    }
 
     @GetMapping("/getBalance")
     public ResponseEntity<?> getBalanceById(@RequestParam Long ownerId) {

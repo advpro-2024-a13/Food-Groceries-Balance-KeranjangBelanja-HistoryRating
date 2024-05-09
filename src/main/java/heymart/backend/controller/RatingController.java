@@ -2,7 +2,6 @@ package heymart.backend.controller;
 
 import heymart.backend.models.Rating;
 import heymart.backend.service.RatingServiceImpl;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -12,8 +11,11 @@ import java.util.HashMap;
 @RequestMapping("/rating")
 public class RatingController {
 
-    @Autowired
-    private RatingServiceImpl ratingService;
+    private final RatingServiceImpl ratingService;
+
+    public RatingController(RatingServiceImpl ratingService) {
+        this.ratingService = ratingService;
+    }
 
     @GetMapping("/get/{id}")
     public ResponseEntity<?> getRatingById(@PathVariable Long id) {
