@@ -1,6 +1,5 @@
 package heymart.backend.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import heymart.backend.models.Balance;
@@ -12,8 +11,11 @@ import java.util.concurrent.CompletableFuture;
 @Service
 public class BalanceServiceImpl implements BalanceService {
 
-    @Autowired
-    private BalanceRepository balanceRepository;
+    private final BalanceRepository balanceRepository;
+
+    public BalanceServiceImpl(BalanceRepository balanceRepository) {
+        this.balanceRepository = balanceRepository;
+    }
 
     @Override
     public Balance modifyBalance(Long ownerId, Long amount) {
@@ -55,6 +57,6 @@ public class BalanceServiceImpl implements BalanceService {
 
     @Override
     public CompletableFuture<Iterable<Balance>> getAllBalance() {
-        return CompletableFuture.supplyAsync(() -> balanceRepository.findAll());
+        return CompletableFuture.supplyAsync(balanceRepository::findAll);
     }
 }

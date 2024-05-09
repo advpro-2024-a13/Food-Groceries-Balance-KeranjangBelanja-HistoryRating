@@ -1,6 +1,5 @@
 package heymart.backend.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import heymart.backend.models.Rating;
@@ -13,8 +12,11 @@ import java.util.Optional;
 @Service
 public class RatingServiceImpl implements RatingService {
 
-    @Autowired
-    private RatingRepository ratingRepository;
+    private final RatingRepository ratingRepository;
+
+    public RatingServiceImpl(RatingRepository ratingRepository) {
+        this.ratingRepository = ratingRepository;
+    }
 
     @Override
     public Rating modifyRating(Long ownerId, Long marketId, int rating, String review) {

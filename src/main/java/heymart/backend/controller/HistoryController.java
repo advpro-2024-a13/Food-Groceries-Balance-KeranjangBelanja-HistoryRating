@@ -3,7 +3,6 @@ package heymart.backend.controller;
 import heymart.backend.models.History;
 import heymart.backend.models.Product;
 import heymart.backend.service.HistoryServiceImpl;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,8 +13,11 @@ import java.util.List;
 @RequestMapping("/history")
 public class HistoryController {
 
-    @Autowired
-    private HistoryServiceImpl historyService;
+    private final HistoryServiceImpl historyService;
+
+    public HistoryController(HistoryServiceImpl historyService) {
+        this.historyService = historyService;
+    }
 
     @GetMapping("/get/{id}")
     public ResponseEntity<?> getHistoryById(@PathVariable Long id) {
@@ -31,7 +33,10 @@ public class HistoryController {
     public ResponseEntity<?> addNewHistory(@RequestBody HashMap<String, Object> request) {
         Long ownerId = Long.parseLong(request.get("ownerId").toString());
         Long marketId = Long.parseLong(request.get("marketId").toString());
+
+        @SuppressWarnings("unchecked")
         List<Product> purchases = (List<Product>) request.get("purchases");
+
         double totalSpent = Double.parseDouble(request.get("totalSpent").toString());
 
         History newHistory = historyService.addNewHistory(ownerId, marketId, purchases, totalSpent);
