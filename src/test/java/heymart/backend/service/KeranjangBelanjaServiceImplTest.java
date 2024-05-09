@@ -23,13 +23,12 @@ public class KeranjangBelanjaServiceImplTest {
     @Mock
     KeranjangBelanjaRepository keranjangBelanjaRepository;
     private List<KeranjangBelanja> keranjangBelanjaList;
-    private List<Product> products;
 
     @BeforeEach
     void setKeranjangBelanja() {
         keranjangBelanjaList = new ArrayList<>();
 
-        this.products = new ArrayList<>();
+        List<Product> products = new ArrayList<>();
 
         Product product1 = new Product();
         product1.setSupermarketId(1648L);
@@ -40,15 +39,15 @@ public class KeranjangBelanjaServiceImplTest {
         product1.setProductAmount(2);
 
         Product product2 = new Product();
-        product2.setSupermarketId(1748l);
-        product2.setProductId(234l);
+        product2.setSupermarketId(1748L);
+        product2.setProductId(234L);
         product2.setProductName("Rum Raisin");
         product2.setProductPrice(200);
         product2.setProductCategory("Gelato");
         product2.setProductAmount(2);
 
-        this.products.add(product1);
-        this.products.add(product2);
+        products.add(product1);
+        products.add(product2);
 
         KeranjangBelanja keranjangBelanja1 = new KeranjangBelanja("Divie_123", products);
         keranjangBelanjaList.add(keranjangBelanja1);

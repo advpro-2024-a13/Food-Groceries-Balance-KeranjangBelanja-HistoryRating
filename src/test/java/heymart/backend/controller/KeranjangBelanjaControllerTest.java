@@ -16,8 +16,7 @@ import static org.mockito.Mockito.mock;
 public class KeranjangBelanjaControllerTest {
     @Mock
     private KeranjangBelanjaServiceImpl keranjangBelanjaService;
-    @Mock
-    private Model model;
+
     @InjectMocks
     private KeranjangBelanjaController keranjangBelanjaController;
 

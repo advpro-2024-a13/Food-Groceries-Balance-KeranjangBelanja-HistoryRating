@@ -54,4 +54,11 @@ public class RatingTest {
         assertEquals(score, rating.getScore());
         assertEquals(review, rating.getReview());
     }
+
+    @Test
+    public void testSetId() {
+        Long id = 789L;
+        rating.setId(id);
+        assertEquals(id, rating.getId());
+    }
 }
