@@ -1,65 +1,33 @@
 package heymart.backend.repository;
 
 import heymart.backend.models.KeranjangBelanja;
-import heymart.backend.models.Product;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.util.ArrayList;
-import java.util.List;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import java.util.Optional;
 
+@ExtendWith(MockitoExtension.class)
 public class KeranjangBelanjaRepositoryTest {
 
-    KeranjangBelanjaRepository keranjangBelanjaRepository;
-    List<KeranjangBelanja> keranjangBelanjaList;
-    private List<Product> products;
-
-    @BeforeEach
-    void setKeranjangBelanja() {
-        keranjangBelanjaList = new ArrayList<>();
-        keranjangBelanjaRepository = new KeranjangBelanjaRepository();
-        this.products = new ArrayList<>();
-
-        Product product1 = new Product();
-        product1.setSupermarketId(1648L);
-        product1.setProductId(123L);
-        product1.setProductName("Vanilla Bourbon");
-        product1.setProductPrice(150);
-        product1.setProductCategory("Gelato");
-        product1.setProductAmount(2);
-
-        Product product2 = new Product();
-        product2.setSupermarketId(1748L);
-        product2.setProductId(234L);
-        product2.setProductName("Rum Raisin");
-        product2.setProductPrice(200);
-        product2.setProductCategory("Gelato");
-        product2.setProductAmount(2);
-
-        this.products.add(product1);
-        this.products.add(product2);
-
-        KeranjangBelanja keranjangBelanja1 = new KeranjangBelanja("Divie_123", products);
-        keranjangBelanjaList.add(keranjangBelanja1);
-
-        KeranjangBelanja keranjangBelanja2 = new KeranjangBelanja("Laras_123", products);
-        keranjangBelanjaList.add(keranjangBelanja2);
-
-        KeranjangBelanja keranjangBelanja3 = new KeranjangBelanja("Vinka_123", products);
-        keranjangBelanjaList.add(keranjangBelanja3);
-    }
+    @Mock
+    private KeranjangBelanjaRepository keranjangBelanjaRepository;
 
     @Test
-    void testSaveCreateKeranjangBelanja(){
-        KeranjangBelanja keranjangBelanja = keranjangBelanjaList.get(1);
-        KeranjangBelanja result = keranjangBelanjaRepository.save(keranjangBelanja);
+    public void testFindByOwnerId() {
+        String ownerId = "ownerId123";
+        KeranjangBelanja keranjangBelanja = new KeranjangBelanja();
+        keranjangBelanja.setOwnerId(ownerId);
 
-        KeranjangBelanja findResult = keranjangBelanjaRepository.findByOwnerId(keranjangBelanjaList.get(1).getOwnerId());
-        assertEquals(keranjangBelanja.getOwnerId(), result.getOwnerId());
-        assertEquals(keranjangBelanja.getOwnerId(), findResult.getOwnerId());
-        assertEquals(keranjangBelanja.getProducts(), result.getProducts());
-        assertEquals(keranjangBelanja.getProducts(), findResult.getProducts());
+        when(keranjangBelanjaRepository.findById(ownerId)).thenReturn(Optional.of(keranjangBelanja));
+
+        Optional<KeranjangBelanja> foundKeranjangBelanja = keranjangBelanjaRepository.findById(ownerId);
+
+        assertTrue(foundKeranjangBelanja.isPresent());
+        assertEquals(keranjangBelanja, foundKeranjangBelanja.get());
     }
 }

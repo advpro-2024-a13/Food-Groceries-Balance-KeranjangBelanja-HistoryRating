@@ -25,7 +25,7 @@ public class RatingServiceImplTest {
 
     @BeforeEach
     public void setUp() {
-        MockitoAnnotations.initMocks(this);
+        MockitoAnnotations.openMocks(this);
     }
 
     @Test
@@ -92,5 +92,22 @@ public class RatingServiceImplTest {
         boolean exists = ratingService.existsById(ratingId);
 
         assertTrue(exists);
+    }
+
+    @Test
+    public void testModifyRatingWithNonExistingMarketId() {
+        Long ownerId = 123L;
+        Long marketId = 456L;
+        int rating = 4;
+        String review = "Great product!";
+        Rating existingRating = new Rating(ownerId, 999L, 3, "Good product"); // marketId does not match
+        List<Rating> ratingList = new ArrayList<>();
+        ratingList.add(existingRating);
+
+        when(ratingRepository.findByOwnerId(ownerId)).thenReturn(Optional.of(ratingList));
+
+        Rating modifiedRating = ratingService.modifyRating(ownerId, marketId, rating, review);
+
+        assertNull(modifiedRating);
     }
 }

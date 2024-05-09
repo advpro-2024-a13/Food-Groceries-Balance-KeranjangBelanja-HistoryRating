@@ -6,8 +6,8 @@ import heymart.backend.models.Product;
 import java.util.List;
 
 public interface HistoryService {
-    public History getHistoryById(Long id);
-    public History addNewHistory(Long ownerId, Long marketId, List<Product> purchases, double totalSpent);
-    public void deleteHistory(Long id);
-    public boolean existsById(Long id);
+    History getHistoryById(Long id);
+    History addNewHistory(Long ownerId, Long marketId, List<Product> purchases, double totalSpent);
+    void deleteHistory(Long id);
+    boolean existsById(Long id);
 }

@@ -29,8 +29,4 @@ public class Rating {
         this.score = score;
         this.review = review;
     }
-
-    public void setScore(int score) {
-        this.score = score;
-    }
 }

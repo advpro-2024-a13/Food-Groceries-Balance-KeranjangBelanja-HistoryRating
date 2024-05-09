@@ -38,12 +38,4 @@ public class History {
         purchases.add(product);
         totalSpent += product.getProductPrice();
     }
-
-    public void setTotal(double totalSpent) {
-        this.totalSpent = totalSpent;
-    }
-
-    public double getTotal() {
-        return totalSpent;
-    }
 }

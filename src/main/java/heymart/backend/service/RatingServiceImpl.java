@@ -7,6 +7,7 @@ import heymart.backend.models.Rating;
 import heymart.backend.repository.RatingRepository;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -18,18 +19,22 @@ public class RatingServiceImpl implements RatingService {
     @Override
     public Rating modifyRating(Long ownerId, Long marketId, int rating, String review) {
         Optional<List<Rating>> ratingObj = ratingRepository.findByOwnerId(ownerId);
-        for (Rating r : ratingObj.get()) {
-            if (r.getMarketId() == marketId) {
-                r.setScore(rating);
-                r.setReview(review);
-                return ratingRepository.save(r);
+        if (ratingObj.isPresent()) {
+            for (Rating r : ratingObj.get()) {
+                if (Objects.equals(r.getMarketId(), marketId)) {
+                    r.setScore(rating);
+                    r.setReview(review);
+                    return ratingRepository.save(r);
+                }
             }
         }
         return null;
     }
+
     @Override
     public Rating getRatingById(Long id) {
-        return ratingRepository.findById(id).get();
+        Optional<Rating> rating = ratingRepository.findById(id);
+        return rating.orElse(null);
     }
 
     @Override
