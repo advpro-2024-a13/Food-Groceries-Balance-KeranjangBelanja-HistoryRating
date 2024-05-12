@@ -43,7 +43,7 @@ public class Cart {
     public Cart() {
     }
 
-    public Cart(KeranjangBelanjaDto cartDto, Product product, Supermarket supermarket, Long userId) {
+    public Cart(CartDto cartDto, Product product, Supermarket supermarket, Long userId) {
         this.userId = userId; // Constructor parameter type updated to Long
         this.supermarketId = cartDto.getSupermarketId();
         this.productId = cartDto.getProductId();
@@ -60,7 +60,7 @@ public class Cart {
         this.quantity = quantity;
     }
 
-    public Cart(KeranjangBelanjaDto cartDto, Product product) {
+    public Cart(CartDto cartDto, Product product) {
         this.userId = cartDto.getUserId(); // Assuming cartDto.getUserId() now returns Long
         this.productId = cartDto.getProductId();
         this.quantity = cartDto.getQuantity();
