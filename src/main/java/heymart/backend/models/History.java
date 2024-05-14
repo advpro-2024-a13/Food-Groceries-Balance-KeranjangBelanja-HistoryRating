@@ -20,6 +20,7 @@ public class History {
     private Long marketId;
 
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
     private double totalSpent;

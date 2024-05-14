@@ -18,6 +18,7 @@ public class Rating {
     private String review;
 
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
     public Rating() {
