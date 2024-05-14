@@ -8,6 +8,7 @@ import heymart.backend.repository.RatingRepository;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.CompletableFuture;
 
 @Service
 public class RatingServiceImpl implements RatingService {
@@ -48,4 +49,20 @@ public class RatingServiceImpl implements RatingService {
         return ratingRepository.existsById(id);
     }
 
+    @Override
+    public CompletableFuture<List<Rating>> getAllRatings() {
+        return CompletableFuture.supplyAsync(() -> ratingRepository.findAll());
+    }
+
+    @Override
+    public CompletableFuture<List<Rating>> getRatingsByOwnerId(Long ownerId) {
+        return CompletableFuture.supplyAsync(() -> ratingRepository.findByOwnerId(ownerId)
+                .orElseGet(() -> List.of()));
+    }
+
+    @Override
+    public CompletableFuture<List<Rating>> getRatingsByMarketId(Long marketId) {
+        return CompletableFuture.supplyAsync(() -> ratingRepository.findByMarketId(marketId)
+                .orElseGet(() -> List.of()));
+    }
 }
