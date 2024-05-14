@@ -3,10 +3,13 @@ package heymart.backend.controller;
 import heymart.backend.models.Rating;
 import heymart.backend.service.RatingServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
+import java.util.List;
+import java.util.concurrent.CompletableFuture;
 
 @RestController
 @RequestMapping("/rating")
@@ -42,8 +45,6 @@ public class RatingController {
         }
     }
 
-
-
     @PostMapping("/add")
     public ResponseEntity<?> addNewRating(@RequestBody HashMap<String, Object> request) {
         Long ownerId = Long.parseLong(request.get("ownerId").toString());
@@ -64,4 +65,31 @@ public class RatingController {
             return ResponseEntity.badRequest().body("Rating with id " + id + " not found.");
         }
     }
+
+    @GetMapping("/ownerrating/{ownerId}")
+    public CompletableFuture<ResponseEntity<List<Rating>>> getRatingByOwnerId(@PathVariable Long ownerId) {
+        return ratingService.getRatingsByOwnerId(ownerId)
+                .thenApply(ResponseEntity::ok)
+                .exceptionally(this::handleGetRatingException);
+    }
+
+    @GetMapping("/marketrating/{marketId}")
+    public CompletableFuture<ResponseEntity<List<Rating>>> getRatingByMarketId(@PathVariable Long marketId) {
+        return ratingService.getRatingsByMarketId(marketId)
+                .thenApply(ResponseEntity::ok)
+                .exceptionally(this::handleGetRatingException);
+    }
+
+    @GetMapping("/getAll")
+    public CompletableFuture<ResponseEntity<List<Rating>>> getAllRatings() {
+        return ratingService.getAllRatings()
+                .thenApply(ResponseEntity::ok)
+                .exceptionally(this::handleGetRatingException);
+    }
+
+    private ResponseEntity<List<Rating>> handleGetRatingException(Throwable throwable) {
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .body(null);
+    }
+
 }
