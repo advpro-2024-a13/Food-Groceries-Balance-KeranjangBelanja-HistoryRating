@@ -25,20 +25,24 @@ public class RatingController {
         }
     }
 
-    @PostMapping("/modify")
-    public ResponseEntity<?> modifyRating(@RequestBody HashMap<String, Object> request) {
-        Long ownerId = Long.parseLong(request.get("ownerId").toString());
-        Long marketId = Long.parseLong(request.get("marketId").toString());
-        int rating = Integer.parseInt(request.get("rating").toString());
-        String review = request.get("review").toString();
+    @PostMapping("/modify/{id}")
+    public ResponseEntity<?> modifyRating(@PathVariable Long id, @RequestBody HashMap<String, Object> request) {
+        if (request.containsKey("rating") && request.containsKey("review")) {
+            int rating = Integer.parseInt(request.get("rating").toString());
+            String review = request.get("review").toString();
 
-        Rating modifiedRating = ratingService.modifyRating(ownerId, marketId, rating, review);
-        if (modifiedRating != null) {
-            return ResponseEntity.ok("Rating modified for ownerId " + ownerId + " and marketId " + marketId);
+            Rating modifiedRating = ratingService.modifyRating(id, rating, review);
+            if (modifiedRating != null) {
+                return ResponseEntity.ok("Rating modified for id " + id);
+            } else {
+                return ResponseEntity.badRequest().body("Rating with id " + id + " not found.");
+            }
         } else {
-            return ResponseEntity.badRequest().body("Rating not found for ownerId " + ownerId + " and marketId " + marketId);
+            return ResponseEntity.badRequest().body("Invalid request format. Rating and review are required.");
         }
     }
+
+
 
     @PostMapping("/add")
     public ResponseEntity<?> addNewRating(@RequestBody HashMap<String, Object> request) {

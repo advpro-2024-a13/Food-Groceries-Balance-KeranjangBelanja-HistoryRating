@@ -16,14 +16,14 @@ public class RatingServiceImpl implements RatingService {
     private RatingRepository ratingRepository;
 
     @Override
-    public Rating modifyRating(Long ownerId, Long marketId, int rating, String review) {
-        Optional<List<Rating>> ratingObj = ratingRepository.findByOwnerId(ownerId);
-        for (Rating r : ratingObj.get()) {
-            if (r.getMarketId() == marketId) {
-                r.setScore(rating);
-                r.setReview(review);
-                return ratingRepository.save(r);
-            }
+    public Rating modifyRating(Long id, int rating, String review) {
+        Optional<Rating> ratingObj = ratingRepository.findById(id);
+
+        if (ratingObj.isPresent()) {
+            Rating r = ratingObj.get();
+            r.setScore(rating);
+            r.setReview(review);
+            return ratingRepository.save(r);
         }
         return null;
     }
