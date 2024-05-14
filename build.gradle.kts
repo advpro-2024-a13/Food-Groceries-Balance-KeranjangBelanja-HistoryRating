@@ -59,6 +59,7 @@ dependencies {
     implementation("org.springframework.cloud:spring-cloud-gcp-starter:1.1.1.RELEASE")
     implementation("javax.annotation:javax.annotation-api:1.3.2")
     implementation("org.springframework.boot:spring-boot-starter-thymeleaf")
+    implementation("org.springframework.boot:spring-boot-starter-actuator")
     implementation(kotlin("script-runtime"))
 }
 

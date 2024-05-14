@@ -15,7 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-public class RatingServiceImplTest {
+ class RatingServiceImplTest {
 
     @Mock
     private RatingRepository ratingRepository;
@@ -24,12 +24,12 @@ public class RatingServiceImplTest {
     private RatingServiceImpl ratingService;
 
     @BeforeEach
-    public void setUp() {
+     void setUp() {
         MockitoAnnotations.openMocks(this);
     }
 
     @Test
-    public void testModifyRating() {
+     void testModifyRating() {
         Long ownerId = 123L;
         Long marketId = 456L;
         int rating = 4;
@@ -48,7 +48,7 @@ public class RatingServiceImplTest {
     }
 
     @Test
-    public void testGetRatingById() {
+     void testGetRatingById() {
         Long ratingId = 789L;
         Rating rating = new Rating(123L, 456L, 4, "Great product!");
 
@@ -60,7 +60,7 @@ public class RatingServiceImplTest {
     }
 
     @Test
-    public void testAddNewRating() {
+    void testAddNewRating() {
         Long ownerId = 123L;
         Long marketId = 456L;
         int rating = 4;
@@ -75,7 +75,7 @@ public class RatingServiceImplTest {
     }
 
     @Test
-    public void testDeleteRating() {
+    void testDeleteRating() {
         Long ratingId = 789L;
 
         ratingService.deleteRating(ratingId);
@@ -84,7 +84,7 @@ public class RatingServiceImplTest {
     }
 
     @Test
-    public void testExistsById() {
+     void testExistsById() {
         Long ratingId = 789L;
 
         when(ratingRepository.existsById(ratingId)).thenReturn(true);
@@ -95,7 +95,7 @@ public class RatingServiceImplTest {
     }
 
     @Test
-    public void testModifyRatingWithNonExistingMarketId() {
+     void testModifyRatingWithNonExistingMarketId() {
         Long ownerId = 123L;
         Long marketId = 456L;
         int rating = 4;
