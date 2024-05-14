@@ -30,18 +30,15 @@ public class RatingServiceImplTest {
 
     @Test
     public void testModifyRating() {
-        Long ownerId = 123L;
-        Long marketId = 456L;
+        Long id = 1L;
         int rating = 4;
         String review = "Great product!";
-        Rating existingRating = new Rating(ownerId, marketId, 3, "Good product");
-        List<Rating> ratingList = new ArrayList<>();
-        ratingList.add(existingRating);
+        Rating existingRating = new Rating(123L, 234L, 3, "Good product");
 
-        when(ratingRepository.findByOwnerId(ownerId)).thenReturn(Optional.of(ratingList));
+        when(ratingRepository.findById(id)).thenReturn(Optional.of(existingRating));
         when(ratingRepository.save(existingRating)).thenReturn(existingRating);
 
-        Rating modifiedRating = ratingService.modifyRating(ownerId, marketId, rating, review);
+        Rating modifiedRating = ratingService.modifyRating(id, rating, review);
 
         assertEquals(rating, modifiedRating.getScore());
         assertEquals(review, modifiedRating.getReview());
