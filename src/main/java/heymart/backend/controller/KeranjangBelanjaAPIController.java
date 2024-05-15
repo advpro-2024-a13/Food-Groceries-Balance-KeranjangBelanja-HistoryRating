@@ -1,61 +1,81 @@
 package heymart.backend.controller;
 
-import heymart.backend.models.Cart;
-import heymart.backend.service.KeranjangBelanjaService;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
+import heymart.backend.models.KeranjangBelanja;
+import heymart.backend.service.KeranjangBelanjaServiceImpl;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-@Controller
-@RequestMapping("/keranjangbelanja")
+import java.util.HashMap;
+import java.util.NoSuchElementException;
+import java.util.UUID;
+import java.util.concurrent.CompletableFuture;
+
+@RestController
+@RequestMapping("/keranjangbelanja/api")
 public class KeranjangBelanjaAPIController {
 
-    @Autowired
-    private KeranjangBelanjaService keranjangBelanjaService;
+    private final KeranjangBelanjaServiceImpl keranjangBelanjaService;
 
-    @GetMapping("/create")
-    public String createKeranjangBelanjaPage(Model model) {
-        Cart cart = new Cart();
-        model.addAttribute("keranjangBelanja", cart);
-        return "CreateKeranjangBelanja";
+    public KeranjangBelanjaAPIController(KeranjangBelanjaServiceImpl keranjangBelanjaService) {
+        this.keranjangBelanjaService = keranjangBelanjaService;
     }
 
-    @PostMapping("/create")
-    public String createKeranjangBelanja(@ModelAttribute Cart cart) {
-        keranjangBelanjaService.createKeranjangBelanja(cart);
-        return "redirect:/keranjangbelanja/list";
+    @PostMapping("/createKeranjangBelanja")
+    public ResponseEntity<?> createKeranjangBelanja(@RequestBody Long userId) {
+        try {
+            KeranjangBelanja newKeranjangBelanja = keranjangBelanjaService.createKeranjangBelanja(userId);
+            return new ResponseEntity<>(newKeranjangBelanja, HttpStatus.CREATED);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body("Keranjang belanja for userId " + userId + " cannot be created");
+        }
     }
 
-    // @GetMapping("/list")
-    // public String listKeranjangBelanja(Model model) {
-    //     model.addAttribute("keranjangBelanjaList", keranjangBelanjaService.getAllKeranjangBelanja());
-    //     return "ListKeranjangBelanja";
-    // }
+    @GetMapping("/findKeranjangBelanjaById")
+    public ResponseEntity<?> findKeranjangBelanjaById(@RequestParam Long userId) {
+        try {
+            KeranjangBelanja keranjangBelanja = keranjangBelanjaService.findKeranjangBelanjaById(userId);
+            return new ResponseEntity<>(keranjangBelanja, HttpStatus.OK);
+        } catch (NoSuchElementException e) {
+            return new ResponseEntity<>("Keranjang Belanja not found for userId: " + userId, HttpStatus.NOT_FOUND);
+        } catch (Exception e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 
-    // @PostMapping("/addProduct")
-    // public String addProductToKeranjang(@RequestParam Long cartId, @RequestParam Long productId, @RequestParam int quantity) {
-    //     keranjangBelanjaService.addProductToKeranjangBelanja(cartId, new Product(productId), quantity);
-    //     return "redirect:/keranjangbelanja/view?cartId=" + cartId;
-    // }
+    @PostMapping("/addProductToKeranjangBelanja")
+    public ResponseEntity<?> addProductToKeranjangBelanja(
+            @RequestParam Long userId,
+            @RequestParam UUID productId) {
+        try {
+            KeranjangBelanja updatedKeranjangBelanja = keranjangBelanjaService.addProductToKeranjang(userId, productId);
+            return new ResponseEntity<>(updatedKeranjangBelanja, HttpStatus.OK);
+        } catch (NoSuchElementException e) {
+            return new ResponseEntity<>("Keranjang Belanja not found for userId: " + userId, HttpStatus.NOT_FOUND);
+        } catch (Exception e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 
-    // @PostMapping("/removeProduct")
-    // public String removeProductFromKeranjang(@RequestParam Long cartId, @RequestParam Long productId) {
-    //     keranjangBelanjaService.removeProductFromKeranjangBelanja(cartId, productId);
-    //     return "redirect:/keranjangbelanja/view?cartId=" + cartId;
-    // }
+    @PostMapping("/countTotalProductInKeranjang")
+    public ResponseEntity<?> countTotalProductInKeranjang(@RequestBody HashMap<UUID, Integer> productMap) {
+        try {
+            Integer totalProducts = keranjangBelanjaService.countTotalProductInKeranjang(productMap);
+            return new ResponseEntity<>(totalProducts, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 
-    // @PostMapping("/updateQuantity")
-    // public String updateProductQuantity(@RequestParam Long cartId, @RequestParam Long productId, @RequestParam int newQuantity) {
-    //     keranjangBelanjaService.updateProductQuantityInKeranjangBelanja(cartId, productId, newQuantity);
-    //     return "redirect:/keranjangbelanja/view?cartId=" + cartId;
-    // }
-
-    // @GetMapping("/view")
-    // public String viewKeranjangBelanja(@RequestParam Long cartId, Model model) {
-    //     KeranjangBelanja keranjangBelanja = keranjangBelanjaService.getKeranjangBelanjaById(cartId);
-    //     model.addAttribute("keranjangBelanja", keranjangBelanja);
-    //     return "ViewKeranjangBelanja";
-    // }
+    @DeleteMapping("/clearKeranjangBelanja")
+    public ResponseEntity<?> clearKeranjangBelanja(@RequestParam Long userId) {
+        try {
+            keranjangBelanjaService.clearKeranjangBelanja(userId);
+            return new ResponseEntity<>("Keranjang Belanja cleared successfully for userId: " + userId, HttpStatus.OK);
+        } catch (NoSuchElementException e) {
+            return new ResponseEntity<>("Keranjang Belanja not found for userId: " + userId, HttpStatus.NOT_FOUND);
+        } catch (Exception e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 }

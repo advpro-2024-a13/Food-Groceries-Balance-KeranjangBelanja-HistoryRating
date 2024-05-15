@@ -1,35 +1,12 @@
 package heymart.backend.repository;
 
-import heymart.backend.models.Cart;
+import heymart.backend.models.KeranjangBelanja;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Optional;
 
 @Repository
-public class KeranjangBelanjaRepository {
-    private List<Cart> cartList = new ArrayList<>();
-    public Cart save(Cart cart) {
-        int i = 0;
-        for (Cart savedCart : cartList){
-            if(savedCart.getOwnerId().equals(cart.getOwnerId())){
-                cartList.remove(i);
-                cartList.add(i, cart);
-                return cart;
-            }
-            i += 1;
-        }
-
-        cartList.add(cart);
-        return cart;
-    }
-
-    public Cart findByOwnerId(String ownerId) {
-        for (Cart savedCart : cartList){
-            if(savedCart.getOwnerId().equals(ownerId)){
-                return savedCart;
-            }
-        }
-        return null;
-    }
+public interface KeranjangBelanjaRepository extends JpaRepository<KeranjangBelanja, Long>{
+    Optional<KeranjangBelanja> findKeranjangBelanjaById(Long keranjangBelanjaId);
 }

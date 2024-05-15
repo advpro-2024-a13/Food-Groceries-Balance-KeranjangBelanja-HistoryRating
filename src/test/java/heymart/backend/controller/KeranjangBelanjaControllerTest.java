@@ -1,6 +1,6 @@
 package heymart.backend.controller;
 
-import heymart.backend.models.Cart;
+import heymart.backend.models.KeranjangBelanja;
 import heymart.backend.service.KeranjangBelanjaServiceImpl;
 import org.mockito.*;
 import org.springframework.ui.Model;
@@ -13,7 +13,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.mock;
 
 @ExtendWith(MockitoExtension.class)
-public class CartControllerTest {
+public class KeranjangBelanjaControllerTest {
     @Mock
     private KeranjangBelanjaServiceImpl keranjangBelanjaService;
     @Mock
@@ -36,9 +36,9 @@ public class CartControllerTest {
     @Test
     void testCreateKeranjangBelanjaPost(){
         Model model = mock(Model.class);
-        Cart cart = new Cart();
-        Mockito.when(keranjangBelanjaService.createKeranjangBelanja(cart)).thenReturn(cart);
-        String result = keranjangBelanjaController.createKeranjangBelanjaPost(cart, model);
+        KeranjangBelanja keranjangBelanja = new KeranjangBelanja();
+        Mockito.when(keranjangBelanjaService.createKeranjangBelanja(keranjangBelanja)).thenReturn(keranjangBelanja);
+        String result = keranjangBelanjaController.createKeranjangBelanjaPost(keranjangBelanja, model);
         assertEquals("redirect::list", result);
     }
 }
