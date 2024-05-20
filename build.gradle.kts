@@ -12,6 +12,7 @@ sonar {
         property("sonar.projectKey", "advpro-2024-a13_Food-Groceries-Balance-KeranjangBelanja-HistoryRating")
         property("sonar.organization", "advpro-2024-a13")
         property("sonar.host.url", "https://sonarcloud.io")
+        property("sonar.exclusions", "**/JwtUtils.java, **/AuthTokenFilter.java")
     }
 }
 
@@ -77,9 +78,6 @@ tasks.withType<Test>().configureEach {
 }
 
 tasks.test {
-    exclude("**/JwtUtils.java")
-    exclude("**/AuthTokenFilter.java")
-
     finalizedBy(tasks.jacocoTestReport)
 }
 
