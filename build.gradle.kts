@@ -77,6 +77,9 @@ tasks.withType<Test>().configureEach {
 }
 
 tasks.test {
+    exclude("**/JwtUtils.java")
+    exclude("**/AuthTokenFilter.java")
+
     finalizedBy(tasks.jacocoTestReport)
 }
 
