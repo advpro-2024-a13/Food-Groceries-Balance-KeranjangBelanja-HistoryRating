@@ -62,11 +62,15 @@ public class AuthTokenFilter extends OncePerRequestFilter {
                     return;
                 }
 
+                String authority = user.getAuthorities().iterator().next().getAuthority();
+                if (authority.startsWith("ROLE_")) {
+                    authority = authority.substring(5);
+                }
                 UserDetails userDetails = org.springframework.security.core.userdetails.User
                         .builder()
                         .username(user.getUsername())
                         .password(user.getPassword())
-                        .roles(user.getAuthorities().iterator().next().getAuthority()).build();
+                        .roles(authority).build();
 
                 if (jwtUtils.validateJwtToken(jwt)) {
                     UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
