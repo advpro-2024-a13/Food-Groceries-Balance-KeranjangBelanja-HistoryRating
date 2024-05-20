@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.*;
 
 import heymart.backend.service.BalanceServiceImpl;
 
-import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 
 @RestController
@@ -21,6 +21,8 @@ public class BalanceAPIController {
         this.balanceService = balanceService;
     }
 
+    private static final String FREQUENTLY_USED_STRING = "Balance with ownerId ";
+    
     @GetMapping("/getBalance")
     public ResponseEntity<?> getBalanceById(@RequestParam Long ownerId) {
         if (balanceService.existsById(ownerId)) {
@@ -28,33 +30,33 @@ public class BalanceAPIController {
         } else {
             return ResponseEntity
                 .badRequest()
-                .body("Balance with ownerId " + ownerId + " not found.");
+                .body(FREQUENTLY_USED_STRING + ownerId + " not found.");
         }
     }
 
     @PostMapping("/addNewBalance")
-    public ResponseEntity<?> addNewBalance(@RequestBody HashMap<String, String> JSON) {
-        long ownerId = Long.parseLong(JSON.get("ownerId"));
+    public ResponseEntity<?> addNewBalance(@RequestBody Map<String, String> json) {
+        long ownerId = Long.parseLong(json.get("ownerId"));
         if (balanceService.existsById(ownerId)) {
             return ResponseEntity
                 .badRequest()
-                .body("Balance with ownerId " + ownerId + " already exists.");
+                .body(FREQUENTLY_USED_STRING + ownerId + " already exists.");
         } else {
             balanceService.addNewBalance(ownerId);
-            return ResponseEntity.ok("Balance with ownerId " + ownerId + " added.");
+            return ResponseEntity.ok(FREQUENTLY_USED_STRING + ownerId + " added.");
         }
     }
 
     @DeleteMapping("/deleteBalance")
-    public ResponseEntity<?> deleteBalance(@RequestBody HashMap<String, String> JSON) {
-        long ownerId = Long.parseLong(JSON.get("ownerId"));
+    public ResponseEntity<?> deleteBalance(@RequestBody Map<String, String> json) {
+        long ownerId = Long.parseLong(json.get("ownerId"));
         if (balanceService.existsById(ownerId)) {
             balanceService.deleteBalance(ownerId);
-            return ResponseEntity.ok("Balance with ownerId " + ownerId + " deleted.");
+            return ResponseEntity.ok(FREQUENTLY_USED_STRING + ownerId + " deleted.");
         } else {
             return ResponseEntity
                 .badRequest()
-                .body("Balance with ownerId " + ownerId + " not found.");
+                .body(FREQUENTLY_USED_STRING + ownerId + " not found.");
         }
     }
 

@@ -12,6 +12,7 @@ sonar {
         property("sonar.projectKey", "advpro-2024-a13_Food-Groceries-Balance-KeranjangBelanja-HistoryRating")
         property("sonar.organization", "advpro-2024-a13")
         property("sonar.host.url", "https://sonarcloud.io")
+        property("sonar.exclusions", "**/JwtUtils.java, **/AuthTokenFilter.java")
     }
 }
 
@@ -60,6 +61,10 @@ dependencies {
     implementation("javax.annotation:javax.annotation-api:1.3.2")
     implementation("org.springframework.boot:spring-boot-starter-thymeleaf")
     implementation("org.springframework.boot:spring-boot-starter-actuator")
+    implementation("org.springframework.boot:spring-boot-starter-security")
+    implementation("io.jsonwebtoken:jjwt-api:0.11.5")
+    implementation("io.jsonwebtoken:jjwt-impl:0.11.5")
+    implementation("io.jsonwebtoken:jjwt-jackson:0.11.5")
     implementation(kotlin("script-runtime"))
 }
 
