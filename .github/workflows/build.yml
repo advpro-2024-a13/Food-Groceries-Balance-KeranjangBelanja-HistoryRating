@@ -37,4 +37,8 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GIT_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        run: ./gradlew build jacocoTestReport sonar --info
+        run: |
+          export SPRING_DATASOURCE_PASSWORD=${{ secrets.JBDC_DATABASE_PASSWORD }}
+          export SPRING_DATASOURCE_USERNAME=${{ secrets.JBDC_DATABASE_USERNAME }}
+          export SPRING_DATASOURCE_URL=jdbc:postgresql://${{ secrets.JBDC_DATABASE_URL }}/postgres
+          ./gradlew build jacocoTestReport sonar --info
