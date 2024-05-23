@@ -1,14 +1,15 @@
 package heymart.backend.service;
 
+import heymart.backend.models.HistoryMemento;
 import heymart.backend.models.Product;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import java.util.concurrent.CompletableFuture;
-
 import heymart.backend.models.History;
 import heymart.backend.repository.HistRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Stack;
+import java.util.concurrent.CompletableFuture;
 
 @Service
 public class HistoryServiceImpl implements HistoryService {
@@ -16,14 +17,18 @@ public class HistoryServiceImpl implements HistoryService {
     @Autowired
     private HistRepository histRepository;
 
+    private final Stack<HistoryMemento> historyStack = new Stack<>();
+
     @Override
     public History getHistoryById(Long id) {
-        return histRepository.findById(id).get();
+        return histRepository.findById(id).orElse(null);
     }
 
     @Override
     public History addNewHistory(Long ownerId, Long marketId, List<Product> purchases, double totalSpent) {
-        return histRepository.save(new History(ownerId, marketId, purchases, totalSpent));
+        History history = new History(ownerId, marketId, purchases, totalSpent);
+        historyStack.push(history.save());
+        return histRepository.save(history);
     }
 
     @Override
@@ -57,4 +62,16 @@ public class HistoryServiceImpl implements HistoryService {
         return CompletableFuture.completedFuture(historyByMarketId);
     }
 
+    public void undoLastChange(Long historyId) {
+        History history = getHistoryById(historyId);
+        if (history != null && !historyStack.isEmpty()) {
+            HistoryMemento memento = historyStack.pop();
+            history.restore(memento);
+            histRepository.save(history);
+        }
+    }
+
+    public void saveHistory(History history) {
+        histRepository.save(history);
+    }
 }

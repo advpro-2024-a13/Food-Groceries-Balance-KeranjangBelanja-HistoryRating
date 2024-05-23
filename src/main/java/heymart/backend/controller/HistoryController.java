@@ -12,6 +12,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
+@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/history")
 public class HistoryController {
@@ -49,6 +50,7 @@ public class HistoryController {
             return ResponseEntity.badRequest().body("History with id " + id + " not found.");
         }
     }
+
     @GetMapping("/all")
     public CompletableFuture<ResponseEntity<List<History>>> getAllHistory() {
         return historyService.getAllHistory()
@@ -70,8 +72,18 @@ public class HistoryController {
                 .exceptionally(this::handleException);
     }
 
+    @PostMapping("/undo/{id}")
+    public ResponseEntity<?> undoLastChange(@PathVariable Long id) {
+        if (historyService.existsById(id)) {
+            historyService.undoLastChange(id);
+            return ResponseEntity.ok("Last change undone for history with id: " + id);
+        } else {
+            return ResponseEntity.badRequest().body("History with id " + id + " not found.");
+        }
+    }
+
     private ResponseEntity<List<History>> handleException(Throwable throwable) {
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                .body(null); // In case of error, return null
+                .body(null);
     }
 }
