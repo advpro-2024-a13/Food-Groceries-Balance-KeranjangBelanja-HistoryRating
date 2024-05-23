@@ -15,7 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
- class RatingServiceImplTest {
+public class RatingServiceImplTest {
 
     @Mock
     private RatingRepository ratingRepository;
@@ -24,31 +24,28 @@ import java.util.Optional;
     private RatingServiceImpl ratingService;
 
     @BeforeEach
-     void setUp() {
-        MockitoAnnotations.openMocks(this);
+    public void setUp() {
+        MockitoAnnotations.initMocks(this);
     }
 
     @Test
-     void testModifyRating() {
-        Long ownerId = 123L;
-        Long marketId = 456L;
+    public void testModifyRating() {
+        Long id = 1L;
         int rating = 4;
         String review = "Great product!";
-        Rating existingRating = new Rating(ownerId, marketId, 3, "Good product");
-        List<Rating> ratingList = new ArrayList<>();
-        ratingList.add(existingRating);
+        Rating existingRating = new Rating(123L, 234L, 3, "Good product");
 
-        when(ratingRepository.findByOwnerId(ownerId)).thenReturn(Optional.of(ratingList));
+        when(ratingRepository.findById(id)).thenReturn(Optional.of(existingRating));
         when(ratingRepository.save(existingRating)).thenReturn(existingRating);
 
-        Rating modifiedRating = ratingService.modifyRating(ownerId, marketId, rating, review);
+        Rating modifiedRating = ratingService.modifyRating(id, rating, review);
 
         assertEquals(rating, modifiedRating.getScore());
         assertEquals(review, modifiedRating.getReview());
     }
 
     @Test
-     void testGetRatingById() {
+    public void testGetRatingById() {
         Long ratingId = 789L;
         Rating rating = new Rating(123L, 456L, 4, "Great product!");
 
@@ -60,7 +57,7 @@ import java.util.Optional;
     }
 
     @Test
-    void testAddNewRating() {
+    public void testAddNewRating() {
         Long ownerId = 123L;
         Long marketId = 456L;
         int rating = 4;
@@ -75,7 +72,7 @@ import java.util.Optional;
     }
 
     @Test
-    void testDeleteRating() {
+    public void testDeleteRating() {
         Long ratingId = 789L;
 
         ratingService.deleteRating(ratingId);
@@ -84,7 +81,7 @@ import java.util.Optional;
     }
 
     @Test
-     void testExistsById() {
+    public void testExistsById() {
         Long ratingId = 789L;
 
         when(ratingRepository.existsById(ratingId)).thenReturn(true);
@@ -92,22 +89,5 @@ import java.util.Optional;
         boolean exists = ratingService.existsById(ratingId);
 
         assertTrue(exists);
-    }
-
-    @Test
-     void testModifyRatingWithNonExistingMarketId() {
-        Long ownerId = 123L;
-        Long marketId = 456L;
-        int rating = 4;
-        String review = "Great product!";
-        Rating existingRating = new Rating(ownerId, 999L, 3, "Good product"); // marketId does not match
-        List<Rating> ratingList = new ArrayList<>();
-        ratingList.add(existingRating);
-
-        when(ratingRepository.findByOwnerId(ownerId)).thenReturn(Optional.of(ratingList));
-
-        Rating modifiedRating = ratingService.modifyRating(ownerId, marketId, rating, review);
-
-        assertNull(modifiedRating);
     }
 }

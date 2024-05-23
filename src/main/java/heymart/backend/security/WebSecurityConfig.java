@@ -33,7 +33,11 @@ public class WebSecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.cors(AbstractHttpConfigurer::disable).csrf(AbstractHttpConfigurer::disable)
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .authorizeHttpRequests(auth -> auth.requestMatchers("/balance/api/getAllBalance").permitAll().anyRequest().authenticated()
+                .authorizeHttpRequests(auth -> auth
+                        .requestMatchers("/balance/api/getAllBalance").permitAll()
+                        .requestMatchers("rating/*").permitAll()
+                        .requestMatchers("/history/*").permitAll()
+                        .anyRequest().authenticated()
                 );
 
         http.addFilterBefore(authTokenFilter, UsernamePasswordAuthenticationFilter.class);

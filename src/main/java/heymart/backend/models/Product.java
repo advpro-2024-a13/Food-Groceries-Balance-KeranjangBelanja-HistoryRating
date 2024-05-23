@@ -35,4 +35,8 @@ public class Product {
 
     public Product() {
     }
+
+    public void setHistory(History history) {
+        this.history = history;
+    }
 }

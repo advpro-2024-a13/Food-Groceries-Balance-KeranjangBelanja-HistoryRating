@@ -20,6 +20,7 @@ public class History {
     private Long marketId;
 
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
     private double totalSpent;
@@ -37,5 +38,25 @@ public class History {
     public void addPurchase(Product product) {
         purchases.add(product);
         totalSpent += product.getProductPrice();
+    }
+
+    public void setTotal(double totalSpent) {
+        this.totalSpent = totalSpent;
+    }
+
+    public double getTotal() {
+        return totalSpent;
+    }
+
+    // Memento methods
+    public HistoryMemento save() {
+        return new HistoryMemento(ownerId, marketId, new ArrayList<>(purchases), totalSpent);
+    }
+
+    public void restore(HistoryMemento memento) {
+        this.ownerId = memento.getOwnerId();
+        this.marketId = memento.getMarketId();
+        this.purchases = new ArrayList<>(memento.getPurchases());
+        this.totalSpent = memento.getTotalSpent();
     }
 }
