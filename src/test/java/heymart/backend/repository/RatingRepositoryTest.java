@@ -1,13 +1,13 @@
 package heymart.backend.repository;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.when;
 
 import heymart.backend.models.Rating;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
@@ -42,6 +42,7 @@ public class RatingRepositoryTest {
 
         Optional<List<Rating>> foundRatings = ratingRepository.findByOwnerId(ownerId);
 
+        assertTrue(foundRatings.isPresent());
         assertEquals(expectedRatings, foundRatings.get());
     }
 
@@ -56,6 +57,7 @@ public class RatingRepositoryTest {
 
         Optional<List<Rating>> foundRatings = ratingRepository.findByMarketId(marketId);
 
+        assertTrue(foundRatings.isPresent());
         assertEquals(expectedRatings, foundRatings.get());
     }
 }

@@ -16,8 +16,7 @@ import static org.mockito.Mockito.mock;
 public class KeranjangBelanjaControllerTest {
     @Mock
     private KeranjangBelanjaServiceImpl keranjangBelanjaService;
-    @Mock
-    private Model model;
+
     @InjectMocks
     private KeranjangBelanjaController keranjangBelanjaController;
 
@@ -37,8 +36,7 @@ public class KeranjangBelanjaControllerTest {
     void testCreateKeranjangBelanjaPost(){
         Model model = mock(Model.class);
         KeranjangBelanja keranjangBelanja = new KeranjangBelanja();
-        Mockito.when(keranjangBelanjaService.createKeranjangBelanja(keranjangBelanja)).thenReturn(keranjangBelanja);
-        String result = keranjangBelanjaController.createKeranjangBelanjaPost(keranjangBelanja, model);
+        String result = keranjangBelanjaController.createKeranjangBelanjaPost(keranjangBelanja);
         assertEquals("redirect::list", result);
     }
 }

@@ -23,7 +23,7 @@ public class BalanceServiceImplTest {
 
     @BeforeEach
     public void setUp() {
-        MockitoAnnotations.initMocks(this);
+        MockitoAnnotations.openMocks(this);
     }
 
     @Test
@@ -110,5 +110,24 @@ public class BalanceServiceImplTest {
         Iterable<Balance> allBalance = balanceService.getAllBalance().join();
 
         assertEquals(java.util.List.of(balance1, balance2), allBalance);
+    }
+
+    @Test
+    public void testModifyBalanceWithNonExistingBalance() {
+        Long ownerId = 123L;
+        Long amountToAdd = 500L;
+
+        when(balanceRepository.findById(ownerId)).thenReturn(Optional.empty());
+
+        assertNull(balanceService.modifyBalance(ownerId, amountToAdd));
+    }
+
+    @Test
+    public void testGetBalanceByIdWithNonExistingBalance() {
+        Long ownerId = 123L;
+
+        when(balanceRepository.findById(ownerId)).thenReturn(Optional.empty());
+
+        assertNull(balanceService.getBalanceById(ownerId));
     }
 }

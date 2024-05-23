@@ -3,7 +3,6 @@ package heymart.backend.controller;
 import heymart.backend.models.KeranjangBelanja;
 import heymart.backend.service.KeranjangBelanjaService;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -12,8 +11,11 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/keranjangbelanja")
 public class KeranjangBelanjaController {
 
-    @Autowired
-    private KeranjangBelanjaService keranjangBelanjaService;
+    private final KeranjangBelanjaService keranjangBelanjaService;
+
+    public KeranjangBelanjaController(KeranjangBelanjaService keranjangBelanjaService) {
+        this.keranjangBelanjaService = keranjangBelanjaService;
+    }
 
     @GetMapping("/create")
     public String createKeranjangBelanjaPage(Model model){
@@ -23,7 +25,7 @@ public class KeranjangBelanjaController {
     }
 
     @PostMapping("/create")
-    public String createKeranjangBelanjaPost(@ModelAttribute KeranjangBelanja keranjangBelanja, Model model){
+    public String createKeranjangBelanjaPost(@ModelAttribute KeranjangBelanja keranjangBelanja){
         keranjangBelanjaService.createKeranjangBelanja(keranjangBelanja);
         return "redirect::list";
     }

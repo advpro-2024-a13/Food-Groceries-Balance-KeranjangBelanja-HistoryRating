@@ -1,14 +1,15 @@
 package heymart.backend.models;
 
 import jakarta.persistence.*;
-import lombok.Builder;
-import lombok.Getter;
+import lombok.*;
 
 import java.util.List;
 
 @Builder
 @Getter
+@Setter
 @Entity
+@NoArgsConstructor
 public class KeranjangBelanja {
 
     @Id
@@ -27,7 +28,8 @@ public class KeranjangBelanja {
         }
     }
 
-    public KeranjangBelanja(){
-
+    @Override
+    public String toString() {
+        return "KeranjangBelanja(ownerId=" + ownerId + ", products=" + products.toString() + ")";
     }
 }

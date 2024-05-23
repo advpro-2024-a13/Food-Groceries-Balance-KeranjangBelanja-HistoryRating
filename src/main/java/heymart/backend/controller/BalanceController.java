@@ -1,7 +1,6 @@
 package heymart.backend.controller;
 
 import heymart.backend.enums.EnumRoleSingleton;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -14,19 +13,17 @@ import java.util.HashMap;
 @RequestMapping("/balance")
 public class BalanceController {
     
-    @Autowired
-    private BalanceServiceImpl balanceService;
+    private final BalanceServiceImpl balanceService;
+
+    public BalanceController(BalanceServiceImpl balanceService) {
+        this.balanceService = balanceService;
+    }
 
     @PostMapping("/modifyBalance")
     public ResponseEntity<?> modifyBalance(@RequestBody HashMap<String, String> JSON) {
         long ownerId = Long.parseLong(JSON.get("ownerId"));
         long amount = Long.parseLong(JSON.get("amount"));
-        if (amount > 0 && balanceService.existsById(ownerId)) {
-            balanceService.modifyBalance(ownerId, amount);
-            return ResponseEntity
-                    .ok()
-                    .body("Balance with ownerId " + ownerId + " modified.");
-        } else if (amount <= 0) {
+        if (amount <= 0) {
             return ResponseEntity
                     .badRequest()
                     .body("Amount harus lebih dari 0");
@@ -35,9 +32,10 @@ public class BalanceController {
                     .badRequest()
                     .body("Balance not found");
         } else {
+            balanceService.modifyBalance(ownerId, amount);
             return ResponseEntity
-                    .badRequest()
-                    .body("Param Invalid");
+                    .ok()
+                    .body("Balance with ownerId " + ownerId + " modified.");
         }
     }
 

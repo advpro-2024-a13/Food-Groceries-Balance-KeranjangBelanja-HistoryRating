@@ -41,8 +41,8 @@ public class HistoryTest {
     @Test
     public void testGetSetTotalSpent() {
         double totalSpent = 100.0;
-        history.setTotal(totalSpent);
-        assertEquals(totalSpent, history.getTotal());
+        history.setTotalSpent(totalSpent);
+        assertEquals(totalSpent, history.getTotalSpent());
     }
 
     @Test
@@ -52,7 +52,7 @@ public class HistoryTest {
         history.addPurchase(product);
         assertEquals(1, history.getPurchases().size());
         assertEquals(product, history.getPurchases().getFirst());
-        assertEquals(50.0, history.getTotal());
+        assertEquals(50.0, history.getTotalSpent());
     }
 
     @Test
