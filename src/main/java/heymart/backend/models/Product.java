@@ -1,26 +1,42 @@
 package heymart.backend.models;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.*;
-
-import java.util.UUID;
 
 @Getter
 @Setter
 @Entity
-@Builder
-@NoArgsConstructor
-@AllArgsConstructor
 public class Product {
+
     @Id
-    private UUID productId;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private long id;
+
+    @ManyToOne
+    @JoinColumn(name = "keranjangBelanja_ownerId")
+    private KeranjangBelanja keranjangBelanja;
+
+    @ManyToOne
+    @JoinColumn(name = "history_id")
+    private History history;
 
     private String productName;
-    private int productQuantity;
+    private long productPrice;
     private String productCategory;
-    private String productDescription;
-    private String productImagePath;
-    private Long productPrice;
-    private Long supermarketOwnerId;
+    private int productAmount;
+    private Long SupermarketId;
+    private Long ProductId;
+
+    public Product(Long id, String name, int price) {
+        this.id = id;
+        this.productName = name;
+        this.productPrice = price;
+    }
+
+    public Product() {
+    }
+
+    public void setHistory(History history) {
+        this.history = history;
+    }
 }

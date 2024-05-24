@@ -15,7 +15,6 @@ public class KeranjangBelanjaServiceImpl implements KeranjangBelanjaService {
 
     private KeranjangBelanjaRepository keranjangBelanjaRepository;
 
-    @Async
     @Override
     public KeranjangBelanja createKeranjangBelanja(Long userId) {
         KeranjangBelanja keranjangBelanja = new KeranjangBelanjaBuilder()
@@ -25,13 +24,11 @@ public class KeranjangBelanjaServiceImpl implements KeranjangBelanjaService {
         return keranjangBelanja;
     }
 
-    @Async
     @Override
     public KeranjangBelanja findKeranjangBelanjaById(Long userId) {
         return keranjangBelanjaRepository.findKeranjangBelanjaById(userId).orElseThrow();
     }
 
-    @Async
     @Override
     public KeranjangBelanja addProductToKeranjang(Long userId, UUID productId) {
         KeranjangBelanja keranjangBelanja = keranjangBelanjaRepository.findKeranjangBelanjaById(userId).orElseThrow();
@@ -45,20 +42,17 @@ public class KeranjangBelanjaServiceImpl implements KeranjangBelanjaService {
         return keranjangBelanja;
     }
 
-    @Async
     @Override
     public Integer countTotalProductInKeranjang(HashMap<UUID, Integer> productMap) {
         return productMap.values().stream().mapToInt(Integer::intValue).sum();
     }
 
-    @Async
     @Override
     public Long countTotalProductPriceInKeranjang(HashMap<UUID, Integer> productMap) {
         // TODO: Create calculating total product price for products in keranjang belanja
         return null;
     }
 
-    @Async
     @Override
     public boolean checkout() {
         // TODO: Create checkout mechanism

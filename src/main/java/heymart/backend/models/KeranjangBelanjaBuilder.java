@@ -1,26 +1,22 @@
 package heymart.backend.models;
 
-import java.util.HashMap;
-import java.util.UUID;
-
 public class KeranjangBelanjaBuilder {
-    private Long keranjangBelanjaId;
-    private HashMap<UUID, Integer> productMap;
-
-    public KeranjangBelanjaBuilder setKeranjangBelanjaId(Long keranjangBelanjaId){
-        this.keranjangBelanjaId = keranjangBelanjaId;
+    private Long id;
+    private Long ownerId;
+    public KeranjangBelanjaBuilder setKeranjangBelanjaId(Long id){
+        this.id = id;
         return this;
     }
 
-    public KeranjangBelanjaBuilder setProductMap(HashMap<UUID, Integer> productMap){
-        this.productMap = productMap;
+    public KeranjangBelanjaBuilder setOwnerId(Long ownerId){
+        this.ownerId = ownerId;
         return this;
     }
 
     public KeranjangBelanja build(){
         KeranjangBelanja keranjangBelanja = new KeranjangBelanja();
-        keranjangBelanja.setKeranjangBelanjaId(this.keranjangBelanjaId);
-        keranjangBelanja.setProductMap(this.productMap);
+        keranjangBelanja.setId(this.id);
+        keranjangBelanja.setOwnerId(this.ownerId);
         return keranjangBelanja;
     }
 }
