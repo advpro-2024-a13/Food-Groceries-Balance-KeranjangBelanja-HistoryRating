@@ -58,20 +58,6 @@ public class HistoryController {
                 .exceptionally(this::handleException);
     }
 
-    @GetMapping("/owner/{ownerId}")
-    public CompletableFuture<ResponseEntity<List<History>>> getHistoryByOwnerId(@PathVariable Long ownerId) {
-        return historyService.getHistoryByOwnerId(ownerId)
-                .thenApply(ResponseEntity::ok)
-                .exceptionally(this::handleException);
-    }
-
-    @GetMapping("/market/{marketId}")
-    public CompletableFuture<ResponseEntity<List<History>>> getHistoryByMarketId(@PathVariable Long marketId) {
-        return historyService.getHistoryByMarketId(marketId)
-                .thenApply(ResponseEntity::ok)
-                .exceptionally(this::handleException);
-    }
-
     @PostMapping("/undo/{id}")
     public ResponseEntity<?> undoLastChange(@PathVariable Long id) {
         if (historyService.existsById(id)) {
