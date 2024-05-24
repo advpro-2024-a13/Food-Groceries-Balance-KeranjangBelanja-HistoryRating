@@ -1,6 +1,9 @@
 package heymart.backend.security.jwt;
 
-import io.jsonwebtoken.*;
+import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.MalformedJwtException;
+import io.jsonwebtoken.UnsupportedJwtException;
 import io.jsonwebtoken.security.Keys;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,11 +22,6 @@ public class JwtUtils {
 
     private Key key() {
         return Keys.hmacShaKeyFor(jwtSecret.getBytes(StandardCharsets.UTF_8));
-    }
-
-    public String getEmailFromJwtToken(String token) {
-        return Jwts.parserBuilder().setSigningKey(jwtSecret).build()
-                .parseClaimsJws(token).getBody().getSubject();
     }
 
     public boolean validateJwtToken(String authToken) {

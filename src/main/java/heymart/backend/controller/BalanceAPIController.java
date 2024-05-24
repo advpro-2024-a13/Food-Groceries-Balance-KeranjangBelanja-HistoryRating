@@ -1,12 +1,10 @@
 package heymart.backend.controller;
 
 import heymart.backend.models.Balance;
+import heymart.backend.service.BalanceServiceImpl;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.*;
-
-import heymart.backend.service.BalanceServiceImpl;
 
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;

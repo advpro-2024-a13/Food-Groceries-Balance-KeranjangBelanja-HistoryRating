@@ -1,9 +1,5 @@
 package heymart.backend.repository;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.Mockito.when;
-
 import heymart.backend.models.History;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -15,8 +11,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.Mockito.when;
+
 @ExtendWith(MockitoExtension.class)
-public class HistoryRepositoryTest {
+class HistoryRepositoryTest {
 
     @Mock
     private HistRepository histRepository;
@@ -31,7 +31,7 @@ public class HistoryRepositoryTest {
     }
 
     @Test
-    public void testFindByOwnerId() {
+    void testFindByOwnerId() {
         Long ownerId = 1L;
         List<History> expectedHistories = new ArrayList<>();
         expectedHistories.add(histories.get(0));
@@ -46,7 +46,7 @@ public class HistoryRepositoryTest {
     }
 
     @Test
-    public void testFindByMarketId() {
+    void testFindByMarketId() {
         Long marketId = 1L;
         List<History> expectedHistories = new ArrayList<>();
         expectedHistories.add(histories.get(0));

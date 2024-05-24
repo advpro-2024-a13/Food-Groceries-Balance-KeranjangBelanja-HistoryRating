@@ -1,8 +1,5 @@
 package heymart.backend.controller;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.Mockito.when;
-
 import heymart.backend.models.History;
 import heymart.backend.models.Product;
 import heymart.backend.service.HistoryServiceImpl;
@@ -18,8 +15,11 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.Mockito.when;
+
 @ExtendWith(MockitoExtension.class)
-public class HistoryControllerTest {
+class HistoryControllerTest {
 
     @Mock
     private HistoryServiceImpl historyService;
@@ -28,7 +28,7 @@ public class HistoryControllerTest {
     private HistoryController historyController;
 
     @Test
-    public void testGetHistoryById() {
+    void testGetHistoryById() {
         Long id = 1L;
         History history = new History();
         when(historyService.existsById(id)).thenReturn(true);
@@ -40,7 +40,7 @@ public class HistoryControllerTest {
     }
 
     @Test
-    public void testGetHistoryByIdNotFound() {
+    void testGetHistoryByIdNotFound() {
         Long id = 1L;
         when(historyService.existsById(id)).thenReturn(false);
 
@@ -50,7 +50,7 @@ public class HistoryControllerTest {
     }
 
     @Test
-    public void testAddNewHistory() {
+    void testAddNewHistory() {
         Long ownerId = 1L;
         Long marketId = 2L;
         List<Product> purchases = new ArrayList<>();
@@ -70,7 +70,7 @@ public class HistoryControllerTest {
     }
 
     @Test
-    public void testDeleteHistory() {
+    void testDeleteHistory() {
         Long id = 1L;
         when(historyService.existsById(id)).thenReturn(true);
 
@@ -80,7 +80,7 @@ public class HistoryControllerTest {
     }
 
     @Test
-    public void testDeleteHistoryNotFound() {
+    void testDeleteHistoryNotFound() {
         Long id = 1L;
         when(historyService.existsById(id)).thenReturn(false);
 

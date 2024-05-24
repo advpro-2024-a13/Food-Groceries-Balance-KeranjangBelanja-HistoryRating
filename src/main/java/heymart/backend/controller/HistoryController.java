@@ -3,13 +3,12 @@ package heymart.backend.controller;
 import heymart.backend.models.History;
 import heymart.backend.models.Product;
 import heymart.backend.service.HistoryServiceImpl;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 
 @CrossOrigin(origins = "*")
@@ -17,8 +16,11 @@ import java.util.concurrent.CompletableFuture;
 @RequestMapping("/history")
 public class HistoryController {
 
-    @Autowired
-    private HistoryServiceImpl historyService;
+    private final HistoryServiceImpl historyService;
+
+    public HistoryController(HistoryServiceImpl historyService) {
+        this.historyService = historyService;
+    }
 
     @GetMapping("/get/{id}")
     public ResponseEntity<?> getHistoryById(@PathVariable Long id) {
@@ -31,7 +33,7 @@ public class HistoryController {
     }
 
     @PostMapping("/add")
-    public ResponseEntity<?> addNewHistory(@RequestBody HashMap<String, Object> request) {
+    public ResponseEntity<?> addNewHistory(@RequestBody Map<String, Object> request) {
         Long ownerId = Long.parseLong(request.get("ownerId").toString());
         Long marketId = Long.parseLong(request.get("marketId").toString());
         List<Product> purchases = (List<Product>) request.get("purchases");

@@ -1,10 +1,7 @@
 package heymart.backend.controller;
 
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.*;
-
 import heymart.backend.models.Balance;
+import heymart.backend.service.BalanceServiceImpl;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -13,15 +10,17 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
-import heymart.backend.service.BalanceServiceImpl;
-
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.*;
+
 @ExtendWith(MockitoExtension.class)
-public class BalanceAPIControllerTest {
+class BalanceAPIControllerTest {
 
     @Mock
     private BalanceServiceImpl balanceService;
@@ -30,7 +29,7 @@ public class BalanceAPIControllerTest {
     private BalanceAPIController balanceAPIController;
 
     @Test
-    public void testGetBalanceById() {
+    void testGetBalanceById() {
         when(balanceService.existsById(any(Long.class))).thenReturn(true);
         when(balanceService.getBalanceById(any(Long.class))).thenReturn(0L);
         ResponseEntity<?> response = balanceAPIController.getBalanceById(1L);
@@ -39,7 +38,7 @@ public class BalanceAPIControllerTest {
     }
 
     @Test
-    public void testFailedGetBalanceById() {
+    void testFailedGetBalanceById() {
         when(balanceService.existsById(any(Long.class))).thenReturn(false);
         ResponseEntity<?> response = balanceAPIController.getBalanceById(1L);
         assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
@@ -47,7 +46,7 @@ public class BalanceAPIControllerTest {
     }
 
     @Test
-    public void testAddNewBalance() {
+    void testAddNewBalance() {
         when(balanceService.existsById(any(Long.class))).thenReturn(false);
         HashMap<String, String> JSON = new HashMap<>();
         JSON.put("ownerId", "1");
@@ -57,7 +56,7 @@ public class BalanceAPIControllerTest {
     }
 
     @Test
-    public void testFailedAddNewBalance() {
+    void testFailedAddNewBalance() {
         when(balanceService.existsById(any(Long.class))).thenReturn(true);
         HashMap<String, String> JSON = new HashMap<>();
         JSON.put("ownerId", "1");
@@ -67,7 +66,7 @@ public class BalanceAPIControllerTest {
     }
 
     @Test
-    public void testDeleteBalance() {
+    void testDeleteBalance() {
         when(balanceService.existsById(any(Long.class))).thenReturn(true);
         HashMap<String, String> JSON = new HashMap<>();
         JSON.put("ownerId", "1");
@@ -77,7 +76,7 @@ public class BalanceAPIControllerTest {
     }
 
     @Test
-    public void testFailedDeleteBalance() {
+    void testFailedDeleteBalance() {
         when(balanceService.existsById(any(Long.class))).thenReturn(false);
         HashMap<String, String> JSON = new HashMap<>();
         JSON.put("ownerId", "1");
@@ -87,7 +86,7 @@ public class BalanceAPIControllerTest {
     }
 
     @Test
-    public void testGetAllBalance() throws ExecutionException, InterruptedException {
+    void testGetAllBalance() throws ExecutionException, InterruptedException {
         Iterable<Balance> balances = Arrays.asList(new Balance(), new Balance());
         when(balanceService.getAllBalance()).thenReturn(CompletableFuture.completedFuture(balances));
 
