@@ -54,7 +54,7 @@ public class RatingController {
         String review = request.get("review").toString();
 
         Rating newRating = ratingService.addNewRating(ownerId, marketId, rating, review);
-        return ResponseEntity.ok("New rating added with id: " + newRating.getId());
+        return new ResponseEntity<>("New rating added with id: " + newRating.getId(), HttpStatus.CREATED);
     }
 
     @DeleteMapping("/delete/{id}")

@@ -41,7 +41,7 @@ public class WebSecurityConfig {
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/balance/api/getAllBalance").permitAll()
-                        .requestMatchers("rating/**").permitAll()
+                        .requestMatchers("/rating/**").permitAll()
                         .requestMatchers("/history/**").permitAll()
                         .anyRequest().authenticated()
                 );
