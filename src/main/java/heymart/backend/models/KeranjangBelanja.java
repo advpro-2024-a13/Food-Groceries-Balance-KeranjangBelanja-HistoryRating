@@ -3,30 +3,27 @@ package heymart.backend.models;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Setter
 @Entity
-@Table(name = "KeranjangBelanja")
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class KeranjangBelanja{
 
     @Id
-    @Column(name = "ownerId")
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long id;
+
     private Long ownerId;
 
-    @ElementCollection
-    @CollectionTable(name = "products", joinColumns = @JoinColumn(name = "ownerId"))
-    @MapKeyColumn(name = "productId")
-    @Column(name = "quantity")
-    private Map<Long, Integer> products;
+    @OneToMany(mappedBy = "keranjangbelanja", cascade = CascadeType.ALL, orphanRemoval = true)
+    List<Product> cartItems = new ArrayList<>();
 
-    @Column(name = "totalPrice")
-    private long totalPrice;
-
-    public KeranjangBelanja(Long ownerId){
-        this.ownerId = ownerId;
+    public static KeranjangBelanjaBuilder getBuilder(){
+        return new KeranjangBelanjaBuilder();
     }
-
-    public KeranjangBelanja(){}
 }
