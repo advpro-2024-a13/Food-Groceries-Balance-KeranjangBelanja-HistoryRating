@@ -1,6 +1,7 @@
 package heymart.backend.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import heymart.backend.models.Rating;
@@ -54,15 +55,15 @@ public class RatingServiceImpl implements RatingService {
         return CompletableFuture.supplyAsync(() -> ratingRepository.findAll());
     }
 
+    @Async
     @Override
-    public CompletableFuture<List<Rating>> getRatingsByOwnerId(Long ownerId) {
-        return CompletableFuture.supplyAsync(() -> ratingRepository.findByOwnerId(ownerId)
-                .orElseGet(() -> List.of()));
+    public CompletableFuture<List<Rating>> findByOwnerId(Long ownerId) {
+        return CompletableFuture.completedFuture(ratingRepository.findByOwnerId(ownerId).orElse(null));
     }
 
+    @Async
     @Override
-    public CompletableFuture<List<Rating>> getRatingsByMarketId(Long marketId) {
-        return CompletableFuture.supplyAsync(() -> ratingRepository.findByMarketId(marketId)
-                .orElseGet(() -> List.of()));
+    public CompletableFuture<List<Rating>> findBySupermarketId(Long marketId) {
+        return CompletableFuture.completedFuture(ratingRepository.findByMarketId(marketId).orElse(null));
     }
 }
