@@ -1,7 +1,8 @@
 package heymart.backend.models;
 
 import heymart.backend.authority.SimpleGrantedAuthority;
-import lombok.*;
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.io.Serial;

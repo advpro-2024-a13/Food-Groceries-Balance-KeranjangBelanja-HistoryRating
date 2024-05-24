@@ -1,9 +1,8 @@
 package heymart.backend.service;
 
-import org.springframework.stereotype.Service;
-
 import heymart.backend.models.Balance;
 import heymart.backend.repository.BalanceRepository;
+import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
