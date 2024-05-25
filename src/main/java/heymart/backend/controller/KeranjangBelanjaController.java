@@ -1,6 +1,7 @@
 package heymart.backend.controller;
 
 import heymart.backend.dto.GetProductRequest;
+import heymart.backend.dto.GetUpdateRequest;
 import heymart.backend.models.KeranjangBelanja;
 import heymart.backend.service.KeranjangBelanjaServiceImpl;
 
@@ -43,6 +44,21 @@ public class KeranjangBelanjaController {
         else{
             keranjangBelanjaService.createNewKeranjangBelanja(ownerId);
             return ResponseEntity.ok(FREQUENTLY_USED_STRING + ownerId + " created.");
+        }
+    }
+
+    @PutMapping("/updateKeranjangBelanja")
+    public ResponseEntity<?> updateKeranjangBelanja(@RequestBody GetUpdateRequest updateRequest) {
+        Long ownerId = updateRequest.getOwnerId();
+        if(keranjangBelanjaService.existsByOwnerId(ownerId)){
+            KeranjangBelanja keranjangBelanja = keranjangBelanjaService.updateKeranjangBelanja(
+                    ownerId,
+                    updateRequest.getUpdatedProducts());
+            return ResponseEntity.ok(keranjangBelanja);
+        } else {
+            return ResponseEntity
+                    .badRequest()
+                    .body(FREQUENTLY_USED_STRING + ownerId + " not found.");
         }
     }
 

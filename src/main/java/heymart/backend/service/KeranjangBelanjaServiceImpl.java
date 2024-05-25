@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 
@@ -26,6 +27,23 @@ public class KeranjangBelanjaServiceImpl implements KeranjangBelanjaService {
                 .products(new HashMap<>())
                 .build();
         return keranjangBelanjaRepository.save(keranjangBelanja);
+    }
+
+    @Override
+    public KeranjangBelanja updateKeranjangBelanja(Long ownerId, Map<UUID, Integer> updatedProducts){
+        KeranjangBelanja keranjangBelanja = keranjangBelanjaRepository.findById(ownerId).orElse(null);
+        if (keranjangBelanja != null) {
+            Map<UUID, Integer> currentProducts = keranjangBelanja.getProducts();
+            for (Map.Entry<UUID, Integer> entry : updatedProducts.entrySet()) {
+                UUID productId = entry.getKey();
+                int quantity = entry.getValue();
+                if (currentProducts.containsKey(productId)) {
+                    currentProducts.put(productId, quantity);
+                }
+            }
+            return keranjangBelanjaRepository.save(keranjangBelanja);
+        }
+        return null;
     }
 
     @Override
