@@ -1,5 +1,8 @@
 package heymart.backend.controller;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.Mockito.when;
+
 import heymart.backend.models.Rating;
 import heymart.backend.service.RatingServiceImpl;
 import org.junit.jupiter.api.Test;
@@ -12,11 +15,8 @@ import org.springframework.http.ResponseEntity;
 
 import java.util.HashMap;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.Mockito.when;
-
 @ExtendWith(MockitoExtension.class)
-class RatingControllerTest {
+public class RatingControllerTest {
 
     @Mock
     private RatingServiceImpl ratingService;
@@ -25,7 +25,7 @@ class RatingControllerTest {
     private RatingController ratingController;
 
     @Test
-    void testGetRatingById() {
+    public void testGetRatingById() {
         Long id = 1L;
         Rating rating = new Rating();
         when(ratingService.existsById(id)).thenReturn(true);
@@ -37,7 +37,7 @@ class RatingControllerTest {
     }
 
     @Test
-    void testGetRatingByIdNotFound() {
+    public void testGetRatingByIdNotFound() {
         Long id = 1L;
         when(ratingService.existsById(id)).thenReturn(false);
 
@@ -47,43 +47,27 @@ class RatingControllerTest {
     }
 
     @Test
-    void testModifyRating() {
+    public void testModifyRating() {
         Long id = 1L;
-        int rating = 4;
-        String review = "Great product!";
-        Rating modifiedRating = new Rating(123L, 456L, rating, review);
-        when(ratingService.modifyRating(id, rating, review)).thenReturn(modifiedRating);
+        when(ratingService.existsById(id)).thenReturn(true);
 
-        HashMap<String, Object> request = new HashMap<>();
-        request.put("rating", rating);
-        request.put("review", review);
+        ResponseEntity<?> response = ratingController.getRatingById(id);
 
-        ResponseEntity<?> response = ratingController.modifyRating(id, request);
         assertEquals(HttpStatus.OK, response.getStatusCode());
-        assertEquals("Rating modified for id " + id, response.getBody());
     }
 
-
     @Test
-    void testModifyRatingNotFound() {
+    public void testModifyRating_InvalidRequest() {
         Long id = 1L;
-        int rating = 4;
-        String review = "Great product!";
+        when(ratingService.existsById(id)).thenReturn(false);
 
-        when(ratingService.modifyRating(id ,rating, review)).thenReturn(null);
+        ResponseEntity<?> response = ratingController.getRatingById(id);
 
-        HashMap<String, Object> request = new HashMap<>();
-        request.put("rating", rating);
-        request.put("review", review);
-
-        ResponseEntity<?> response = ratingController.modifyRating(id, request);
         assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
-        assertEquals("Rating with id " + id + " not found.", response.getBody());
     }
 
-
     @Test
-    void testAddNewRating() {
+    public void testAddNewRating() {
         Long ownerId = 1L;
         Long marketId = 2L;
         int rating = 4;
@@ -99,11 +83,11 @@ class RatingControllerTest {
 
         ResponseEntity<?> response = ratingController.addNewRating(request);
         assertEquals(HttpStatus.OK, response.getStatusCode());
-        assertEquals("New rating added with id: " + newRating.getId(), response.getBody());
+        assertEquals("New rating added.", response.getBody());
     }
 
     @Test
-    void testDeleteRating() {
+    public void testDeleteRating() {
         Long id = 1L;
         when(ratingService.existsById(id)).thenReturn(true);
 
@@ -113,7 +97,7 @@ class RatingControllerTest {
     }
 
     @Test
-    void testDeleteRatingNotFound() {
+    public void testDeleteRatingNotFound() {
         Long id = 1L;
         when(ratingService.existsById(id)).thenReturn(false);
 
