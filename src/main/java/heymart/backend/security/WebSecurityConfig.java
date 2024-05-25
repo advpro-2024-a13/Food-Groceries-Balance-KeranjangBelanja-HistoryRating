@@ -58,7 +58,8 @@ public class WebSecurityConfig {
         configuration.setAllowedOrigins(Arrays.asList(
                 "https://food-groceries-front-production.up.railway.app",
                 "http://localhost:8080",
-                "http://localhost:3030"
+                "http://localhost:3000",
+                "http://localhost:3031"
         ));
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"));
         configuration.setAllowedHeaders(Arrays.asList("authorization", "content-type", "x-auth-token"));
