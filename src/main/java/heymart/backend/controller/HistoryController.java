@@ -58,17 +58,21 @@ public class HistoryController {
                 .exceptionally(this::handleException);
     }
 
-    @PostMapping("/undo/{id}")
-    public ResponseEntity<?> undoLastChange(@PathVariable Long id) {
-        if (historyService.existsById(id)) {
-            historyService.undoLastChange(id);
-            return ResponseEntity.ok("Last change undone for history with id: " + id);
-        } else {
-            return ResponseEntity.badRequest().body("History with id " + id + " not found.");
-        }
+    @GetMapping("/owner/{ownerId}")
+    public CompletableFuture<ResponseEntity<List<History>>> getHistoryByOwnerId(@PathVariable Long ownerId) {
+        return historyService.getHistoryByOwnerId(ownerId)
+                .thenApply(ResponseEntity::ok)
+                .exceptionally(this::handleException);
     }
 
-    private ResponseEntity<List<History>> handleException(Throwable throwable) {
+    @GetMapping("/market/{marketId}")
+    public CompletableFuture<ResponseEntity<List<History>>> getHistoryByMarketId(@PathVariable Long marketId) {
+        return historyService.getHistoryByMarketId(marketId)
+                .thenApply(ResponseEntity::ok)
+                .exceptionally(this::handleException);
+    }
+
+    ResponseEntity<List<History>> handleException(Throwable throwable) {
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                 .body(null);
     }

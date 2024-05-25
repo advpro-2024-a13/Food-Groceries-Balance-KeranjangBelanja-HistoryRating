@@ -2,21 +2,17 @@ package heymart.backend.models;
 
 import jakarta.persistence.*;
 import lombok.Getter;
-import lombok.Setter;
-
 import java.util.ArrayList;
 import java.util.List;
 
 @Getter
-@Setter
 @Entity
 public class History {
 
-    @OneToMany(mappedBy = "history")
-    List<Product> purchases = new ArrayList<>();
+    @OneToMany(mappedBy = "history", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Product> purchases = new ArrayList<>();
 
     private Long ownerId;
-
     private Long marketId;
 
     @Id
@@ -25,38 +21,49 @@ public class History {
 
     private double totalSpent;
 
-    public History() {
-    }
+    public History() {}
 
-    public History(Long ownerId, Long marketId, List<Product> purchases, double totalSpent) {
-        this.ownerId = ownerId;
-        this.marketId = marketId;
-        this.purchases = purchases;
-        this.totalSpent = totalSpent;
+    private History(Builder builder) {
+        this.ownerId = builder.ownerId;
+        this.marketId = builder.marketId;
+        this.purchases = builder.purchases;
+        this.totalSpent = builder.totalSpent;
     }
 
     public void addPurchase(Product product) {
         purchases.add(product);
+        product.setHistory(this);
         totalSpent += product.getProductPrice();
     }
 
-    public void setTotal(double totalSpent) {
-        this.totalSpent = totalSpent;
-    }
+    public static class Builder {
+        private Long ownerId;
+        private Long marketId;
+        private List<Product> purchases = new ArrayList<>();
+        private double totalSpent;
 
-    public double getTotal() {
-        return totalSpent;
-    }
+        public Builder ownerId(Long ownerId) {
+            this.ownerId = ownerId;
+            return this;
+        }
 
-    // Memento methods
-    public HistoryMemento save() {
-        return new HistoryMemento(ownerId, marketId, new ArrayList<>(purchases), totalSpent);
-    }
+        public Builder marketId(Long marketId) {
+            this.marketId = marketId;
+            return this;
+        }
 
-    public void restore(HistoryMemento memento) {
-        this.ownerId = memento.getOwnerId();
-        this.marketId = memento.getMarketId();
-        this.purchases = new ArrayList<>(memento.getPurchases());
-        this.totalSpent = memento.getTotalSpent();
+        public Builder purchases(List<Product> purchases) {
+            this.purchases = purchases;
+            return this;
+        }
+
+        public Builder totalSpent(double totalSpent) {
+            this.totalSpent = totalSpent;
+            return this;
+        }
+
+        public History build() {
+            return new History(this);
+        }
     }
 }
