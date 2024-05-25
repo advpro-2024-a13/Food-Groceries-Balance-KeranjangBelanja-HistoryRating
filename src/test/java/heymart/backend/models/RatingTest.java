@@ -1,8 +1,9 @@
 package heymart.backend.models;
 
-import org.junit.jupiter.api.Test;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class RatingTest {
 
@@ -19,34 +20,45 @@ public class RatingTest {
         rating.setOwnerId(ownerId);
         assertEquals(ownerId, rating.getOwnerId());
     }
+
     @Test
     public void testGetSetMarketId() {
         Long marketId = 456L;
         rating.setMarketId(marketId);
         assertEquals(marketId, rating.getMarketId());
     }
+
     @Test
-    public void testGetSetRatingScore() {
-        int ratingScore = 10;
-        rating.setScore(ratingScore);
-        assertEquals(ratingScore, rating.getScore());
+    public void testGetSetScore() {
+        int score = 10;
+        rating.setScore(score);
+        assertEquals(score, rating.getScore());
     }
+
     @Test
-    public void testGetSetRatingReview() {
-        String ratingReview = "Good";
-        rating.setReview(ratingReview);
-        assertEquals(ratingReview, rating.getReview());
+    public void testGetSetReview() {
+        String review = "Good";
+        rating.setReview(review);
+        assertEquals(review, rating.getReview());
     }
+
     @Test
     public void testConstructor() {
         Long ownerId = 123L;
         Long marketId = 456L;
-        int ratingScore = 10;
-        String ratingReview = "Good";
-        Rating rating = new Rating(ownerId, marketId, ratingScore, ratingReview);
+        int score = 10;
+        String review = "Good";
+        Rating rating = new Rating(ownerId, marketId, score, review);
         assertEquals(ownerId, rating.getOwnerId());
         assertEquals(marketId, rating.getMarketId());
-        assertEquals(ratingScore, rating.getScore());
-        assertEquals(ratingReview, rating.getReview());
+        assertEquals(score, rating.getScore());
+        assertEquals(review, rating.getReview());
+    }
+
+    @Test
+    public void testSetId() {
+        Long id = 789L;
+        rating.setId(id);
+        assertEquals(id, rating.getId());
     }
 }

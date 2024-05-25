@@ -6,7 +6,6 @@ import lombok.Setter;
 
 @Getter
 @Setter
-
 @Table(name = "rating",
         uniqueConstraints = {
                 @UniqueConstraint(columnNames = {"owner_id", "market_id"})
@@ -19,6 +18,7 @@ public class Rating {
     private String review;
 
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
     public Rating() {
@@ -29,5 +29,9 @@ public class Rating {
         this.marketId = marketId;
         this.score = score;
         this.review = review;
+    }
+
+    public void setScore(int score) {
+        this.score = score;
     }
 }

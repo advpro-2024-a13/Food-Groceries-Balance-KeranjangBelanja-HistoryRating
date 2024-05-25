@@ -1,10 +1,9 @@
 package heymart.backend.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import heymart.backend.models.Rating;
 import heymart.backend.repository.RatingRepository;
+import org.springframework.scheduling.annotation.Async;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
@@ -13,8 +12,11 @@ import java.util.concurrent.CompletableFuture;
 @Service
 public class RatingServiceImpl implements RatingService {
 
-    @Autowired
-    private RatingRepository ratingRepository;
+    private final RatingRepository ratingRepository;
+
+    public RatingServiceImpl(RatingRepository ratingRepository) {
+        this.ratingRepository = ratingRepository;
+    }
 
     @Override
     public Rating modifyRating(Long id, int rating, String review) {
@@ -28,9 +30,15 @@ public class RatingServiceImpl implements RatingService {
         }
         return null;
     }
+
     @Override
     public Rating getRatingById(Long id) {
-        return ratingRepository.findById(id).get();
+        Optional<Rating> rating = ratingRepository.findById(id);
+        if (rating.isPresent()) {
+            return rating.get();
+        } else {
+            throw new RuntimeException("Rating not found with id: " + id);
+        }
     }
 
     @Override
@@ -51,18 +59,18 @@ public class RatingServiceImpl implements RatingService {
 
     @Override
     public CompletableFuture<List<Rating>> getAllRatings() {
-        return CompletableFuture.supplyAsync(() -> ratingRepository.findAll());
+        return CompletableFuture.supplyAsync(ratingRepository::findAll);
     }
 
+    @Async
     @Override
-    public CompletableFuture<List<Rating>> getRatingsByOwnerId(Long ownerId) {
-        return CompletableFuture.supplyAsync(() -> ratingRepository.findByOwnerId(ownerId)
-                .orElseGet(() -> List.of()));
+    public CompletableFuture<List<Rating>> findByOwnerId(Long ownerId) {
+        return CompletableFuture.completedFuture(ratingRepository.findByOwnerId(ownerId).orElse(null));
     }
 
+    @Async
     @Override
-    public CompletableFuture<List<Rating>> getRatingsByMarketId(Long marketId) {
-        return CompletableFuture.supplyAsync(() -> ratingRepository.findByMarketId(marketId)
-                .orElseGet(() -> List.of()));
+    public CompletableFuture<List<Rating>> findBySupermarketId(Long marketId) {
+        return CompletableFuture.completedFuture(ratingRepository.findByMarketId(marketId).orElse(null));
     }
 }

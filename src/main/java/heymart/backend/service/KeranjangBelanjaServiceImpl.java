@@ -63,7 +63,7 @@ public class KeranjangBelanjaServiceImpl implements KeranjangBelanjaService {
     }
 
     @Override
-    public CompletableFuture<KeranjangBelanja> getKeranjangBelanjaByOwnerId(Long ownerId){
-        return CompletableFuture.supplyAsync(() -> keranjangBelanjaRepository.findById(ownerId).orElse(null));
+    public KeranjangBelanja getKeranjangBelanjaByOwnerId(Long ownerId){
+        return keranjangBelanjaRepository.findById(ownerId).orElse(null);
     }
 }

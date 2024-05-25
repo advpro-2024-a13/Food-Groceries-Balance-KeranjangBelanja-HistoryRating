@@ -11,5 +11,5 @@ public interface KeranjangBelanjaService {
     KeranjangBelanja removeProductFromKeranjangBelanja(Long ownerId, UUID productId);
     void clearKeranjangBelanja(Long ownerId);
     boolean existsByOwnerId(Long ownerId);
-    CompletableFuture<KeranjangBelanja> getKeranjangBelanjaByOwnerId(Long ownerId);
+    KeranjangBelanja getKeranjangBelanjaByOwnerId(Long ownerId);
 }

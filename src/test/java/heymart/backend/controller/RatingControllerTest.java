@@ -1,9 +1,5 @@
 package heymart.backend.controller;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.when;
-
 import heymart.backend.models.Rating;
 import heymart.backend.service.RatingServiceImpl;
 import org.junit.jupiter.api.Test;
@@ -16,8 +12,11 @@ import org.springframework.http.ResponseEntity;
 
 import java.util.HashMap;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.Mockito.when;
+
 @ExtendWith(MockitoExtension.class)
-public class RatingControllerTest {
+class RatingControllerTest {
 
     @Mock
     private RatingServiceImpl ratingService;
@@ -26,7 +25,7 @@ public class RatingControllerTest {
     private RatingController ratingController;
 
     @Test
-    public void testGetRatingById() {
+    void testGetRatingById() {
         Long id = 1L;
         Rating rating = new Rating();
         when(ratingService.existsById(id)).thenReturn(true);
@@ -38,7 +37,7 @@ public class RatingControllerTest {
     }
 
     @Test
-    public void testGetRatingByIdNotFound() {
+    void testGetRatingByIdNotFound() {
         Long id = 1L;
         when(ratingService.existsById(id)).thenReturn(false);
 
@@ -48,7 +47,7 @@ public class RatingControllerTest {
     }
 
     @Test
-    public void testModifyRating() {
+    void testModifyRating() {
         Long id = 1L;
         int rating = 4;
         String review = "Great product!";
@@ -66,13 +65,12 @@ public class RatingControllerTest {
 
 
     @Test
-    public void testModifyRatingNotFound() {
+    void testModifyRatingNotFound() {
         Long id = 1L;
         int rating = 4;
         String review = "Great product!";
-        Rating modifiedRating = new Rating(123L, 456L, rating, review);
 
-        when(ratingService.modifyRating(id, rating, review)).thenReturn(null);
+        when(ratingService.modifyRating(id ,rating, review)).thenReturn(null);
 
         HashMap<String, Object> request = new HashMap<>();
         request.put("rating", rating);
@@ -85,7 +83,7 @@ public class RatingControllerTest {
 
 
     @Test
-    public void testAddNewRating() {
+    void testAddNewRating() {
         Long ownerId = 1L;
         Long marketId = 2L;
         int rating = 4;
@@ -105,7 +103,7 @@ public class RatingControllerTest {
     }
 
     @Test
-    public void testDeleteRating() {
+    void testDeleteRating() {
         Long id = 1L;
         when(ratingService.existsById(id)).thenReturn(true);
 
@@ -115,7 +113,7 @@ public class RatingControllerTest {
     }
 
     @Test
-    public void testDeleteRatingNotFound() {
+    void testDeleteRatingNotFound() {
         Long id = 1L;
         when(ratingService.existsById(id)).thenReturn(false);
 

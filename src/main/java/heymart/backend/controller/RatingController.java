@@ -2,21 +2,24 @@ package heymart.backend.controller;
 
 import heymart.backend.models.Rating;
 import heymart.backend.service.RatingServiceImpl;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 
+@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/rating")
 public class RatingController {
 
-    @Autowired
-    private RatingServiceImpl ratingService;
+    private final RatingServiceImpl ratingService;
+
+    public RatingController(RatingServiceImpl ratingService) {
+        this.ratingService = ratingService;
+    }
 
     @GetMapping("/get/{id}")
     public ResponseEntity<?> getRatingById(@PathVariable Long id) {
@@ -29,7 +32,7 @@ public class RatingController {
     }
 
     @PostMapping("/modify/{id}")
-    public ResponseEntity<?> modifyRating(@PathVariable Long id, @RequestBody HashMap<String, Object> request) {
+    public ResponseEntity<?> modifyRating(@PathVariable Long id, @RequestBody Map<String, Object> request) {
         if (request.containsKey("rating") && request.containsKey("review")) {
             int rating = Integer.parseInt(request.get("rating").toString());
             String review = request.get("review").toString();
@@ -46,7 +49,7 @@ public class RatingController {
     }
 
     @PostMapping("/add")
-    public ResponseEntity<?> addNewRating(@RequestBody HashMap<String, Object> request) {
+    public ResponseEntity<?> addNewRating(@RequestBody Map<String, Object> request) {
         Long ownerId = Long.parseLong(request.get("ownerId").toString());
         Long marketId = Long.parseLong(request.get("marketId").toString());
         int rating = Integer.parseInt(request.get("rating").toString());
@@ -66,18 +69,16 @@ public class RatingController {
         }
     }
 
-    @GetMapping("/ownerrating/{ownerId}")
-    public CompletableFuture<ResponseEntity<List<Rating>>> getRatingByOwnerId(@PathVariable Long ownerId) {
-        return ratingService.getRatingsByOwnerId(ownerId)
-                .thenApply(ResponseEntity::ok)
-                .exceptionally(this::handleGetRatingException);
+    @GetMapping("/owner/{ownerId}")
+    public CompletableFuture<ResponseEntity<List<Rating>>> findByOwnerId(@PathVariable Long ownerId) {
+        return ratingService.findByOwnerId(ownerId)
+                .thenApply(ResponseEntity::ok);
     }
 
-    @GetMapping("/marketrating/{marketId}")
-    public CompletableFuture<ResponseEntity<List<Rating>>> getRatingByMarketId(@PathVariable Long marketId) {
-        return ratingService.getRatingsByMarketId(marketId)
-                .thenApply(ResponseEntity::ok)
-                .exceptionally(this::handleGetRatingException);
+    @GetMapping("/market/{marketId}")
+    public CompletableFuture<ResponseEntity<List<Rating>>> findByMarketId(@PathVariable Long marketId) {
+        return ratingService.findBySupermarketId(marketId)
+                .thenApply(ResponseEntity::ok);
     }
 
     @GetMapping("/getAll")
