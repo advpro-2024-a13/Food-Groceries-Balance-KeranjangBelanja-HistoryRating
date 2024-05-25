@@ -29,9 +29,10 @@ public class RatingServiceImpl implements RatingService {
         }
         return null;
     }
+
     @Override
     public Rating getRatingById(Long id) {
-        return ratingRepository.findById(id).get();
+        return ratingRepository.findById(id).orElse(null);
     }
 
     @Override
@@ -63,7 +64,7 @@ public class RatingServiceImpl implements RatingService {
 
     @Async
     @Override
-    public CompletableFuture<List<Rating>> findBySupermarketId(Long marketId) {
+    public CompletableFuture<List<Rating>> findByMarketId(Long marketId) {
         return CompletableFuture.completedFuture(ratingRepository.findByMarketId(marketId).orElse(null));
     }
 }
