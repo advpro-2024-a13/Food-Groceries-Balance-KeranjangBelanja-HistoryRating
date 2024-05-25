@@ -1,69 +1,69 @@
 package heymart.backend.service;
 
 import heymart.backend.models.KeranjangBelanja;
-import heymart.backend.models.KeranjangBelanjaBuilder;
-
 import heymart.backend.repository.KeranjangBelanjaRepository;
-import org.springframework.scheduling.annotation.Async;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
 import java.util.UUID;
+import java.util.concurrent.CompletableFuture;
 
 @Service
 public class KeranjangBelanjaServiceImpl implements KeranjangBelanjaService {
 
-    private KeranjangBelanjaRepository keranjangBelanjaRepository;
+    private final KeranjangBelanjaRepository keranjangBelanjaRepository;
+
+    @Autowired
+    public KeranjangBelanjaServiceImpl(KeranjangBelanjaRepository keranjangBelanjaRepository){
+        this.keranjangBelanjaRepository = keranjangBelanjaRepository;
+    }
 
     @Override
-    public KeranjangBelanja createKeranjangBelanja(Long userId) {
-        KeranjangBelanja keranjangBelanja = new KeranjangBelanjaBuilder()
-                .setKeranjangBelanjaId(userId)
-                .setProductMap(new HashMap<UUID, Integer>())
+    public KeranjangBelanja createNewKeranjangBelanja(Long ownerId){
+        KeranjangBelanja keranjangBelanja = KeranjangBelanja.builder()
+                .ownerId(ownerId)
+                .products(new HashMap<>())
                 .build();
-        return keranjangBelanja;
+        return keranjangBelanjaRepository.save(keranjangBelanja);
     }
 
     @Override
-    public KeranjangBelanja findKeranjangBelanjaById(Long userId) {
-        return keranjangBelanjaRepository.findKeranjangBelanjaById(userId).orElseThrow();
-    }
-
-    @Override
-    public KeranjangBelanja addProductToKeranjang(Long userId, UUID productId) {
-        KeranjangBelanja keranjangBelanja = keranjangBelanjaRepository.findKeranjangBelanjaById(userId).orElseThrow();
-        HashMap<UUID, Integer> productMap = keranjangBelanja.getProductMap();
-
-        if (productMap.containsKey(productId)) {
-            productMap.put(productId, productMap.get(productId) + 1);
-        } else {
-            productMap.put(productId, 1);
+    public KeranjangBelanja addProductToKeranjangBelanja(Long ownerId, UUID productId, int quantity){
+        KeranjangBelanja keranjangBelanja = keranjangBelanjaRepository.findById(ownerId).orElse(null);
+        if (keranjangBelanja != null) {
+            keranjangBelanja.getProducts().put(productId, quantity);
+            return keranjangBelanjaRepository.save(keranjangBelanja);
         }
-        return keranjangBelanja;
-    }
-
-    @Override
-    public Integer countTotalProductInKeranjang(HashMap<UUID, Integer> productMap) {
-        return productMap.values().stream().mapToInt(Integer::intValue).sum();
-    }
-
-    @Override
-    public Long countTotalProductPriceInKeranjang(HashMap<UUID, Integer> productMap) {
-        // TODO: Create calculating total product price for products in keranjang belanja
         return null;
     }
 
     @Override
-    public boolean checkout() {
-        // TODO: Create checkout mechanism
-        return false;
+    public KeranjangBelanja removeProductFromKeranjangBelanja(Long ownerId, UUID productId){
+        KeranjangBelanja keranjangBelanja = keranjangBelanjaRepository.findById(ownerId).orElse(null);
+        if (keranjangBelanja != null) {
+            keranjangBelanja.getProducts().remove(productId);
+            return keranjangBelanjaRepository.save(keranjangBelanja);
+        }
+        return null;
     }
 
-    @Async
     @Override
-    public void clearKeranjangBelanja(Long userId) {
-        KeranjangBelanja keranjangBelanja = keranjangBelanjaRepository.findKeranjangBelanjaById(userId).orElseThrow();
-        keranjangBelanja.getProductMap().clear();
-        keranjangBelanjaRepository.save(keranjangBelanja);
+    public void clearKeranjangBelanja(Long ownerId){
+        KeranjangBelanja keranjangBelanja = keranjangBelanjaRepository.findById(ownerId).orElse(null);
+        if (keranjangBelanja != null) {
+            keranjangBelanja.getProducts().clear();
+            keranjangBelanjaRepository.save(keranjangBelanja);
+        }
+    }
+
+    @Override
+    public boolean existsByOwnerId(Long ownerId){
+        return keranjangBelanjaRepository.existsById(ownerId);
+    }
+
+    @Override
+    public CompletableFuture<KeranjangBelanja> getKeranjangBelanjaByOwnerId(Long ownerId){
+        return CompletableFuture.supplyAsync(() -> keranjangBelanjaRepository.findById(ownerId).orElse(null));
     }
 }
