@@ -1,10 +1,11 @@
 package heymart.backend.models;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-public class BalanceTest {
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
+class BalanceTest {
 
     private Balance balance;
 
@@ -15,21 +16,21 @@ public class BalanceTest {
     }
 
     @Test
-    public void testGetSetOwnerId() {
+    void testGetSetOwnerId() {
         Long ownerId = 123L;
         balance.setOwnerId(ownerId);
         assertEquals(ownerId, balance.getOwnerId());
     }
 
     @Test
-    public void testGetSetBalance() {
+    void testGetSetBalance() {
         Long balanceAmount = 1000L;
         balance.setBalance(balanceAmount);
         assertEquals(balanceAmount, balance.getBalance());
     }
 
     @Test
-    public void testConstructor() {
+    void testConstructor() {
         Long ownerId = 456L;
         Long balanceAmount = 2000L;
         Balance balance = Balance.builder()
@@ -41,7 +42,7 @@ public class BalanceTest {
     }
 
     @Test
-    public void testToString() {
+    void testToString() {
         Long ownerId = 789L;
         Long balanceAmount = 3000L;
         Balance balance = Balance.builder()
@@ -53,7 +54,7 @@ public class BalanceTest {
     }
 
     @Test
-    public void testBalanceBuilderToString() {
+    void testBalanceBuilderToString() {
         Long ownerId = 123L;
         Long balanceAmount = 1000L;
         Balance.BalanceBuilder builder = Balance.builder().ownerId(ownerId).balance(balanceAmount);

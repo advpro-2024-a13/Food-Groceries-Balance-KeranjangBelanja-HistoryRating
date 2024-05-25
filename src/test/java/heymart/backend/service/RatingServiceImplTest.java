@@ -1,8 +1,5 @@
 package heymart.backend.service;
 
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.*;
-
 import heymart.backend.models.Rating;
 import heymart.backend.repository.RatingRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -11,11 +8,13 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
 
-public class RatingServiceImplTest {
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.Mockito.*;
+
+class RatingServiceImplTest {
 
     @Mock
     private RatingRepository ratingRepository;
@@ -29,7 +28,7 @@ public class RatingServiceImplTest {
     }
 
     @Test
-    public void testModifyRating() {
+    void testModifyRating() {
         Long id = 1L;
         int rating = 4;
         String review = "Great product!";
@@ -45,7 +44,7 @@ public class RatingServiceImplTest {
     }
 
     @Test
-    public void testGetRatingById() {
+    void testGetRatingById() {
         Long ratingId = 789L;
         Rating rating = new Rating(123L, 456L, 4, "Great product!");
 
@@ -57,7 +56,7 @@ public class RatingServiceImplTest {
     }
 
     @Test
-    public void testAddNewRating() {
+    void testAddNewRating() {
         Long ownerId = 123L;
         Long marketId = 456L;
         int rating = 4;
@@ -72,7 +71,7 @@ public class RatingServiceImplTest {
     }
 
     @Test
-    public void testDeleteRating() {
+    void testDeleteRating() {
         Long ratingId = 789L;
 
         ratingService.deleteRating(ratingId);
@@ -81,7 +80,7 @@ public class RatingServiceImplTest {
     }
 
     @Test
-    public void testExistsById() {
+    void testExistsById() {
         Long ratingId = 789L;
 
         when(ratingRepository.existsById(ratingId)).thenReturn(true);

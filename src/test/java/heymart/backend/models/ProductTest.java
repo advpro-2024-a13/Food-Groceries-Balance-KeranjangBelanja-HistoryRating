@@ -3,9 +3,9 @@ package heymart.backend.models;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class ProductTest {
+class ProductTest {
     private Product product;
     private KeranjangBelanja keranjangBelanja;
     private History history;
