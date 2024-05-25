@@ -51,7 +51,7 @@ public class HistoryController {
         }
     }
 
-    @GetMapping("/all")
+    @GetMapping("/getAll")
     public CompletableFuture<ResponseEntity<List<History>>> getAllHistory() {
         return historyService.getAllHistory()
                 .thenApply(ResponseEntity::ok)
