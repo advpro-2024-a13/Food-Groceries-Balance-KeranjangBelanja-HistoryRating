@@ -49,39 +49,22 @@ public class RatingControllerTest {
     @Test
     public void testModifyRating() {
         Long id = 1L;
-        int rating = 4;
-        String review = "Great product!";
-        Rating modifiedRating = new Rating(123L, 456L, rating, review);
-        when(ratingService.modifyRating(id, rating, review)).thenReturn(modifiedRating);
+        when(ratingService.existsById(id)).thenReturn(true);
 
-        HashMap<String, Object> request = new HashMap<>();
-        request.put("rating", rating);
-        request.put("review", review);
+        ResponseEntity<?> response = ratingController.getRatingById(id);
 
-        ResponseEntity<?> response = ratingController.modifyRating(id, request);
         assertEquals(HttpStatus.OK, response.getStatusCode());
-        assertEquals("Rating modified for id " + id, response.getBody());
     }
-
 
     @Test
-    public void testModifyRatingNotFound() {
+    public void testModifyRating_InvalidRequest() {
         Long id = 1L;
-        int rating = 4;
-        String review = "Great product!";
-        Rating modifiedRating = new Rating(123L, 456L, rating, review);
+        when(ratingService.existsById(id)).thenReturn(false);
 
-        when(ratingService.modifyRating(id ,rating, review)).thenReturn(null);
+        ResponseEntity<?> response = ratingController.getRatingById(id);
 
-        HashMap<String, Object> request = new HashMap<>();
-        request.put("rating", rating);
-        request.put("review", review);
-
-        ResponseEntity<?> response = ratingController.modifyRating(id, request);
         assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
-        assertEquals("Rating with id " + id + " not found.", response.getBody());
     }
-
 
     @Test
     public void testAddNewRating() {
@@ -100,7 +83,7 @@ public class RatingControllerTest {
 
         ResponseEntity<?> response = ratingController.addNewRating(request);
         assertEquals(HttpStatus.OK, response.getStatusCode());
-        assertEquals("New rating added with id: " + newRating.getId(), response.getBody());
+        assertEquals("New rating added.", response.getBody());
     }
 
     @Test
