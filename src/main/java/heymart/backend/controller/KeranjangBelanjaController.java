@@ -1,6 +1,9 @@
 package heymart.backend.controller;
 
+import heymart.backend.dto.GetProductRequest;
+import heymart.backend.models.KeranjangBelanja;
 import heymart.backend.service.KeranjangBelanjaServiceImpl;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -55,15 +58,34 @@ public class KeranjangBelanjaController {
                     .body(FREQUENTLY_USED_STRING + ownerId + " not found.");
         }
     }
-//    @PutMapping("/addProductToKeranjangBelanja")
-//    public KeranjangBelanja addProductToKeranjangBelanja(@PathVariable Long ownerId, @PathVariable UUID productId,
-//                                                         @PathVariable int quantity){
-//        return keranjangBelanjaService.addProductToKeranjangBelanja(ownerId, productId, quantity);
-//    }
-//
-//    @PutMapping("/{ownerId}/removeProduct/{productId}")
-//    public KeranjangBelanja removeProductFromKeranjangBelanja(@PathVariable Long ownerId, @PathVariable UUID productId){
-//        return keranjangBelanjaService.removeProductFromKeranjangBelanja(ownerId, productId);
-//    }
+    @PostMapping("/addProductToKeranjangBelanja")
+    public ResponseEntity<?> addProductToKeranjangBelanja(@RequestBody GetProductRequest productRequest){
+        Long ownerId = productRequest.getOwnerId();
+        if(keranjangBelanjaService.existsByOwnerId(ownerId)){
+            KeranjangBelanja keranjangBelanja = keranjangBelanjaService.addProductToKeranjangBelanja(
+                    ownerId,
+                    productRequest.getProductId(),
+                    productRequest.getQuantity());
+            return ResponseEntity.ok(keranjangBelanja);
+        } else {
+            return ResponseEntity
+                    .badRequest()
+                    .body(FREQUENTLY_USED_STRING + ownerId + " not found.");
+        }
+    }
 
+    @DeleteMapping("/removeProductFromKeranjangBelanja")
+    public ResponseEntity<?> removeProductFromKeranjangBelanja(@RequestBody GetProductRequest productRequest){
+        Long ownerId = productRequest.getOwnerId();
+        if(keranjangBelanjaService.existsByOwnerId(ownerId)){
+            KeranjangBelanja keranjangBelanja = keranjangBelanjaService.removeProductFromKeranjangBelanja(
+                    ownerId,
+                    productRequest.getProductId());
+            return ResponseEntity.ok(keranjangBelanja);
+        } else {
+            return ResponseEntity
+                    .badRequest()
+                    .body(FREQUENTLY_USED_STRING + ownerId + " not found.");
+        }
+    }
 }
