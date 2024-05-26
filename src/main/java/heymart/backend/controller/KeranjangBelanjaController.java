@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/keranjangbelanja")
 public class KeranjangBelanjaController {
 
-    private static final String FREQUENTLY_USED_STRING = "Keranjang Belanja with ownerId ";
+    public static final String FREQUENTLY_USED_STRING = "Keranjang Belanja with ownerId ";
 
     private final KeranjangBelanjaServiceImpl keranjangBelanjaService;
 
@@ -54,7 +54,7 @@ public class KeranjangBelanjaController {
             KeranjangBelanja keranjangBelanja = keranjangBelanjaService.updateKeranjangBelanja(
                     ownerId,
                     updateRequest.getUpdatedProducts());
-            return ResponseEntity.ok(keranjangBelanja);
+            return ResponseEntity.ok(FREQUENTLY_USED_STRING + ownerId + " is updated.");
         } else {
             return ResponseEntity
                     .badRequest()
