@@ -1,6 +1,7 @@
 package heymart.backend.controller;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 import heymart.backend.models.Rating;
@@ -48,22 +49,41 @@ public class RatingControllerTest {
 
     @Test
     public void testModifyRating() {
-        Long id = 1L;
-        when(ratingService.existsById(id)).thenReturn(true);
+        Long ownerId = 1L;
+        Long marketId = 2L;
+        int rating = 4;
+        String review = "Great product!";
+        Rating modifiedRating = new Rating(ownerId, marketId, rating, review);
+        when(ratingService.modifyRating(ownerId, marketId, rating, review)).thenReturn(modifiedRating);
 
-        ResponseEntity<?> response = ratingController.getRatingById(id);
+        HashMap<String, Object> request = new HashMap<>();
+        request.put("ownerId", ownerId);
+        request.put("marketId", marketId);
+        request.put("rating", rating);
+        request.put("review", review);
 
+        ResponseEntity<?> response = ratingController.modifyRating(request);
         assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals("Rating modified for ownerId " + ownerId + " and marketId " + marketId, response.getBody());
     }
 
     @Test
-    public void testModifyRating_InvalidRequest() {
-        Long id = 1L;
-        when(ratingService.existsById(id)).thenReturn(false);
+    public void testModifyRatingNotFound() {
+        Long ownerId = 1L;
+        Long marketId = 2L;
+        int rating = 4;
+        String review = "Great product!";
+        when(ratingService.modifyRating(ownerId, marketId, rating, review)).thenReturn(null);
 
-        ResponseEntity<?> response = ratingController.getRatingById(id);
+        HashMap<String, Object> request = new HashMap<>();
+        request.put("ownerId", ownerId);
+        request.put("marketId", marketId);
+        request.put("rating", rating);
+        request.put("review", review);
 
+        ResponseEntity<?> response = ratingController.modifyRating(request);
         assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
+        assertEquals("Rating not found for ownerId " + ownerId + " and marketId " + marketId, response.getBody());
     }
 
     @Test
@@ -83,7 +103,7 @@ public class RatingControllerTest {
 
         ResponseEntity<?> response = ratingController.addNewRating(request);
         assertEquals(HttpStatus.OK, response.getStatusCode());
-        assertEquals("New rating added.", response.getBody());
+        assertEquals("New rating added with id: " + newRating.getId(), response.getBody());
     }
 
     @Test

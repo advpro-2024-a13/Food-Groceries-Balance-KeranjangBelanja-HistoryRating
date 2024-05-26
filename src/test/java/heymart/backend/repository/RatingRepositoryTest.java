@@ -1,5 +1,8 @@
 package heymart.backend.repository;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.Mockito.when;
+
 import heymart.backend.models.Rating;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -11,12 +14,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.Mockito.when;
-
 @ExtendWith(MockitoExtension.class)
-class RatingRepositoryTest {
+public class RatingRepositoryTest {
 
     @Mock
     private RatingRepository ratingRepository;
@@ -32,7 +31,7 @@ class RatingRepositoryTest {
     }
 
     @Test
-    void testFindByOwnerId() {
+    public void testFindByOwnerId() {
         Long ownerId = 1L;
         List<Rating> expectedRatings = new ArrayList<>();
         expectedRatings.add(ratings.get(0));
@@ -42,12 +41,11 @@ class RatingRepositoryTest {
 
         Optional<List<Rating>> foundRatings = ratingRepository.findByOwnerId(ownerId);
 
-        assertTrue(foundRatings.isPresent());
         assertEquals(expectedRatings, foundRatings.get());
     }
 
     @Test
-    void testFindByMarketId() {
+    public void testFindByMarketId() {
         Long marketId = 1L;
         List<Rating> expectedRatings = new ArrayList<>();
         expectedRatings.add(ratings.get(0));
@@ -57,7 +55,6 @@ class RatingRepositoryTest {
 
         Optional<List<Rating>> foundRatings = ratingRepository.findByMarketId(marketId);
 
-        assertTrue(foundRatings.isPresent());
         assertEquals(expectedRatings, foundRatings.get());
     }
 }
