@@ -21,4 +21,12 @@ public class Balance {
     @Column(name = "balance_amount", columnDefinition = "bigint default 0")
     @NotNull
     private Long balance;
+
+    @Override
+    public String toString() {
+        return "Balance(" +
+                "ownerId=" + ownerId +
+                ", balance=" + balance +
+                ')';
+    }
 }

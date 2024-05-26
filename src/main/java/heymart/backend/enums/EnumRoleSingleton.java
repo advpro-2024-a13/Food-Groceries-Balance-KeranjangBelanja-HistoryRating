@@ -6,9 +6,9 @@ public enum EnumRoleSingleton {
 
     INSTANCE;
 
-    private HashMap<String, String> stringValues;
+    private final HashMap<String, String> stringValues;
 
-    private EnumRoleSingleton() {
+    EnumRoleSingleton() {
         stringValues = new HashMap<>();
         stringValues.put("Pembeli", "ROLE_PEMBELI");
         stringValues.put("Pengelola", "ROLE_PENGELOLA");
