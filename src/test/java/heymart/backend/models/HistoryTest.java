@@ -1,16 +1,11 @@
 package heymart.backend.models;
 
-import heymart.backend.models.History;
-import heymart.backend.models.Product;
-import jakarta.persistence.EntityManager;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class HistoryTest {
