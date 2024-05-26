@@ -17,7 +17,6 @@ public class KeranjangBelanjaController {
 
     private final KeranjangBelanjaServiceImpl keranjangBelanjaService;
 
-    @Autowired
     public KeranjangBelanjaController(KeranjangBelanjaServiceImpl keranjangBelanjaService){
         this.keranjangBelanjaService = keranjangBelanjaService;
     }

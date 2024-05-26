@@ -2,20 +2,17 @@ package heymart.backend.service;
 
 import heymart.backend.models.KeranjangBelanja;
 import heymart.backend.repository.KeranjangBelanjaRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
-import java.util.concurrent.CompletableFuture;
 
 @Service
 public class KeranjangBelanjaServiceImpl implements KeranjangBelanjaService {
 
     private final KeranjangBelanjaRepository keranjangBelanjaRepository;
 
-    @Autowired
     public KeranjangBelanjaServiceImpl(KeranjangBelanjaRepository keranjangBelanjaRepository){
         this.keranjangBelanjaRepository = keranjangBelanjaRepository;
     }
