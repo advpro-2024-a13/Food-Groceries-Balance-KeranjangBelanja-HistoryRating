@@ -1,9 +1,11 @@
 package heymart.backend.service;
 
-import heymart.backend.models.Rating;
-import heymart.backend.repository.RatingRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
+
+import heymart.backend.models.Rating;
+import heymart.backend.repository.RatingRepository;
 
 import java.util.List;
 import java.util.Optional;
@@ -12,11 +14,8 @@ import java.util.concurrent.CompletableFuture;
 @Service
 public class RatingServiceImpl implements RatingService {
 
-    private final RatingRepository ratingRepository;
-
-    public RatingServiceImpl(RatingRepository ratingRepository) {
-        this.ratingRepository = ratingRepository;
-    }
+    @Autowired
+    private RatingRepository ratingRepository;
 
     @Override
     public Rating modifyRating(Long id, int rating, String review) {
@@ -33,12 +32,7 @@ public class RatingServiceImpl implements RatingService {
 
     @Override
     public Rating getRatingById(Long id) {
-        Optional<Rating> rating = ratingRepository.findById(id);
-        if (rating.isPresent()) {
-            return rating.get();
-        } else {
-            throw new RuntimeException("Rating not found with id: " + id);
-        }
+        return ratingRepository.findById(id).orElse(null);
     }
 
     @Override
@@ -59,7 +53,7 @@ public class RatingServiceImpl implements RatingService {
 
     @Override
     public CompletableFuture<List<Rating>> getAllRatings() {
-        return CompletableFuture.supplyAsync(ratingRepository::findAll);
+        return CompletableFuture.supplyAsync(() -> ratingRepository.findAll());
     }
 
     @Async
@@ -70,7 +64,7 @@ public class RatingServiceImpl implements RatingService {
 
     @Async
     @Override
-    public CompletableFuture<List<Rating>> findBySupermarketId(Long marketId) {
+    public CompletableFuture<List<Rating>> findByMarketId(Long marketId) {
         return CompletableFuture.completedFuture(ratingRepository.findByMarketId(marketId).orElse(null));
     }
 }

@@ -30,7 +30,7 @@ public class RatingTest {
 
     @Test
     public void testGetSetScore() {
-        int score = 10;
+        int score = 1;
         rating.setScore(score);
         assertEquals(score, rating.getScore());
     }
@@ -46,7 +46,7 @@ public class RatingTest {
     public void testConstructor() {
         Long ownerId = 123L;
         Long marketId = 456L;
-        int score = 10;
+        int score = 1;
         String review = "Good";
         Rating rating = new Rating(ownerId, marketId, score, review);
         assertEquals(ownerId, rating.getOwnerId());

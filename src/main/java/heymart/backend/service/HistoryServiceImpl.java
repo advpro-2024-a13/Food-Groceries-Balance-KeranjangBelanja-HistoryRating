@@ -1,25 +1,19 @@
 package heymart.backend.service;
 
-import heymart.backend.models.History;
-import heymart.backend.models.HistoryMemento;
 import heymart.backend.models.Product;
+import heymart.backend.models.History;
 import heymart.backend.repository.HistRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Stack;
 import java.util.concurrent.CompletableFuture;
 
 @Service
 public class HistoryServiceImpl implements HistoryService {
 
-    private final HistRepository histRepository;
-
-    private final Stack<HistoryMemento> historyStack = new Stack<>();
-
-    public HistoryServiceImpl(HistRepository histRepository) {
-        this.histRepository = histRepository;
-    }
+    @Autowired
+    private HistRepository histRepository;
 
     @Override
     public History getHistoryById(Long id) {
@@ -28,8 +22,12 @@ public class HistoryServiceImpl implements HistoryService {
 
     @Override
     public History addNewHistory(Long ownerId, Long marketId, List<Product> purchases, double totalSpent) {
-        History history = new History(ownerId, marketId, purchases, totalSpent);
-        historyStack.push(history.save());
+        History history = new History.Builder()
+                .ownerId(ownerId)
+                .marketId(marketId)
+                .purchases(purchases)
+                .totalSpent(totalSpent)
+                .build();
         return histRepository.save(history);
     }
 
@@ -62,18 +60,5 @@ public class HistoryServiceImpl implements HistoryService {
         List<History> historyByMarketId = histRepository.findByMarketId(marketId).orElse(List.of());
         historyByMarketId.forEach(history -> history.getPurchases().size());
         return CompletableFuture.completedFuture(historyByMarketId);
-    }
-
-    public void undoLastChange(Long historyId) {
-        History history = getHistoryById(historyId);
-        if (history != null && !historyStack.isEmpty()) {
-            HistoryMemento memento = historyStack.pop();
-            history.restore(memento);
-            histRepository.save(history);
-        }
-    }
-
-    public void saveHistory(History history) {
-        histRepository.save(history);
     }
 }

@@ -1,13 +1,15 @@
 package heymart.backend.controller;
 
+import heymart.backend.command.*;
 import heymart.backend.models.Rating;
-import heymart.backend.service.RatingServiceImpl;
+import heymart.backend.service.RatingService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 
 @CrossOrigin(origins = "*")
@@ -15,11 +17,10 @@ import java.util.concurrent.CompletableFuture;
 @RequestMapping("/rating")
 public class RatingController {
 
-    private final RatingServiceImpl ratingService;
+    @Autowired
+    private RatingService ratingService;
 
-    public RatingController(RatingServiceImpl ratingService) {
-        this.ratingService = ratingService;
-    }
+    private CommandInvoker commandInvoker = new CommandInvoker();
 
     @GetMapping("/get/{id}")
     public ResponseEntity<?> getRatingById(@PathVariable Long id) {
@@ -32,37 +33,42 @@ public class RatingController {
     }
 
     @PostMapping("/modify/{id}")
-    public ResponseEntity<?> modifyRating(@PathVariable Long id, @RequestBody Map<String, Object> request) {
-        if (request.containsKey("rating") && request.containsKey("review")) {
+    public ResponseEntity<?> modifyRating(@PathVariable Long id, @RequestBody HashMap<String, Object> request) {
+        if (request.containsKey("rating") && request.containsKey("review") && ratingService.existsById(id)) {
             int rating = Integer.parseInt(request.get("rating").toString());
             String review = request.get("review").toString();
 
-            Rating modifiedRating = ratingService.modifyRating(id, rating, review);
-            if (modifiedRating != null) {
-                return ResponseEntity.ok("Rating modified for id " + id);
-            } else {
-                return ResponseEntity.badRequest().body("Rating with id " + id + " not found.");
-            }
+            ModifyRatingCommand command = new ModifyRatingCommand(ratingService, id, rating, review);
+            commandInvoker.setCommand(command);
+            commandInvoker.executeCommand();
+
+            return ResponseEntity.ok("Rating modified for id " + id);
         } else {
-            return ResponseEntity.badRequest().body("Invalid request format. Rating and review are required.");
+            return ResponseEntity.badRequest().body("Id Not Found or Invalid request format. Rating and review are required.");
         }
     }
 
     @PostMapping("/add")
-    public ResponseEntity<?> addNewRating(@RequestBody Map<String, Object> request) {
+    public ResponseEntity<?> addNewRating(@RequestBody HashMap<String, Object> request) {
         Long ownerId = Long.parseLong(request.get("ownerId").toString());
         Long marketId = Long.parseLong(request.get("marketId").toString());
         int rating = Integer.parseInt(request.get("rating").toString());
         String review = request.get("review").toString();
 
-        Rating newRating = ratingService.addNewRating(ownerId, marketId, rating, review);
-        return ResponseEntity.ok("New rating added with id: " + newRating.getId());
+        AddNewRatingCommand command = new AddNewRatingCommand(ratingService, ownerId, marketId, rating, review);
+        commandInvoker.setCommand(command);
+        commandInvoker.executeCommand();
+
+        return ResponseEntity.ok("New rating added.");
     }
 
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<?> deleteRating(@PathVariable Long id) {
         if (ratingService.existsById(id)) {
-            ratingService.deleteRating(id);
+            DeleteRatingCommand command = new DeleteRatingCommand(ratingService, id);
+            commandInvoker.setCommand(command);
+            commandInvoker.executeCommand();
+
             return ResponseEntity.ok("Rating with id " + id + " deleted.");
         } else {
             return ResponseEntity.badRequest().body("Rating with id " + id + " not found.");
@@ -77,7 +83,7 @@ public class RatingController {
 
     @GetMapping("/market/{marketId}")
     public CompletableFuture<ResponseEntity<List<Rating>>> findByMarketId(@PathVariable Long marketId) {
-        return ratingService.findBySupermarketId(marketId)
+        return ratingService.findByMarketId(marketId)
                 .thenApply(ResponseEntity::ok);
     }
 
@@ -92,5 +98,4 @@ public class RatingController {
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                 .body(null);
     }
-
 }
