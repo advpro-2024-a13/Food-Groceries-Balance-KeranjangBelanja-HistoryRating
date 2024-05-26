@@ -1,34 +1,107 @@
 package heymart.backend.controller;
 
+import heymart.backend.dto.GetProductRequest;
+import heymart.backend.dto.GetUpdateRequest;
 import heymart.backend.models.KeranjangBelanja;
-import heymart.backend.service.KeranjangBelanjaService;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import heymart.backend.service.KeranjangBelanjaServiceImpl;
 
-@Controller
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+@RestController
 @RequestMapping("/keranjangbelanja")
 public class KeranjangBelanjaController {
 
-    private final KeranjangBelanjaService keranjangBelanjaService;
+    public static final String FREQUENTLY_USED_STRING = "Keranjang Belanja with ownerId ";
 
-    public KeranjangBelanjaController(KeranjangBelanjaService keranjangBelanjaService) {
+    private final KeranjangBelanjaServiceImpl keranjangBelanjaService;
+
+    @Autowired
+    public KeranjangBelanjaController(KeranjangBelanjaServiceImpl keranjangBelanjaService){
         this.keranjangBelanjaService = keranjangBelanjaService;
     }
 
-    @GetMapping("/create")
-    public String createKeranjangBelanjaPage(Model model){
-        KeranjangBelanja keranjangBelanja = new KeranjangBelanja();
-        model.addAttribute("keranjangBelanja", keranjangBelanja);
-        return "CreateKeranjangBelanja";
+    @GetMapping("/getKeranjangBelanjaById")
+    public ResponseEntity<?> getKeranjangBelanjaByOwnerId(@RequestParam Long ownerId){
+        if(keranjangBelanjaService.existsByOwnerId(ownerId)){
+            return ResponseEntity.ok(keranjangBelanjaService.getKeranjangBelanjaByOwnerId(ownerId));
+        }
+        else{
+            return ResponseEntity
+                    .badRequest()
+                    .body(FREQUENTLY_USED_STRING + ownerId + " not found.");
+        }
     }
 
-    @PostMapping("/create")
-    public String createKeranjangBelanjaPost(@ModelAttribute KeranjangBelanja keranjangBelanja){
-        keranjangBelanjaService.createKeranjangBelanja(keranjangBelanja);
-        return "redirect::list";
+    @PostMapping("/createNewKeranjangBelanja")
+    public ResponseEntity<?> createNewKeranjangBelanja(@RequestParam Long ownerId){
+        if(keranjangBelanjaService.existsByOwnerId(ownerId)){
+            return ResponseEntity
+                    .badRequest()
+                    .body(FREQUENTLY_USED_STRING + ownerId + " already exists.");
+        }
+        else{
+            keranjangBelanjaService.createNewKeranjangBelanja(ownerId);
+            return ResponseEntity.ok(FREQUENTLY_USED_STRING + ownerId + " created.");
+        }
+    }
+
+    @PutMapping("/updateKeranjangBelanja")
+    public ResponseEntity<?> updateKeranjangBelanja(@RequestBody GetUpdateRequest updateRequest) {
+        Long ownerId = updateRequest.getOwnerId();
+        if(keranjangBelanjaService.existsByOwnerId(ownerId)){
+            KeranjangBelanja keranjangBelanja = keranjangBelanjaService.updateKeranjangBelanja(
+                    ownerId,
+                    updateRequest.getUpdatedProducts());
+            return ResponseEntity.ok(FREQUENTLY_USED_STRING + ownerId + " is updated.");
+        } else {
+            return ResponseEntity
+                    .badRequest()
+                    .body(FREQUENTLY_USED_STRING + ownerId + " not found.");
+        }
+    }
+
+    @DeleteMapping("/clearKeranjangBelanja")
+    public ResponseEntity<?> clearKeranjangBelanja(@RequestParam Long ownerId){
+        if(keranjangBelanjaService.existsByOwnerId(ownerId)){
+            keranjangBelanjaService.clearKeranjangBelanja(ownerId);
+            return ResponseEntity.ok(FREQUENTLY_USED_STRING + ownerId + " is deleted.");
+        }
+        else{
+            return ResponseEntity
+                    .badRequest()
+                    .body(FREQUENTLY_USED_STRING + ownerId + " not found.");
+        }
+    }
+    @PostMapping("/addProductToKeranjangBelanja")
+    public ResponseEntity<?> addProductToKeranjangBelanja(@RequestBody GetProductRequest productRequest){
+        Long ownerId = productRequest.getOwnerId();
+        if(keranjangBelanjaService.existsByOwnerId(ownerId)){
+            KeranjangBelanja keranjangBelanja = keranjangBelanjaService.addProductToKeranjangBelanja(
+                    ownerId,
+                    productRequest.getProductId(),
+                    productRequest.getQuantity());
+            return ResponseEntity.ok(keranjangBelanja);
+        } else {
+            return ResponseEntity
+                    .badRequest()
+                    .body(FREQUENTLY_USED_STRING + ownerId + " not found.");
+        }
+    }
+
+    @DeleteMapping("/removeProductFromKeranjangBelanja")
+    public ResponseEntity<?> removeProductFromKeranjangBelanja(@RequestBody GetProductRequest productRequest){
+        Long ownerId = productRequest.getOwnerId();
+        if(keranjangBelanjaService.existsByOwnerId(ownerId)){
+            KeranjangBelanja keranjangBelanja = keranjangBelanjaService.removeProductFromKeranjangBelanja(
+                    ownerId,
+                    productRequest.getProductId());
+            return ResponseEntity.ok(keranjangBelanja);
+        } else {
+            return ResponseEntity
+                    .badRequest()
+                    .body(FREQUENTLY_USED_STRING + ownerId + " not found.");
+        }
     }
 }

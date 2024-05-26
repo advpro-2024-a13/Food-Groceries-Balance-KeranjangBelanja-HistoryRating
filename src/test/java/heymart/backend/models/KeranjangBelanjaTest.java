@@ -3,76 +3,49 @@ package heymart.backend.models;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 public class KeranjangBelanjaTest {
-    private List<Product> products;
-    private KeranjangBelanja.KeranjangBelanjaBuilder builder;
+    private KeranjangBelanja keranjangBelanja;
+    private HashMap<UUID, Integer> productMap;
 
     @BeforeEach
-    void setUp() {
-        this.products = new ArrayList<>();
-        this.products.add(new Product());
-        this.builder = KeranjangBelanja.builder();
+    void setUp(){
+        keranjangBelanja = new KeranjangBelanja();
+        productMap = new HashMap<>();
+
+        UUID product1Id = UUID.fromString("eb558e9f-1c39-460e-8860-71af6af63bd6");
+        UUID product2Id = UUID.fromString("d6e2c1fd-0dd4-4be2-b2fb-efdc1c3c2c94");
+
+        productMap.put(product1Id, 4);
+        productMap.put(product2Id,3);
+
+        keranjangBelanja.setOwnerId(1L);
+        keranjangBelanja.setProducts(productMap);
     }
 
     @Test
-    void testBuilder() {
-        KeranjangBelanja keranjangBelanja = builder.ownerId("rxa15").products(products).build();
-
-        assertNotNull(keranjangBelanja);
-        assertEquals("rxa15", keranjangBelanja.getOwnerId());
-        assertEquals(products, keranjangBelanja.getProducts());
+    void testCreateKeranjangBelanjaWithEmptyProducts(){
+        productMap.clear();
+        keranjangBelanja.setProducts(productMap);
+        assertTrue(keranjangBelanja.getProducts().isEmpty());
     }
 
     @Test
-    void testToString() {
-        KeranjangBelanja keranjangBelanja = builder.ownerId("rxa15").products(products).build();
+    void testCreateKeranjangBelanjaSuccess(){
+        assertEquals(2, keranjangBelanja.getProducts().size());
 
-        String expected = "KeranjangBelanja(ownerId=rxa15, products=" + products.toString() + ")";
-        assertEquals(expected, keranjangBelanja.toString());
-    }
-
-    @Test
-    void testOwnerId() {
-        KeranjangBelanja keranjangBelanja = new KeranjangBelanja("rxa15", products);
-
-        assertEquals("rxa15", keranjangBelanja.getOwnerId());
-    }
-
-    @Test
-    void testProducts() {
-        KeranjangBelanja keranjangBelanja = builder.ownerId("rxa15").products(products).build();
-
-        assertEquals(products, keranjangBelanja.getProducts());
-    }
-
-    @Test
-    void testKeranjangBelanjaBuilder() {
-        KeranjangBelanja.KeranjangBelanjaBuilder newBuilder = KeranjangBelanja.builder();
-
-        assertNotNull(newBuilder);
-    }
-
-    @Test
-    void testKeranjangBelanjaWithEmptyProducts() {
-        assertThrows(IllegalArgumentException.class, () -> new KeranjangBelanja("rxa15", new ArrayList<>()));
-    }
-
-    @Test
-    void testKeranjangBelanjaBuilderToString() {
-        String expected = "KeranjangBelanja.KeranjangBelanjaBuilder(ownerId=rxa15, products=" + products.toString() + ")";
-        assertEquals(expected, builder.ownerId("rxa15").products(products).toString());
-    }
-
-    @Test
-    void testSetProducts() {
-        KeranjangBelanja keranjangBelanja = new KeranjangBelanja();
-        keranjangBelanja.setProducts(products);
-
-        assertEquals(products, keranjangBelanja.getProducts());
+        for (UUID productId : keranjangBelanja.getProducts().keySet()) {
+            if (productId.equals(UUID.fromString("eb558e9f-1c39-460e-8860-71af6af63bd6"))) {
+                assertEquals(4, keranjangBelanja.getProducts().get(productId));
+            } else if (productId.equals(UUID.fromString("d6e2c1fd-0dd4-4be2-b2fb-efdc1c3c2c94"))) {
+                assertEquals(3, keranjangBelanja.getProducts().get(productId));
+            } else {
+                fail("Unexpected product found in the productMap");
+            }
+        }
     }
 }
