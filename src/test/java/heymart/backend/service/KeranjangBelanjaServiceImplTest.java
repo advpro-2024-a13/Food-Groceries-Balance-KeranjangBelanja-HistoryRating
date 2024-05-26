@@ -113,5 +113,4 @@ public class KeranjangBelanjaServiceImplTest {
         assertEquals(keranjangBelanja.getOwnerId(), result.getOwnerId());
         assertEquals(keranjangBelanja.getProducts(), result.getProducts());
     }
-
 }
