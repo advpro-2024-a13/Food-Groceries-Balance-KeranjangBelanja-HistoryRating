@@ -1,7 +1,8 @@
 package heymart.backend.models;
 
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.Getter;
+import lombok.Setter;
 
 @Getter
 @Setter
@@ -24,8 +25,8 @@ public class Product {
     private long productPrice;
     private String productCategory;
     private int productAmount;
-    private Long SupermarketId;
-    private Long ProductId;
+    private Long supermarketId;
+    private Long productId;
 
     public Product(Long id, String name, int price) {
         this.id = id;

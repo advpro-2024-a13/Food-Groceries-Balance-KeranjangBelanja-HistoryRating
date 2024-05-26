@@ -1,8 +1,5 @@
 package heymart.backend.repository;
 
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.*;
-
 import heymart.backend.models.Balance;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -11,14 +8,18 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Optional;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.Mockito.when;
+
 @ExtendWith(MockitoExtension.class)
-public class BalanceRepositoryTest {
+class BalanceRepositoryTest {
 
     @Mock
     private BalanceRepository balanceRepository;
 
     @Test
-    public void testFindByOwnerId() {
+    void testFindByOwnerId() {
         Balance balance = Balance.builder()
                 .ownerId(123L)
                 .balance(1000L)
@@ -34,7 +35,7 @@ public class BalanceRepositoryTest {
     }
 
     @Test
-    public void testGetBalanceByOwnerId() {
+    void testGetBalanceByOwnerId() {
         when(balanceRepository.findById(123L)).thenReturn(Optional.of(Balance.builder()
                 .ownerId(123L)
                 .balance(1000L)
