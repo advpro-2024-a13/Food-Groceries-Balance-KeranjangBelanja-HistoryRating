@@ -1,3 +1,5 @@
+package heymart.backend.models;
+
 import heymart.backend.models.History;
 import heymart.backend.models.Product;
 import jakarta.persistence.EntityManager;
