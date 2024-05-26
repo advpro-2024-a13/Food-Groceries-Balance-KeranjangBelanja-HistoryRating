@@ -86,12 +86,13 @@ public class KeranjangBelanjaServiceImplTest {
 
     @Test
     void testClearKeranjangBelanja(){
-        when(keranjangBelanjaRepository.findById(keranjangBelanja.getOwnerId())).thenReturn(Optional.of(keranjangBelanja));
-        doNothing().when(keranjangBelanjaRepository).save(any(KeranjangBelanja.class));
+        Long ownerId = keranjangBelanja.getOwnerId();
+        when(keranjangBelanjaRepository.findById(ownerId)).thenReturn(Optional.of(keranjangBelanja));
+        doNothing().when(keranjangBelanjaRepository).save(keranjangBelanja);
 
-        keranjangBelanjaService.clearKeranjangBelanja(keranjangBelanja.getOwnerId());
+        keranjangBelanjaService.clearKeranjangBelanja(ownerId);
 
-        verify(keranjangBelanjaRepository, times(1)).save(any(KeranjangBelanja.class));
+        verify(keranjangBelanjaRepository, times(1)).save(keranjangBelanja);
         assertTrue(keranjangBelanja.getProducts().isEmpty());
     }
 
