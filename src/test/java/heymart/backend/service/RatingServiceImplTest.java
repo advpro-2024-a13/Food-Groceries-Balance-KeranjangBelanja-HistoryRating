@@ -1,5 +1,8 @@
 package heymart.backend.service;
 
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
+
 import heymart.backend.models.Rating;
 import heymart.backend.repository.RatingRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -8,13 +11,11 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.Mockito.*;
-
-class RatingServiceImplTest {
+public class RatingServiceImplTest {
 
     @Mock
     private RatingRepository ratingRepository;
@@ -28,23 +29,26 @@ class RatingServiceImplTest {
     }
 
     @Test
-    void testModifyRating() {
-        Long id = 1L;
+    public void testModifyRating() {
+        Long ownerId = 123L;
+        Long marketId = 456L;
         int rating = 4;
         String review = "Great product!";
-        Rating existingRating = new Rating(123L, 234L, 3, "Good product");
+        Rating existingRating = new Rating(ownerId, marketId, 3, "Good product");
+        List<Rating> ratingList = new ArrayList<>();
+        ratingList.add(existingRating);
 
-        when(ratingRepository.findById(id)).thenReturn(Optional.of(existingRating));
+        when(ratingRepository.findByOwnerId(ownerId)).thenReturn(Optional.of(ratingList));
         when(ratingRepository.save(existingRating)).thenReturn(existingRating);
 
-        Rating modifiedRating = ratingService.modifyRating(id, rating, review);
+        Rating modifiedRating = ratingService.modifyRating(ownerId, marketId, rating, review);
 
         assertEquals(rating, modifiedRating.getScore());
         assertEquals(review, modifiedRating.getReview());
     }
 
     @Test
-    void testGetRatingById() {
+    public void testGetRatingById() {
         Long ratingId = 789L;
         Rating rating = new Rating(123L, 456L, 4, "Great product!");
 
@@ -56,7 +60,7 @@ class RatingServiceImplTest {
     }
 
     @Test
-    void testAddNewRating() {
+    public void testAddNewRating() {
         Long ownerId = 123L;
         Long marketId = 456L;
         int rating = 4;
@@ -71,7 +75,7 @@ class RatingServiceImplTest {
     }
 
     @Test
-    void testDeleteRating() {
+    public void testDeleteRating() {
         Long ratingId = 789L;
 
         ratingService.deleteRating(ratingId);
@@ -80,7 +84,7 @@ class RatingServiceImplTest {
     }
 
     @Test
-    void testExistsById() {
+    public void testExistsById() {
         Long ratingId = 789L;
 
         when(ratingRepository.existsById(ratingId)).thenReturn(true);

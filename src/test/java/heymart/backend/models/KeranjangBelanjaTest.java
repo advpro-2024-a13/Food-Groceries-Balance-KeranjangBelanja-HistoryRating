@@ -1,51 +1,67 @@
 package heymart.backend.models;
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.util.HashMap;
-import java.util.UUID;
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 public class KeranjangBelanjaTest {
-    private KeranjangBelanja keranjangBelanja;
-    private HashMap<UUID, Integer> productMap;
+    private List<Product> products;
 
     @BeforeEach
-    void setUp(){
-        keranjangBelanja = new KeranjangBelanja();
-        productMap = new HashMap<>();
+    void setKeranjangBelanja(){
+        this.products = new ArrayList<>();
 
-        UUID product1Id = UUID.fromString("eb558e9f-1c39-460e-8860-71af6af63bd6");
-        UUID product2Id = UUID.fromString("d6e2c1fd-0dd4-4be2-b2fb-efdc1c3c2c94");
+        Product product1 = new Product();
+        product1.setSupermarketId(1648L);
+        product1.setProductId(123L);
+        product1.setProductName("Vanilla Bourbon");
+        product1.setProductPrice(150);
+        product1.setProductCategory("Gelato");
+        product1.setProductAmount(2);
 
-        productMap.put(product1Id, 4);
-        productMap.put(product2Id,3);
+        Product product2 = new Product();
+        product2.setSupermarketId(1748L);
+        product2.setProductId(234L);
+        product2.setProductName("Rum Raisin");
+        product2.setProductPrice(200);
+        product2.setProductCategory("Gelato");
+        product2.setProductAmount(2);
 
-        keranjangBelanja.setOwnerId(1L);
-        keranjangBelanja.setProducts(productMap);
+        this.products.add(product1);
+        this.products.add(product2);
     }
 
     @Test
-    void testCreateKeranjangBelanjaWithEmptyProducts(){
-        productMap.clear();
-        keranjangBelanja.setProducts(productMap);
-        assertTrue(keranjangBelanja.getProducts().isEmpty());
+    void testCreateKeranjangBelanjaEmptyProduct(){
+        this.products.clear();
+
+        assertThrows(IllegalArgumentException.class, () -> {
+            new KeranjangBelanja("rxa15", this.products);
+        });
     }
 
     @Test
     void testCreateKeranjangBelanjaSuccess(){
+        KeranjangBelanja keranjangBelanja = new KeranjangBelanja("rxa15", this.products);
+
+        assertSame(this.products, keranjangBelanja.getProducts());
         assertEquals(2, keranjangBelanja.getProducts().size());
 
-        for (UUID productId : keranjangBelanja.getProducts().keySet()) {
-            if (productId.equals(UUID.fromString("eb558e9f-1c39-460e-8860-71af6af63bd6"))) {
-                assertEquals(4, keranjangBelanja.getProducts().get(productId));
-            } else if (productId.equals(UUID.fromString("d6e2c1fd-0dd4-4be2-b2fb-efdc1c3c2c94"))) {
-                assertEquals(3, keranjangBelanja.getProducts().get(productId));
-            } else {
-                fail("Unexpected product found in the productMap");
-            }
-        }
+        assertEquals(1648, keranjangBelanja.getProducts().get(0).getSupermarketId());
+        assertEquals(123, keranjangBelanja.getProducts().get(0).getProductId());
+        assertEquals("Vanilla Bourbon", keranjangBelanja.getProducts().get(0).getProductName());
+        assertEquals(150, keranjangBelanja.getProducts().get(0).getProductPrice());
+        assertEquals("Gelato", keranjangBelanja.getProducts().get(0).getProductCategory());
+        assertEquals(2, keranjangBelanja.getProducts().get(0).getProductAmount());
+
+        assertEquals(1748, keranjangBelanja.getProducts().get(1).getSupermarketId());
+        assertEquals(234, keranjangBelanja.getProducts().get(1).getProductId());
+        assertEquals("Rum Raisin", keranjangBelanja.getProducts().get(1).getProductName());
+        assertEquals(200, keranjangBelanja.getProducts().get(1).getProductPrice());
+        assertEquals("Gelato", keranjangBelanja.getProducts().get(1).getProductCategory());
+        assertEquals(2, keranjangBelanja.getProducts().get(1).getProductAmount());
     }
 }

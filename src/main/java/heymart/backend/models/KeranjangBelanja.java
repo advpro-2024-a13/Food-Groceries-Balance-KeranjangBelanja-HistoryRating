@@ -1,29 +1,33 @@
 package heymart.backend.models;
 
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.Builder;
+import lombok.Getter;
 
-import java.util.Map;
-import java.util.UUID;
+import java.util.List;
 
-@Getter
-@Setter
-@Entity
 @Builder
-@NoArgsConstructor
-@AllArgsConstructor
-@Table(name = "keranjangbelanja",
-        uniqueConstraints = {
-        @UniqueConstraint(columnNames = "ownerId")
-        })
-public class KeranjangBelanja{
+@Getter
+@Entity
+public class KeranjangBelanja {
 
     @Id
-    private Long ownerId;
+    String ownerId;
 
-    @ElementCollection
-    @CollectionTable(name = "products", joinColumns = @JoinColumn(name = "ownerId"))
-    @MapKeyColumn(name = "productId")
-    @Column(name = "quantity")
-    private Map<UUID, Integer> products;
+    @OneToMany(mappedBy = "keranjangBelanja")
+    List<Product> products;
+
+    public KeranjangBelanja(String ownerId, List<Product> products){
+        this.ownerId = ownerId;
+
+        if(products.isEmpty()){
+            throw new IllegalArgumentException();
+        } else{
+            this.products = products;
+        }
+    }
+
+    public KeranjangBelanja(){
+
+    }
 }

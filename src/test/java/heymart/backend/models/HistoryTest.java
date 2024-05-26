@@ -1,58 +1,68 @@
-import heymart.backend.models.History;
-import heymart.backend.models.Product;
-import jakarta.persistence.EntityManager;
+package heymart.backend.models;
+
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class HistoryTest {
 
+    private History history;
+
+    @BeforeEach
+    public void setUp() {
+        history = new History();
+    }
+
     @Test
-    public void testConstructor() {
-        Long ownerId = 1L;
-        Long marketId = 2L;
-        List<Product> purchases = new ArrayList<>();
-        double totalSpent = 100.0;
+    public void testGetSetId() {
+        Long id = 123L;
+        history.setId(id);
+        assertEquals(id, history.getId());
+    }
 
-        History history = new History.Builder()
-                .ownerId(ownerId)
-                .marketId(marketId)
-                .purchases(purchases)
-                .totalSpent(totalSpent)
-                .build();
-
+    @Test
+    public void testGetSetOwnerId() {
+        Long ownerId = 123L;
+        history.setOwnerId(ownerId);
         assertEquals(ownerId, history.getOwnerId());
+    }
+
+    @Test
+    public void testGetSetMarketId() {
+        Long marketId = 456L;
+        history.setMarketId(marketId);
         assertEquals(marketId, history.getMarketId());
-        assertEquals(purchases, history.getPurchases());
-        assertEquals(totalSpent, history.getTotalSpent(), 0.001);
+    }
+
+    @Test
+    public void testGetSetTotalSpent() {
+        double totalSpent = 100.0;
+        history.setTotal(totalSpent);
+        assertEquals(totalSpent, history.getTotal());
     }
 
     @Test
     public void testAddPurchase() {
-        History history = new History.Builder().build();
-        Product product1 = new Product();
-        product1.setProductPrice((long) 10.0);
-        Product product2 = new Product();
-        product2.setProductPrice((long) 20.0);
-
-        history.addPurchase(product1);
-        history.addPurchase(product2);
-
-        assertEquals(2, history.getPurchases().size());
-        assertEquals(product1, history.getPurchases().get(0));
-        assertEquals(product2, history.getPurchases().get(1));
-        assertEquals(30.0, history.getTotalSpent(), 0.001);
+        Product product = new Product();
+        product.setProductPrice(50);
+        history.addPurchase(product);
+        assertEquals(1, history.getPurchases().size());
+        assertEquals(product, history.getPurchases().getFirst());
+        assertEquals(50.0, history.getTotal());
     }
 
     @Test
-    public void testNullPurchase() {
-        History history = new History.Builder().build();
-        assertThrows(NullPointerException.class, () -> history.addPurchase(null));
+    public void testGetSetPurchases() {
+        List<Product> purchases = new ArrayList<>();
+        Product product1 = new Product();
+        Product product2 = new Product();
+        purchases.add(product1);
+        purchases.add(product2);
+        history.setPurchases(purchases);
+        assertEquals(purchases, history.getPurchases());
     }
 }

@@ -1,26 +1,24 @@
 package heymart.backend.controller;
 
 import heymart.backend.models.Balance;
-import heymart.backend.service.BalanceServiceImpl;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Map;
+import heymart.backend.service.BalanceServiceImpl;
+
+import java.util.HashMap;
 import java.util.concurrent.CompletableFuture;
 
 @RestController
 @RequestMapping("/balance/api")
 public class BalanceAPIController {
     
-    private final BalanceServiceImpl balanceService;
+    @Autowired
+    private BalanceServiceImpl balanceService;
 
-    public BalanceAPIController(BalanceServiceImpl balanceService) {
-        this.balanceService = balanceService;
-    }
-
-    private static final String FREQUENTLY_USED_STRING = "Balance with ownerId ";
-    
     @GetMapping("/getBalance")
     public ResponseEntity<?> getBalanceById(@RequestParam Long ownerId) {
         if (balanceService.existsById(ownerId)) {
@@ -28,33 +26,33 @@ public class BalanceAPIController {
         } else {
             return ResponseEntity
                 .badRequest()
-                .body(FREQUENTLY_USED_STRING + ownerId + " not found.");
+                .body("Balance with ownerId " + ownerId + " not found.");
         }
     }
 
     @PostMapping("/addNewBalance")
-    public ResponseEntity<?> addNewBalance(@RequestBody Map<String, String> json) {
-        long ownerId = Long.parseLong(json.get("ownerId"));
+    public ResponseEntity<?> addNewBalance(@RequestBody HashMap<String, String> JSON) {
+        long ownerId = Long.parseLong(JSON.get("ownerId"));
         if (balanceService.existsById(ownerId)) {
             return ResponseEntity
                 .badRequest()
-                .body(FREQUENTLY_USED_STRING + ownerId + " already exists.");
+                .body("Balance with ownerId " + ownerId + " already exists.");
         } else {
             balanceService.addNewBalance(ownerId);
-            return ResponseEntity.ok(FREQUENTLY_USED_STRING + ownerId + " added.");
+            return ResponseEntity.ok("Balance with ownerId " + ownerId + " added.");
         }
     }
 
     @DeleteMapping("/deleteBalance")
-    public ResponseEntity<?> deleteBalance(@RequestBody Map<String, String> json) {
-        long ownerId = Long.parseLong(json.get("ownerId"));
+    public ResponseEntity<?> deleteBalance(@RequestBody HashMap<String, String> JSON) {
+        long ownerId = Long.parseLong(JSON.get("ownerId"));
         if (balanceService.existsById(ownerId)) {
             balanceService.deleteBalance(ownerId);
-            return ResponseEntity.ok(FREQUENTLY_USED_STRING + ownerId + " deleted.");
+            return ResponseEntity.ok("Balance with ownerId " + ownerId + " deleted.");
         } else {
             return ResponseEntity
                 .badRequest()
-                .body(FREQUENTLY_USED_STRING + ownerId + " not found.");
+                .body("Balance with ownerId " + ownerId + " not found.");
         }
     }
 

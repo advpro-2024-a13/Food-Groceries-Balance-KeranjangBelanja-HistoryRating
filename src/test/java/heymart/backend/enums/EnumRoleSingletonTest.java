@@ -1,20 +1,20 @@
 package heymart.backend.enums;
 
-import org.junit.jupiter.api.Test;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-class EnumRoleSingletonTest {
+import org.junit.jupiter.api.Test;
+
+public class EnumRoleSingletonTest {
 
     @Test
-    void testGetInstance() {
+    public void testGetInstance() {
         EnumRoleSingleton instance = EnumRoleSingleton.getInstance();
         assertNotNull(instance);
     }
 
     @Test
-    void testAddStringValue() {
+    public void testAddStringValue() {
         EnumRoleSingleton instance = EnumRoleSingleton.getInstance();
         instance.addStringValue("TestKey", "TestValue");
         String value = instance.getStringValue("TestKey");
@@ -22,7 +22,7 @@ class EnumRoleSingletonTest {
     }
 
     @Test
-    void testGetStringValue() {
+    public void testGetStringValue() {
         EnumRoleSingleton instance = EnumRoleSingleton.getInstance();
         String value = instance.getStringValue("Pembeli");
         assertEquals("ROLE_PEMBELI", value);

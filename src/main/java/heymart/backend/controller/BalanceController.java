@@ -1,30 +1,32 @@
 package heymart.backend.controller;
 
 import heymart.backend.enums.EnumRoleSingleton;
-import heymart.backend.service.BalanceServiceImpl;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
-import java.util.Map;
+import heymart.backend.service.BalanceServiceImpl;
+
+import java.util.HashMap;
 
 @Controller
 @RequestMapping("/balance")
 public class BalanceController {
     
-    private final BalanceServiceImpl balanceService;
-
-    public BalanceController(BalanceServiceImpl balanceService) {
-        this.balanceService = balanceService;
-    }
+    @Autowired
+    private BalanceServiceImpl balanceService;
 
     @PostMapping("/modifyBalance")
-    public ResponseEntity<?> modifyBalance(@RequestBody Map<String, String> JSON) {
+    public ResponseEntity<?> modifyBalance(@RequestBody HashMap<String, String> JSON) {
         long ownerId = Long.parseLong(JSON.get("ownerId"));
         long amount = Long.parseLong(JSON.get("amount"));
-        if (amount <= 0) {
+        if (amount > 0 && balanceService.existsById(ownerId)) {
+            balanceService.modifyBalance(ownerId, amount);
+            return ResponseEntity
+                    .ok()
+                    .body("Balance with ownerId " + ownerId + " modified.");
+        } else if (amount <= 0) {
             return ResponseEntity
                     .badRequest()
                     .body("Amount harus lebih dari 0");
@@ -33,15 +35,14 @@ public class BalanceController {
                     .badRequest()
                     .body("Balance not found");
         } else {
-            balanceService.modifyBalance(ownerId, amount);
             return ResponseEntity
-                    .ok()
-                    .body("Balance with ownerId " + ownerId + " modified.");
+                    .badRequest()
+                    .body("Param Invalid");
         }
     }
 
     @PostMapping("/topUp")
-    public ResponseEntity<?> topUp(@RequestBody Map<String, String> JSON) {
+    public ResponseEntity<?> topUp(@RequestBody HashMap<String, String> JSON) {
         long ownerId = Long.parseLong(JSON.get("ownerId"));
         long amount = Long.parseLong(JSON.get("amount"));
         String role = JSON.get("role");
@@ -69,7 +70,7 @@ public class BalanceController {
     }
 
     @PostMapping("/withdraw")
-    public ResponseEntity<?> withdraw(@RequestBody Map<String, String> JSON) {
+    public ResponseEntity<?> withdraw(@RequestBody HashMap<String, String> JSON) {
         long ownerId = Long.parseLong(JSON.get("ownerId"));
         long amount = Long.parseLong(JSON.get("amount"));
         String role = JSON.get("role");

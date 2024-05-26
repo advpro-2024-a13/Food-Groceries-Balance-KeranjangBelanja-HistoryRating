@@ -35,9 +35,6 @@ jobs:
 
       - name: Test with Gradle
         run: |
-          export SPRING_DATASOURCE_PASSWORD=${{ secrets.JBDC_DATABASE_PASSWORD }}
-          export SPRING_DATASOURCE_USERNAME=${{ secrets.JBDC_DATABASE_USERNAME }}
-          export SPRING_DATASOURCE_URL=jdbc:postgresql://${{ secrets.JBDC_DATABASE_URL }}/postgres
           ./gradlew wrapper --gradle-version=8.5
           ./gradlew test
 
